@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Rules Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        #results { background: #f5f5f5; padding: 10px; border-radius: 5px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Firebase Security Rules Test</h1>
+    
+    <div class="test-section">
+        <h3>Test Read Permissions</h3>
+        <button onclick="testReadPermissions()">Test Read Access</button>
+        <button onclick="testWritePermissions()">Test Write Access</button>
+        <button onclick="testUnauthenticatedAccess()">Test Unauthenticated Access</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>Results</h3>
+        <div id="results"></div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './firebase.js';
+        import { 
+            signInAnonymously,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import {
+            doc,
+            getDoc,
+            setDoc,
+            collection,
+            getDocs,
+            query,
+            orderBy
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        let results = document.getElementById('results');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            results.innerHTML += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            console.log(message);
+        }
+
+        async function testReadPermissions() {
+            try {
+                log('Testing read permissions...');
+                
+                // Test reading items collection
+                const itemsRef = collection(db, 'items');
+                const q = query(itemsRef, orderBy('createdAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+                
+                log(`Successfully read ${querySnapshot.size} items from collection`, 'success');
+                
+                // Test reading a specific document
+                if (querySnapshot.size > 0) {
+                    const firstDoc = querySnapshot.docs[0];
+                    const itemRef = doc(db, 'items', firstDoc.id);
+                    const itemDoc = await getDoc(itemRef);
+                    
+                    if (itemDoc.exists()) {
+                        log(`Successfully read specific item: ${firstDoc.id}`, 'success');
+                    } else {
+                        log(`Item ${firstDoc.id} does not exist`, 'warning');
+                    }
+                }
+                
+            } catch (error) {
+                log(`Read permission error: ${error.message}`, 'error');
+                log(`Error code: ${error.code}`, 'error');
+            }
+        }
+
+        async function testWritePermissions() {
+            try {
+                log('Testing write permissions...');
+                
+                const testData = {
+                    title: 'Test Item',
+                    description: 'This is a test item for permissions',
+                    uid: auth.currentUser?.uid || 'anonymous',
+                    createdAt: new Date(),
+                    status: 'test'
+                };
+                
+                const testRef = doc(db, 'items', 'test-permission-item');
+                await setDoc(testRef, testData);
+                
+                log('Successfully wrote test document', 'success');
+                
+                // Clean up - delete the test document
+                // Note: This might fail if delete permissions are restricted
+                try {
+                    await setDoc(testRef, {});
+                    log('Test document cleaned up', 'success');
+                } catch (cleanupError) {
+                    log(`Cleanup failed (this is normal if delete permissions are restricted): ${cleanupError.message}`, 'warning');
+                }
+                
+            } catch (error) {
+                log(`Write permission error: ${error.message}`, 'error');
+                log(`Error code: ${error.code}`, 'error');
+            }
+        }
+
+        async function testUnauthenticatedAccess() {
+            try {
+                log('Testing unauthenticated access...');
+                
+                // Sign out first
+                await signOut(auth);
+                log('Signed out user');
+                
+                // Wait a moment for auth state to update
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Try to read items
+                const itemsRef = collection(db, 'items');
+                const q = query(itemsRef, orderBy('createdAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+                
+                log(`Unauthenticated read successful: ${querySnapshot.size} items`, 'success');
+                
+                // Sign back in anonymously
+                await signInAnonymously(auth);
+                log('Signed back in anonymously');
+                
+            } catch (error) {
+                log(`Unauthenticated access error: ${error.message}`, 'error');
+                log(`Error code: ${error.code}`, 'error');
+                
+                // Sign back in anonymously even if test failed
+                try {
+                    await signInAnonymously(auth);
+                    log('Signed back in anonymously after error');
+                } catch (signInError) {
+                    log(`Failed to sign back in: ${signInError.message}`, 'error');
+                }
+            }
+        }
+
+        // Make functions globally available
+        window.testReadPermissions = testReadPermissions;
+        window.testWritePermissions = testWritePermissions;
+        window.testUnauthenticatedAccess = testUnauthenticatedAccess;
+
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                log(`User authenticated: ${user.uid}`, 'success');
+            } else {
+                log('No user authenticated', 'warning');
+            }
+        });
+
+        log('Firebase rules test tool loaded. Click buttons to test permissions.');
+    </script>
+</body>
+</html> 

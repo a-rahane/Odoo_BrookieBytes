@@ -273,6 +273,17 @@
         setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    // Firebase config for debugging
+    const firebaseConfig = {
+        apiKey: "AIzaSyBwLPKXaTy4qRA7jhfMzc8p8cqoKBSR4o0",
+        authDomain: "odoo-brookiebytes.firebaseapp.com",
+        projectId: "odoo-brookiebytes",
+        storageBucket: "odoo-brookiebytes.firebasestorage.app",
+        messagingSenderId: "254090879828",
+        appId: "1:254090879828:web:1ebcac60fb47a74e47dec1",
+        measurementId: "G-V4631K9Q5S"
+    };
+
     // Points system functions
     async function getUserPoints(userId) {
         try {
@@ -388,6 +399,24 @@
       return params.get('id');
     }
 
+    // Test Firebase connection
+    async function testFirebaseConnection() {
+        try {
+            console.log('Testing Firebase connection...');
+            console.log('Firebase config:', firebaseConfig);
+            console.log('Database instance:', db);
+            
+            // Try to read a test document
+            const testRef = doc(db, 'items', 'test');
+            await getDoc(testRef);
+            console.log('Firebase connection successful');
+            return true;
+        } catch (error) {
+            console.error('Firebase connection test failed:', error);
+            return false;
+        }
+    }
+
     let currentImgIdx = 0;
     let currentImages = [];
 
@@ -400,9 +429,35 @@
                 showProductNotFound();
                 return;
             }
+
+            // Check if Firebase is properly initialized
+            if (!db) {
+                console.error('Firebase database not initialized');
+                showProductNotFound();
+                return;
+            }
+
+            // Test Firebase connection first
+            const connectionOk = await testFirebaseConnection();
+            if (!connectionOk) {
+                console.error('Firebase connection failed');
+                showProductNotFound();
+                return;
+            }
+
             const docRef = doc(db, 'items', id);
             console.log('Document reference:', docRef); // Debug log
-            const docSnap = await getDoc(docRef);
+            
+            // Add timeout to prevent hanging
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Request timeout')), 10000)
+            );
+            
+            const docSnap = await Promise.race([
+                getDoc(docRef),
+                timeoutPromise
+            ]);
+            
             console.log('Document exists:', docSnap.exists()); // Debug log
             if (docSnap.exists()) {
                 const product = docSnap.data();
@@ -414,7 +469,15 @@
             }
         } catch (error) {
             console.error('Error loading product:', error);
-            showProductNotFound();
+            if (error.message.includes('permission-denied')) {
+                console.error('Firebase permission denied. Check security rules.');
+                showProductNotFound();
+            } else if (error.message.includes('timeout')) {
+                console.error('Request timed out. Check internet connection.');
+                showProductNotFound();
+            } else {
+                showProductNotFound();
+            }
         }
     }
 
@@ -569,12 +632,28 @@
     window.logout = logout;
 
     document.addEventListener('DOMContentLoaded', function() {
-        const id = getItemId();
-        if (id) {
-            loadProductDetails(id);
-        } else {
-            showProductNotFound();
-        }
+        // Check authentication state first
+        onAuthStateChanged(auth, (user) => {
+            console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+            
+            const id = getItemId();
+            if (id) {
+                console.log('Loading product details for ID:', id);
+                loadProductDetails(id);
+            } else {
+                console.error('No item ID found in URL');
+                showProductNotFound();
+            }
+        }, (error) => {
+            console.error('Auth state change error:', error);
+            // Still try to load the item even if auth fails
+            const id = getItemId();
+            if (id) {
+                loadProductDetails(id);
+            } else {
+                showProductNotFound();
+            }
+        });
         
         document.getElementById('arrowLeft').onclick = function() {
             showImage(currentImgIdx - 1);
