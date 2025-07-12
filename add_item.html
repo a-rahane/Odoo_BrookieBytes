@@ -20,10 +20,36 @@
             font-family: 'Inter', sans-serif;
             background: var(--champagne-pink);
         }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--dark-purple);
+            color: var(--timberwolf);
+            box-shadow: 0 2px 8px rgba(31,26,56,0.15);
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--champagne-pink);
+            letter-spacing: 1px;
+        }
+        .nav-links a {
+            color: var(--timberwolf);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--amaranth-pink);
+        }
         .container {
             max-width: 1100px;
             margin: 40px auto 0 auto;
-            background: var(--dark-purple);
+            background: #7B506F;
             border-radius: 22px;
             box-shadow: 0 4px 24px rgba(31,26,56,0.10);
             padding: 36px 40px 32px 40px;
@@ -49,7 +75,7 @@
         }
         .image-upload {
             flex: 1.1;
-            background: rgba(123,80,111,0.13);
+            background: #7B506F;
             border: 2px dashed var(--timberwolf);
             border-radius: 16px;
             min-height: 260px;
@@ -81,11 +107,11 @@
             gap: 18px;
         }
         .desc-box {
-            background: rgba(234,215,209,0.10);
+            background: #7B506F;
             border: 1.5px solid var(--timberwolf);
             border-radius: 14px;
             padding: 18px 18px 12px 18px;
-            min-height: 120px;
+            min-height: 60px;
             color: var(--timberwolf);
             font-size: 1.1rem;
             margin-bottom: 0;
@@ -175,47 +201,65 @@
             flex: 0 0 240px;
             min-width: 220px;
             max-width: 260px;
-            min-height: 180px;
-            background: rgba(123,80,111,0.13);
-            border: 1.5px solid var(--timberwolf);
-            border-radius: 18px;
+            min-height: 320px;
+            background: #ead7d1;
+            border: none;
+            border-radius: 28px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-end;
-            color: var(--timberwolf);
+            align-items: center;
+            justify-content: flex-start;
+            color: var(--dark-purple);
             font-size: 1.05rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(31,26,56,0.10);
+            box-shadow: 0 2px 16px rgba(31,26,56,0.10);
             margin-bottom: 0;
-            padding: 0;
+            padding: 0 0 18px 0;
+            transition: box-shadow 0.2s;
         }
-        .listing-card .card-bg {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%; height: 100%;
+        .listing-card:hover {
+            box-shadow: 0 6px 32px rgba(123,80,111,0.13);
+        }
+        .listing-card .card-img {
+            width: 100%;
+            height: 150px;
             object-fit: cover;
-            z-index: 1;
-            filter: brightness(0.7);
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            background: var(--timberwolf);
         }
         .listing-card .card-content {
-            position: relative;
-            z-index: 2;
-            padding: 18px 18px 14px 18px;
             width: 100%;
+            padding: 18px 18px 0 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .listing-card .category-badge {
+            background: var(--timberwolf);
+            color: var(--amaranth-pink);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 4px 18px;
+            margin-bottom: 10px;
+            margin-top: -22px;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+        .listing-card .title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--dark-purple);
+            margin-bottom: 6px;
+            text-align: center;
         }
         .listing-card .desc {
-            font-size: 1.08rem;
-            font-weight: 600;
-            color: var(--timberwolf);
-            margin-bottom: 4px;
-            text-shadow: 0 2px 8px rgba(31,26,56,0.18);
-        }
-        .listing-card .stat {
-            font-size: 1rem;
-            color: var(--amaranth-pink);
-            font-weight: 500;
+            font-size: 1.05rem;
+            color: var(--dark-purple);
+            margin-bottom: 0;
+            text-align: center;
         }
         .hidden { display: none; }
         .error-message { color: #e74c3c; font-size: 1rem; margin-top: 8px; }
@@ -234,6 +278,10 @@
         .carousel-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #ead7d1;
+            opacity: 1;
         }
         @media (max-width: 900px) {
             .main-content {
@@ -256,6 +304,14 @@
     </style>
 </head>
 <body>
+    <div class="navbar">
+      <span class="logo">ReWear</span>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Logout</a>
+      </div>
+    </div>
     <div class="container">
         <div class="header">
             <h1>Add Item</h1>
@@ -269,11 +325,17 @@
                 </div>
                 <div class="details-section">
                     <div class="desc-box">
+                        <label for="product-title">Product Title</label>
+                        <input id="product-title" type="text" placeholder="Enter product title..." required style="width:100%;padding:10px 8px;margin-bottom:0;border-radius:8px;border:none;font-size:1.08rem;background:rgba(234,215,209,0.13);color:var(--timberwolf);font-family:'Inter',sans-serif;" />
+                    </div>
+                    <div class="desc-box" style="margin-top:14px;">
+                        <label for="product-price">Price (INR)</label>
+                        <input id="product-price" type="number" min="0" step="0.01" placeholder="Enter price in INR..." required style="width:100%;padding:10px 8px;margin-bottom:0;border-radius:8px;border:none;font-size:1.08rem;background:rgba(234,215,209,0.13);color:var(--timberwolf);font-family:'Inter',sans-serif;" />
+                    </div>
+                    <div class="desc-box" style="margin-top:14px;">
                         <label for="product-desc">Add Product Description</label>
                         <textarea id="product-desc" placeholder="Describe your item..." required></textarea>
                     </div>
-                    <button type="button" class="swap-btn" id="toggle-status">Available</button>
-                    <input type="hidden" id="status" value="available" />
                 </div>
             </div>
             <div style="text-align:right; margin-bottom:10px;">
@@ -291,11 +353,11 @@
         </div>
     </div>
     <script type="module">
-        import { auth, db, storage } from './firebase.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
+    import { auth, db, storage } from './firebase.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('add-item-form');
         const imagesInput = document.getElementById('images');
         const imagePreview = document.getElementById('image-preview');
@@ -323,11 +385,13 @@
         fetchListings();
 
         // Toggle status
-        toggleStatusBtn.addEventListener('click', () => {
-            status = (status === 'available') ? 'swap' : 'available';
-            statusInput.value = status;
-            toggleStatusBtn.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-        });
+        if (toggleStatusBtn && statusInput) {
+            toggleStatusBtn.addEventListener('click', () => {
+                status = (status === 'available') ? 'swap' : 'available';
+                statusInput.value = status;
+                toggleStatusBtn.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            });
+        }
 
         // Image preview
         imagesInput.addEventListener('change', () => {
@@ -362,7 +426,13 @@
                 errorMessage.classList.remove('hidden');
                 return;
             }
+            const title = document.getElementById('product-title').value.trim();
             const desc = descInput.value.trim();
+            if (!title) {
+                errorMessage.textContent = 'Please enter a product title.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
             if (!desc) {
                 errorMessage.textContent = 'Please enter a product description.';
                 errorMessage.classList.remove('hidden');
@@ -381,6 +451,7 @@
                 // Save to Firestore
                 await addDoc(collection(db, 'items'), {
                     uid: currentUser.uid,
+                    title: title,
                     description: desc,
                     status: status,
                     images: imageUrls,
@@ -418,19 +489,26 @@
                 if (data.images && data.images.length) {
                     const img = document.createElement('img');
                     img.src = data.images[0];
-                    img.className = 'card-bg';
+                    img.className = 'card-img';
                     card.appendChild(img);
                 }
                 const content = document.createElement('div');
                 content.className = 'card-content';
+                // Category/Status badge
+                const badge = document.createElement('div');
+                badge.className = 'category-badge';
+                badge.textContent = (data.status || 'ITEM').toUpperCase();
+                content.appendChild(badge);
+                // Title
+                const title = document.createElement('div');
+                title.className = 'title';
+                title.textContent = data.title || 'Untitled';
+                content.appendChild(title);
+                // Description
                 const desc = document.createElement('div');
                 desc.className = 'desc';
                 desc.textContent = data.description;
                 content.appendChild(desc);
-                const stat = document.createElement('div');
-                stat.className = 'stat';
-                stat.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-                content.appendChild(stat);
                 card.appendChild(content);
                 listingCards.appendChild(card);
             }
@@ -450,6 +528,7 @@
                 showCarousel(carouselIndex);
             }
         };
+    });
     </script>
 </body>
 </html>
