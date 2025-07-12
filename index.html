@@ -13,304 +13,711 @@
             --amaranth-pink: #dd99bb;
             --chinese-violet: #7b506f;
             --dark-purple: #1f1a38;
+            --white-pink: #feebf5;
         }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background:
-                repeating-linear-gradient(
-                    to right,
-                    #fff 0px, #fff 16px,
-                    #f8f6f4 16px, #f8f6f4 32px
-                ),
-                var(--champagne-pink);
+            overflow-x: hidden;
         }
+        
+        body {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--champagne-pink) 0px,
+                    var(--champagne-pink) 20px,
+                    var(--timberwolf) 20px,
+                    var(--timberwolf) 40px
+                ),
+                linear-gradient(135deg, var(--champagne-pink) 0%, var(--timberwolf) 100%);
+            animation: subtleShift 20s ease-in-out infinite;
+        }
+        
+        @keyframes subtleShift {
+            0%, 100% { background-position: 0px 0px, 0% 0%; }
+            50% { background-position: 10px 10px, 100% 100%; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
         .split-container {
             display: flex;
             min-height: 100vh;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
         }
+        
         .left {
             flex: 1.2;
-            background: var(--chinese-violet);
+            background: var(--dark-purple);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-width: 320px;
-            padding: 0 0 0 0;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 1.2s ease-out 0.3s both;
         }
+        
+        .left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(221, 153, 187, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(219, 205, 198, 0.1) 0%, transparent 50%);
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
         .left svg {
             width: 60%;
             max-width: 340px;
             height: auto;
             display: block;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            animation: logoFloat 6s ease-in-out infinite, pulse 3s ease-in-out infinite;
         }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
         .brand-message {
             color: var(--timberwolf);
             text-align: center;
             margin-top: 32px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out 0.8s both;
         }
+        
         .brand-message h1 {
-            font-size: 2.1rem;
+            font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 0.3em;
             letter-spacing: 0.5px;
+            background: linear-gradient(45deg, var(--timberwolf), var(--amaranth-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 3s ease-in-out infinite;
         }
+        
+        @keyframes textGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
         .brand-message p {
             font-size: 1.1rem;
             font-weight: 400;
             margin-bottom: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        
         .right {
             flex: 1.8;
-            background: var(--timberwolf);
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    var(--timberwolf) 0px,
+                    var(--timberwolf) 30px,
+                    var(--champagne-pink) 30px,
+                    var(--champagne-pink) 60px
+                );
             display: flex;
             align-items: center;
             justify-content: center;
             min-width: 340px;
+            padding: 2rem;
+            position: relative;
+            animation: slideInRight 1.2s ease-out 0.5s both;
         }
+        
+        .right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(123, 80, 111, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(221, 153, 187, 0.05) 0%, transparent 50%);
+            animation: rightFloat 12s ease-in-out infinite reverse;
+        }
+        
+        @keyframes rightFloat {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(180deg); }
+        }
+        
         .form-wrapper {
             width: 100%;
-            max-width: 420px;
-            background: var(--champagne-pink);
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(31,26,56,0.07);
+            max-width: 440px;
+            background: var(--white-pink);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 40px rgba(31,26,56,0.15),
+                0 10px 20px rgba(123,80,111,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2);
             padding: 48px 36px 36px 36px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 1s ease-out 0.7s both;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        .form-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 25px 50px rgba(31,26,56,0.2),
+                0 15px 30px rgba(123,80,111,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+        
+        .form-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    135deg,
+                    transparent 0px,
+                    transparent 10px,
+                    rgba(255,255,255,0.03) 10px,
+                    rgba(255,255,255,0.03) 20px
+                );
+            border-radius: 24px;
+            pointer-events: none;
+        }
+        
         .form-wrapper .header {
             background: none;
             color: var(--chinese-violet);
             padding: 0;
             text-align: left;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out 1s both;
         }
+        
         .form-wrapper .header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 600;
             margin-bottom: 0.2em;
             letter-spacing: 0.5px;
+            background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
         }
+        
+        .form-wrapper .header h1:hover {
+            transform: scale(1.02);
+        }
+        
         .form-wrapper .header p {
             color: var(--dark-purple);
             font-size: 1.1rem;
-            margin-bottom: 1.2em;
+            margin-bottom: 1.5em;
+            opacity: 0.8;
         }
+        
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             position: relative;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            animation: fadeInUp 0.8s ease-out both;
         }
+        
+        .form-group:nth-child(1) { animation-delay: 1.2s; }
+        .form-group:nth-child(2) { animation-delay: 1.4s; }
+        .form-group:nth-child(3) { animation-delay: 1.6s; }
+        
         .form-group label {
             color: var(--dark-purple);
             font-size: 1rem;
             font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        .form-group:focus-within label {
+            color: var(--amaranth-pink);
+            transform: translateY(-2px);
+        }
+        
         .form-group input {
-            background: var(--champagne-pink);
-            border: none;
-            border-radius: 8px;
-            padding: 12px 14px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(234, 215, 209, 0.8) 0%, 
+                    rgba(219, 205, 198, 0.8) 100%);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 16px 20px;
             font-size: 1rem;
             color: var(--dark-purple);
-            margin-top: 2px;
+            margin-top: 4px;
             outline: none;
-            transition: box-shadow 0.2s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .form-group input::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .form-group input:focus::before {
+            left: 100%;
+        }
+        
         .form-group input::placeholder {
-            color: var(--timberwolf);
-            opacity: 1;
+            color: var(--chinese-violet);
+            opacity: 0.6;
+            transition: all 0.3s ease;
         }
+        
+        .form-group input:focus::placeholder {
+            opacity: 0.3;
+            transform: translateX(10px);
+        }
+        
         .form-group input:focus {
-            box-shadow: 0 0 0 2px var(--amaranth-pink);
-            background: var(--timberwolf);
+            border-color: var(--amaranth-pink);
+            background: 
+                linear-gradient(135deg, 
+                    rgba(219, 205, 198, 0.9) 0%, 
+                    rgba(234, 215, 209, 0.9) 100%);
+            box-shadow: 
+                0 0 0 4px rgba(221, 153, 187, 0.2),
+                0 8px 16px rgba(123, 80, 111, 0.1);
+            transform: translateY(-2px) scale(1.02);
         }
+        
+        .form-group input:hover:not(:focus) {
+            border-color: rgba(221, 153, 187, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(123, 80, 111, 0.1);
+        }
+        
         .form-group.error input {
-            border: 2px solid #e74c3c;
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            animation: shake 0.6s cubic-bezier(0.36, 0, 0.66, 1);
         }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
         .error-message {
             color: #e74c3c;
             font-size: 12px;
             margin-top: 5px;
             display: none;
+            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-10px) scale(0.95);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+        
         .form-group.error .error-message {
             display: block;
         }
+        
         .password-toggle {
             position: absolute;
-            right: 16px;
-            top: 40px;
+            right: 20px;
+            top: 48px;
             cursor: pointer;
             color: var(--chinese-violet);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 4px;
+            border-radius: 50%;
         }
+        
+        .password-toggle:hover {
+            background: rgba(123, 80, 111, 0.1);
+            transform: scale(1.2) rotate(180deg);
+            color: var(--amaranth-pink);
+        }
+        
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 18px;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            margin-bottom: 18px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
             background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-            color: var(--dark-purple);
-            box-shadow: 0 2px 8px rgba(123,80,111,0.08);
+            color: white;
+            box-shadow: 
+                0 8px 16px rgba(123,80,111,0.3),
+                0 4px 8px rgba(221,153,187,0.2);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 1.8s both;
         }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
         .btn:hover {
             background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
-            color: var(--champagne-pink);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 15px 30px rgba(123,80,111,0.4),
+                0 8px 16px rgba(221,153,187,0.3);
         }
+        
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+        
         .divider {
             text-align: center;
-            margin: 20px 0 10px 0;
+            margin: 25px 0 20px 0;
             position: relative;
+            animation: fadeInUp 0.8s ease-out 2s both;
         }
+        
         .divider::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 0;
             right: 0;
-            height: 1px;
-            background: var(--timberwolf);
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--timberwolf) 25%, 
+                var(--amaranth-pink) 50%, 
+                var(--timberwolf) 75%, 
+                transparent 100%);
+            animation: shimmer 2s ease-in-out infinite;
         }
+        
         .divider span {
-            background: var(--champagne-pink);
-            padding: 0 15px;
+            background: linear-gradient(135deg, var(--champagne-pink), var(--timberwolf));
+            padding: 0 20px;
             color: var(--chinese-violet);
             font-size: 14px;
+            font-weight: 500;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(123,80,111,0.1);
+            transition: all 0.3s ease;
         }
+        
+        .divider span:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(123,80,111,0.2);
+        }
+        
         .social-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease-out 2.2s both;
         }
+        
         .social-btn {
-            padding: 12px;
-            border: 2px solid var(--timberwolf);
-            border-radius: 10px;
-            background: var(--champagne-pink);
+            padding: 14px 12px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(234, 215, 209, 0.8) 0%, 
+                    rgba(219, 205, 198, 0.8) 100%);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 14px;
             font-weight: 500;
             color: var(--chinese-violet);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent 0px,
+                    transparent 2px,
+                    rgba(255,255,255,0.1) 2px,
+                    rgba(255,255,255,0.1) 4px
+                );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .social-btn:hover::before {
+            opacity: 1;
+        }
+        
         .social-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(123, 80, 111, 0.1);
-            background: var(--amaranth-pink);
-            color: var(--dark-purple);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 24px rgba(123, 80, 111, 0.25);
+            background: 
+                linear-gradient(135deg, 
+                    rgba(221, 153, 187, 0.9) 0%, 
+                    rgba(234, 215, 209, 0.9) 100%);
         }
-        .social-btn.google {
-            color: #db4437;
-            border-color: #db4437;
+        
+        .social-btn:active {
+            transform: translateY(-2px) scale(1.02);
         }
-        .social-btn.facebook {
-            color: #4267B2;
-            border-color: #4267B2;
-        }
-        .social-btn.github {
-            color: #333;
-            border-color: #333;
-        }
-        .social-btn.twitter {
-            color: #1DA1F2;
-            border-color: #1DA1F2;
-        }
+        
+        .social-btn.google { border-color: rgba(219, 68, 55, 0.3); }
+        .social-btn.facebook { border-color: rgba(66, 103, 178, 0.3); }
+        .social-btn.github { border-color: rgba(51, 51, 51, 0.3); }
+        .social-btn.twitter { border-color: rgba(29, 161, 242, 0.3); }
+        
+        .social-btn:hover.google { border-color: #db4437; color: #db4437; }
+        .social-btn:hover.facebook { border-color: #4267B2; color: #4267B2; }
+        .social-btn:hover.github { border-color: #333; color: #333; }
+        .social-btn:hover.twitter { border-color: #1DA1F2; color: #1DA1F2; }
+        
         .toggle-form {
-            margin-top: 15px;
+            margin-top: 20px;
             text-align: center;
+            animation: fadeInUp 0.8s ease-out 2.4s both;
         }
+        
         .toggle-form a {
             color: var(--amaranth-pink);
             text-decoration: none;
             font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
+        
+        .toggle-form a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .toggle-form a:hover::after {
+            width: 100%;
+        }
+        
+        .toggle-form a:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 2px 4px rgba(221, 153, 187, 0.3);
+        }
+        
         .success-message {
-            background: #d4edda;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(212, 237, 218, 0.9) 0%, 
+                    rgba(195, 230, 203, 0.9) 100%);
             color: #155724;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: 12px;
             margin-bottom: 20px;
             display: none;
+            border: 1px solid rgba(21, 87, 36, 0.2);
+            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
+        
+        .form-footer {
+            animation: fadeInUp 0.8s ease-out 2.6s both;
         }
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #7b506f;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        
         .form-footer a {
             color: var(--amaranth-pink);
             text-decoration: none;
             font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
+        
+        .form-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .form-footer a:hover::after {
+            width: 100%;
+        }
+        
         .form-footer a:hover {
-            text-decoration: underline;
+            transform: translateY(-2px);
+            text-shadow: 0 2px 4px rgba(221, 153, 187, 0.3);
         }
-        .strength-bar {
-            height: 4px;
-            background: var(--timberwolf);
-            border-radius: 2px;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-        .terms-checkbox label {
-            font-size: 14px;
-            color: var(--chinese-violet);
-            line-height: 1.4;
-        }
-        .terms-checkbox a {
-            color: var(--amaranth-pink);
-            text-decoration: none;
-        }
-        .terms-checkbox a:hover {
-            text-decoration: underline;
-        }
+        
         @media (max-width: 900px) {
             .split-container {
                 flex-direction: column;
             }
+            
             .left, .right {
                 min-width: 0;
                 width: 100%;
-                min-height: 220px;
+                min-height: 280px;
             }
+            
             .left {
                 justify-content: flex-start;
-                padding: 32px 0 0 0;
+                padding: 32px 16px 16px 16px;
             }
+            
             .right {
                 justify-content: flex-start;
-                padding: 0 0 32px 0;
+                padding: 16px 16px 32px 16px;
             }
+            
             .form-wrapper {
                 margin: 0 auto;
+                padding: 32px 24px 24px 24px;
+            }
+            
+            .brand-message h1 {
+                font-size: 2rem;
+            }
+            
+            .form-wrapper .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-wrapper {
+                padding: 24px 20px 20px 20px;
             }
         }
     </style>
@@ -329,17 +736,16 @@
       </svg>
       <div class="brand-message">
         <h1>Welcome to ReWear</h1>
-        <p>Swap, Save, Sustain.<br>Sign in or create an account to start swapping and get updates on sustainable fashion.</p>
+        <p>Swap, Save, Sustain.<br>Sign in to your account to start swapping and get updates on sustainable fashion.</p>
       </div>
     </div>
     <div class="right">
       <div class="form-wrapper">
         <div class="header">
-          <h1 id="formTitle">Welcome Back</h1>
-          <p id="formSubtitle">Sign in to your ReWear account</p>
+          <h1>Welcome Back</h1>
+          <p>Sign in to your ReWear account</p>
         </div>
         <div class="success-message" id="successMessage"></div>
-        <!-- Login Form -->
         <form id="loginForm">
           <div class="form-group">
             <label for="loginEmail">Email</label>
@@ -353,32 +759,6 @@
             <div class="error-message">Password is required</div>
           </div>
           <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
-        <!-- Signup Form -->
-        <form id="signupForm" style="display: none;">
-          <div class="form-group">
-            <label for="signupName">Full Name</label>
-            <input type="text" id="signupName" placeholder="Enter your full name" required>
-            <div class="error-message">Please enter your full name</div>
-          </div>
-          <div class="form-group">
-            <label for="signupEmail">Email</label>
-            <input type="email" id="signupEmail" placeholder="Enter your email" required>
-            <div class="error-message">Please enter a valid email address</div>
-          </div>
-          <div class="form-group">
-            <label for="signupPassword">Password</label>
-            <input type="password" id="signupPassword" placeholder="Create a password" required>
-            <i class="fas fa-eye password-toggle" onclick="togglePassword('signupPassword')"></i>
-            <div class="error-message">Password must be at least 8 characters</div>
-          </div>
-          <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
-            <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
-            <div class="error-message">Passwords do not match</div>
-          </div>
-          <button type="submit" class="btn btn-primary">Create Account</button>
         </form>
         <div class="divider">
           <span>or continue with</span>
@@ -402,8 +782,8 @@
           </button>
         </div>
         <div class="toggle-form">
-          <span id="toggleText">Don't have an account?</span>
-          <a href="#" id="toggleLink" onclick="toggleForm()">Sign up</a>
+          <span>Don't have an account?</span>
+          <a href="Signup.html">Sign up</a>
         </div>
         <div class="form-footer">
           <a href="#" onclick="forgotPassword()">Forgot your password?</a>
@@ -412,39 +792,7 @@
     </div>
   </div>
   <script>
-        let isLoginForm = true;
         let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Toggle between login and signup forms
-        function toggleForm() {
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const toggleText = document.getElementById('toggleText');
-            const toggleLink = document.getElementById('toggleLink');
-            const header = document.querySelector('.header h1');
-            const headerP = document.querySelector('.header p');
-
-            if (isLoginForm) {
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                toggleText.textContent = 'Already have an account?';
-                toggleLink.textContent = 'Sign in';
-                header.textContent = 'Create Account';
-                headerP.textContent = 'Join ReWear today';
-                isLoginForm = false;
-            } else {
-                loginForm.style.display = 'block';
-                signupForm.style.display = 'none';
-                toggleText.textContent = 'Don\'t have an account?';
-                toggleLink.textContent = 'Sign up';
-                header.textContent = 'Welcome Back';
-                headerP.textContent = 'Sign in to your ReWear account';
-                isLoginForm = true;
-            }
-            
-            clearErrors();
-            clearSuccessMessage();
-        }
 
         // Toggle password visibility
         function togglePassword(inputId) {
@@ -466,10 +814,6 @@
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(email);
-        }
-
-        function validatePassword(password) {
-            return password.length >= 8;
         }
 
         function showError(inputId, message) {
@@ -496,10 +840,6 @@
             setTimeout(() => {
                 successDiv.style.display = 'none';
             }, 3000);
-        }
-
-        function clearSuccessMessage() {
-            document.getElementById('successMessage').style.display = 'none';
         }
 
         // Login form submission
@@ -541,133 +881,27 @@
             }
         });
 
-        // Signup form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            clearErrors();
-            
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            let isValid = true;
-            
-            if (!name) {
-                showError('signupName', 'Please enter your full name');
-                isValid = false;
-            }
-            
-            if (!email || !validateEmail(email)) {
-                showError('signupEmail', 'Please enter a valid email address');
-                isValid = false;
-            }
-            
-            if (!password || !validatePassword(password)) {
-                showError('signupPassword', 'Password must be at least 8 characters');
-                isValid = false;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('confirmPassword', 'Passwords do not match');
-                isValid = false;
-            }
-            
-            // Check if email already exists
-            if (users.find(u => u.email === email)) {
-                showError('signupEmail', 'Email already registered');
-                isValid = false;
-            }
-            
-            if (isValid) {
-                // Create new user
-                const newUser = {
-                    id: Date.now(),
-                    name: name,
-                    email: email,
-                    password: password,
-                    createdAt: new Date().toISOString()
-                };
-                
-                users.push(newUser);
-                localStorage.setItem('users', JSON.stringify(users));
-                
-                showSuccessMessage('Account created successfully! Please sign in.');
-                
-                // Switch back to login form
-                setTimeout(() => {
-                    toggleForm();
-                    document.getElementById('loginEmail').value = email;
-                }, 1500);
-            }
-        });
-
-        // Social media login
+        // Social login (placeholder - would require backend integration)
         function socialLogin(provider) {
-            showSuccessMessage(`Connecting to ${provider}...`);
-            
-            // Simulate social login process
-            setTimeout(() => {
-                const socialUser = {
-                    id: Date.now(),
-                    name: `User from ${provider}`,
-                    email: `user@${provider}.com`,
-                    provider: provider,
-                    createdAt: new Date().toISOString()
-                };
-                
-                localStorage.setItem('currentUser', JSON.stringify(socialUser));
-                showSuccessMessage(`Successfully logged in with ${provider}!`);
-                
+            alert('Social login functionality is not yet implemented. Please use email/password.');
+            console.log('Social login clicked with provider:', provider);
+        }
+
+        // Forgot password (placeholder - would require backend integration)
+        function forgotPassword() {
+            alert('Forgot password functionality is not yet implemented. Please use email/password.');
+            console.log('Forgot password clicked');
+        }
+
+        // Initial check for current user session on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                showSuccessMessage('Welcome back, ' + currentUser.name + '!');
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 1500);
-            }, 2000);
-        }
-
-        // Forgot password functionality
-        function forgotPassword() {
-            const email = document.getElementById('loginEmail').value.trim();
-            
-            if (!email || !validateEmail(email)) {
-                showError('loginEmail', 'Please enter your email address first');
-                return;
             }
-            
-            showSuccessMessage('Password reset link sent to your email!');
-        }
-
-        // Real-time validation
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('blur', function() {
-                const inputId = this.id;
-                const value = this.value.trim();
-                
-                if (inputId.includes('Email')) {
-                    if (value && !validateEmail(value)) {
-                        showError(inputId, 'Please enter a valid email address');
-                    } else {
-                        clearError(inputId);
-                    }
-                }
-                
-                if (inputId.includes('Password') && !inputId.includes('confirm')) {
-                    if (value && !validatePassword(value)) {
-                        showError(inputId, 'Password must be at least 8 characters');
-                    } else {
-                        clearError(inputId);
-                    }
-                }
-                
-                if (inputId === 'confirmPassword') {
-                    const password = document.getElementById('signupPassword').value;
-                    if (value && value !== password) {
-                        showError(inputId, 'Passwords do not match');
-                    } else {
-                        clearError(inputId);
-                    }
-                }
-            });
         });
     </script>
 </body>
