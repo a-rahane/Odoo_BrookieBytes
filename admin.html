@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - ReWear</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --timberwolf: #dbcdc6;
+      --champagne-pink: #ead7d1;
+      --amaranth-pink: #dd99bb;
+      --chinese-violet: #7b506f;
+      --dark-purple: #1f1a38;
+      --white-pink: #feebf5;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--champagne-pink); color: var(--dark-purple); }
+    body {
+      background:
+        repeating-linear-gradient(90deg, rgba(123,80,111,0.07) 0px, rgba(123,80,111,0.07) 2px, transparent 2px, transparent 32px),
+        linear-gradient(135deg, var(--champagne-pink) 0%, var(--timberwolf) 100%);
+      min-height: 100vh;
+      animation: subtleShift 20s ease-in-out infinite;
+    }
+    @keyframes subtleShift {
+      0%, 100% { background-position: 0px 0px, 0% 0%; }
+      50% { background-position: 10px 10px, 100% 100%; }
+    }
+    .navbar {
+      width: 100%;
+      background: var(--white-pink);
+      box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      animation: fadeInUp 1s;
+    }
+    .navbar .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--chinese-violet);
+      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: filter 0.3s;
+    }
+    .navbar .nav-links {
+      display: flex;
+      gap: 2.2rem;
+    }
+    .navbar .nav-links a {
+      color: var(--chinese-violet);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.08rem;
+      position: relative;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      transition: width 0.3s;
+    }
+    .navbar .nav-links a:hover {
+      color: var(--amaranth-pink);
+      transform: translateY(-2px);
+    }
+    .navbar .nav-links a:hover::after {
+      width: 100%;
+    }
+    .admin-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: var(--white-pink);
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(31,26,56,0.10);
+      padding: 2.5rem 2rem 2rem 2rem;
+    }
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .admin-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+      letter-spacing: 1px;
+    }
+    .admin-badge {
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+      padding: 0.5em 1.3em;
+      border-radius: 1.5em;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-left: 1em;
+      box-shadow: 0 2px 8px rgba(123,80,111,0.10);
+    }
+    .admin-nav {
+      display: flex;
+      gap: 1.5em;
+      margin-bottom: 2.5rem;
+    }
+    .admin-nav-btn {
+      background: none;
+      border: 2px solid var(--chinese-violet);
+      color: var(--chinese-violet);
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.7em 2em;
+      border-radius: 1.2em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+    }
+    .admin-nav-btn.active, .admin-nav-btn:hover {
+      background: var(--amaranth-pink);
+      color: #fff;
+      border-color: var(--amaranth-pink);
+    }
+    .admin-section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin: 2.5rem 0 1.2rem 0;
+      letter-spacing: 1px;
+    }
+    .moderate-listings {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .listing-moderate-card {
+      background: #fff;
+      border-radius: 1.2em;
+      box-shadow: 0 2px 12px rgba(123,80,111,0.08);
+      padding: 1.2em 1em 1em 1em;
+      display: flex;
+      align-items: center;
+      gap: 1.5em;
+      color: var(--dark-purple);
+      position: relative;
+    }
+    .listing-moderate-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--champagne-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--chinese-violet);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(123,80,111,0.10);
+      overflow: hidden;
+    }
+    .listing-moderate-details {
+      flex: 1;
+      min-width: 0;
+    }
+    .listing-moderate-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.3em;
+      color: var(--chinese-violet);
+    }
+    .listing-moderate-desc {
+      font-size: 0.98rem;
+      color: var(--dark-purple);
+      opacity: 0.85;
+      margin-bottom: 0.5em;
+    }
+    .listing-moderate-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+      min-width: 120px;
+    }
+    .moderate-btn {
+      padding: 0.5em 1.2em;
+      border-radius: 1em;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.2em;
+      background: var(--champagne-pink);
+      color: var(--chinese-violet);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(123,80,111,0.08);
+    }
+    .moderate-btn.approve {
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+    }
+    .moderate-btn.reject {
+      background: #e74c3c;
+      color: #fff;
+    }
+    .moderate-btn.remove {
+      background: var(--chinese-violet);
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .admin-container {
+        padding: 1rem 0.5rem;
+      }
+      .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .admin-nav {
+        flex-direction: column;
+        gap: 1em;
+      }
+      .listing-moderate-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1em;
+      }
+      .listing-moderate-actions {
+        flex-direction: row;
+        gap: 0.7em;
+        min-width: 0;
+      }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">ReWear</div>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">Pages</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact Us</a>
+      <a href="index.html"><i class="fas fa-user"></i></a>
+    </div>
+  </nav>
+  <div class="admin-container">
+    <div class="admin-header">
+      <div class="admin-title">Admin Panel</div>
+      <div class="admin-badge">Great</div>
+    </div>
+    <div class="admin-nav">
+      <button class="admin-nav-btn active">Manage Users</button>
+      <button class="admin-nav-btn">Manage Orders</button>
+      <button class="admin-nav-btn">Manage Listings</button>
+    </div>
+    <div class="admin-section-title">Moderate Item Listings</div>
+    <div class="moderate-listings">
+      <div class="listing-moderate-card">
+        <div class="listing-moderate-avatar"><i class="fas fa-user"></i></div>
+        <div class="listing-moderate-details">
+          <div class="listing-moderate-title">Elegant Meerkat</div>
+          <div class="listing-moderate-desc">Blue Denim Jacket - "Classic style, gently used, size M"</div>
+        </div>
+        <div class="listing-moderate-actions">
+          <button class="moderate-btn approve">Approve</button>
+          <button class="moderate-btn reject">Reject</button>
+          <button class="moderate-btn remove">Remove</button>
+        </div>
+      </div>
+      <div class="listing-moderate-card">
+        <div class="listing-moderate-avatar"><i class="fas fa-user"></i></div>
+        <div class="listing-moderate-details">
+          <div class="listing-moderate-title">Mysterious Dove</div>
+          <div class="listing-moderate-desc">Patterned Skirt - "Vibrant colors, never worn, size S"</div>
+        </div>
+        <div class="listing-moderate-actions">
+          <button class="moderate-btn approve">Approve</button>
+          <button class="moderate-btn reject">Reject</button>
+          <button class="moderate-btn remove">Remove</button>
+        </div>
+      </div>
+      <div class="listing-moderate-card">
+        <div class="listing-moderate-avatar"><i class="fas fa-user"></i></div>
+        <div class="listing-moderate-details">
+          <div class="listing-moderate-title">Pleased Scorpion</div>
+          <div class="listing-moderate-desc">Cozy Knit Sweater - "Warm and soft, perfect for winter, size L"</div>
+        </div>
+        <div class="listing-moderate-actions">
+          <button class="moderate-btn approve">Approve</button>
+          <button class="moderate-btn reject">Reject</button>
+          <button class="moderate-btn remove">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

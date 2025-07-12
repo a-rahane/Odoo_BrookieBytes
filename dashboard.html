@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - ReWear</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --timberwolf: #dbcdc6;
+      --champagne-pink: #ead7d1;
+      --amaranth-pink: #dd99bb;
+      --chinese-violet: #7b506f;
+      --dark-purple: #1f1a38;
+      --white-pink: #feebf5;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--champagne-pink); color: var(--dark-purple); }
+    body {
+      background: repeating-linear-gradient(45deg, var(--champagne-pink) 0px, var(--champagne-pink) 20px, var(--timberwolf) 20px, var(--timberwolf) 40px), linear-gradient(135deg, var(--champagne-pink) 0%, var(--timberwolf) 100%);
+      min-height: 100vh;
+      animation: subtleShift 20s ease-in-out infinite;
+    }
+    @keyframes subtleShift {
+      0%, 100% { background-position: 0px 0px, 0% 0%; }
+      50% { background-position: 10px 10px, 100% 100%; }
+    }
+    .navbar {
+      width: 100%;
+      background: var(--white-pink);
+      box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      animation: fadeInUp 1s;
+    }
+    .navbar .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--chinese-violet);
+      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: filter 0.3s;
+    }
+    .navbar .nav-links {
+      display: flex;
+      gap: 2.2rem;
+    }
+    .navbar .nav-links a {
+      color: var(--chinese-violet);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.08rem;
+      position: relative;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      transition: width 0.3s;
+    }
+    .navbar .nav-links a:hover {
+      color: var(--amaranth-pink);
+      transform: translateY(-2px);
+    }
+    .navbar .nav-links a:hover::after {
+      width: 100%;
+    }
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: var(--white-pink);
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(31,26,56,0.10);
+      padding: 2.5rem 2rem 2rem 2rem;
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--timberwolf);
+      padding-bottom: 2rem;
+    }
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--champagne-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--chinese-violet);
+      font-weight: 700;
+      box-shadow: 0 2px 12px rgba(123,80,111,0.10);
+      overflow: hidden;
+    }
+    .profile-details {
+      flex: 1;
+    }
+    .profile-details h2 {
+      margin: 0 0 0.3em 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+    }
+    .profile-details .email {
+      color: var(--dark-purple);
+      font-size: 1rem;
+      margin-bottom: 0.7em;
+      opacity: 0.8;
+    }
+    .profile-points {
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+      padding: 0.7em 1.5em;
+      border-radius: 1.5em;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-block;
+      margin-top: 0.5em;
+      box-shadow: 0 2px 8px rgba(123,80,111,0.10);
+    }
+    .dashboard-section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin: 2.5rem 0 1.2rem 0;
+      letter-spacing: 1px;
+    }
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+    .listing-card {
+      background: #fff;
+      border-radius: 1.2em;
+      box-shadow: 0 2px 12px rgba(123,80,111,0.08);
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--dark-purple);
+      position: relative;
+    }
+    .listing-card img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 0.8em;
+      margin-bottom: 0.7em;
+      background: var(--timberwolf);
+    }
+    .listing-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3em;
+      text-align: center;
+    }
+    .listing-status {
+      font-size: 0.9rem;
+      color: var(--amaranth-pink);
+      background: var(--champagne-pink);
+      border-radius: 0.7em;
+      padding: 0.2em 0.8em;
+      margin-top: 0.2em;
+      display: inline-block;
+    }
+    .swaps-section {
+      margin-top: 2.5rem;
+    }
+    .swaps-tabs {
+      display: flex;
+      gap: 1.5em;
+      margin-bottom: 1.2em;
+    }
+    .swaps-tab {
+      background: none;
+      border: none;
+      color: var(--chinese-violet);
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.5em 1.2em;
+      border-radius: 1.2em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .swaps-tab.active, .swaps-tab:hover {
+      background: var(--amaranth-pink);
+      color: #fff;
+    }
+    .swaps-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .swap-card {
+      background: #fff;
+      border-radius: 1.2em;
+      box-shadow: 0 2px 12px rgba(123,80,111,0.08);
+      padding: 1em 1em 1em 1em;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      color: var(--dark-purple);
+      position: relative;
+    }
+    .swap-card img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 0.7em;
+      background: var(--timberwolf);
+    }
+    .swap-info {
+      flex: 1;
+    }
+    .swap-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.2em;
+    }
+    .swap-partner {
+      font-size: 0.95rem;
+      color: var(--chinese-violet);
+      margin-bottom: 0.2em;
+    }
+    .swap-status {
+      font-size: 0.9rem;
+      color: #fff;
+      background: var(--amaranth-pink);
+      border-radius: 0.7em;
+      padding: 0.2em 0.8em;
+      display: inline-block;
+    }
+    .swap-status.completed {
+      background: var(--chinese-violet);
+    }
+    @media (max-width: 700px) {
+      .dashboard-container {
+        padding: 1rem 0.5rem;
+      }
+      .profile-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .listings-grid, .swaps-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">ReWear</div>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">Pages</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact Us</a>
+      <a href="index.html"><i class="fas fa-user"></i></a>
+    </div>
+  </nav>
+  <div class="dashboard-container">
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="profile-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="profile-details">
+        <h2>Compassionate Zebra</h2>
+        <div class="email">zebra@email.com</div>
+        <div class="profile-points">Points: 120</div>
+      </div>
+    </div>
+
+    <!-- My Listings -->
+    <div class="dashboard-section-title">My Listings</div>
+    <div class="listings-grid">
+      <div class="listing-card">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Listing 1">
+        <div class="listing-title">Blue Denim Jacket</div>
+        <div class="listing-status">Active</div>
+      </div>
+      <div class="listing-card">
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=200&q=80" alt="Listing 2">
+        <div class="listing-title">Classic White Tee</div>
+        <div class="listing-status">Active</div>
+      </div>
+      <div class="listing-card">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=200&q=80" alt="Listing 3">
+        <div class="listing-title">Patterned Skirt</div>
+        <div class="listing-status">Inactive</div>
+      </div>
+      <div class="listing-card">
+        <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=200&q=80" alt="Listing 4">
+        <div class="listing-title">Cozy Knit Sweater</div>
+        <div class="listing-status">Active</div>
+      </div>
+    </div>
+
+    <!-- My Swaps -->
+    <div class="dashboard-section-title">My Swaps</div>
+    <div class="swaps-section">
+      <div class="swaps-tabs">
+        <button class="swaps-tab active" onclick="showSwaps('ongoing')">Ongoing</button>
+        <button class="swaps-tab" onclick="showSwaps('completed')">Completed</button>
+      </div>
+      <div id="ongoing-swaps" class="swaps-list">
+        <div class="swap-card">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Swap 1">
+          <div class="swap-info">
+            <div class="swap-title">Blue Denim Jacket</div>
+            <div class="swap-partner">with Shreya</div>
+            <div class="swap-status">Ongoing</div>
+          </div>
+        </div>
+        <div class="swap-card">
+          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=200&q=80" alt="Swap 2">
+          <div class="swap-info">
+            <div class="swap-title">Classic White Tee</div>
+            <div class="swap-partner">with Alex</div>
+            <div class="swap-status">Ongoing</div>
+          </div>
+        </div>
+      </div>
+      <div id="completed-swaps" class="swaps-list" style="display:none;">
+        <div class="swap-card">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=200&q=80" alt="Swap 3">
+          <div class="swap-info">
+            <div class="swap-title">Patterned Skirt</div>
+            <div class="swap-partner">with Shreyas</div>
+            <div class="swap-status completed">Done</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showSwaps(type) {
+      document.getElementById('ongoing-swaps').style.display = (type === 'ongoing') ? 'grid' : 'none';
+      document.getElementById('completed-swaps').style.display = (type === 'completed') ? 'grid' : 'none';
+      document.querySelectorAll('.swaps-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.swaps-tab')[type === 'ongoing' ? 0 : 1].classList.add('active');
+    }
+  </script>
+</body>
+</html>
