@@ -351,6 +351,13 @@
       font-weight: 500;
       margin-bottom: 0.2em;
     }
+    
+    .product-owner {
+      font-size: 0.9rem;
+      color: var(--chinese-violet);
+      opacity: 0.8;
+      margin-top: 0.2em;
+    }
     .product-rating {
       color: var(--amaranth-pink);
       font-size: 1.1em;
@@ -438,6 +445,36 @@
       font-size: 1.1em;
       font-weight: 700;
       margin-left: 0.3em;
+    }
+
+    /* Loading spinner */
+    .loading-spinner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: var(--chinese-violet);
+      font-size: 1.1rem;
+    }
+    
+    .loading-spinner i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--amaranth-pink);
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--chinese-violet);
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--amaranth-pink);
+      margin-bottom: 1rem;
     }
 
     /* RESPONSIVE DESIGN */
@@ -594,77 +631,18 @@
   <section class="arrivals-section">
     <h2 class="arrivals-title">New Arrivals</h2>
     <div class="arrivals-tabs">
-      <button class="tab active">Women</button>
-      <button class="tab">Men</button>
-      <button class="tab">Shoes</button>
-      <button class="tab">Bags</button>
-      <button class="tab">Accessories</button>
+      <button class="tab active" data-category="all">All</button>
+      <button class="tab" data-category="women">Women</button>
+      <button class="tab" data-category="men">Men</button>
+      <button class="tab" data-category="shoes">Shoes</button>
+      <button class="tab" data-category="bags">Bags</button>
+      <button class="tab" data-category="accessories">Accessories</button>
     </div>
-    <div class="arrivals-grid">
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=300&q=80" alt="Polo Shirt">
-        <div class="product-info">
-          <span class="product-type">JACKETS</span>
-          <div class="product-name">adidas X Pop Polo shirt, navy / blue</div>
-          <div class="product-price">$69.99</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80" alt="Sneakers">
-        <div class="product-info">
-          <span class="product-type">SHOES</span>
-          <div class="product-name">adidas X Pop TRX Vintage, navy / white</div>
-          <div class="product-price">$99.99</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=300&q=80" alt="Track Jacket">
-        <div class="product-info">
-          <span class="product-type">JACKETS</span>
-          <div class="product-name">adidas X Pop Beckenbauer Track Jacket</div>
-          <div class="product-price">$120.00</div>
-          <div class="product-rating">★★★★★</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
-        <div class="product-info">
-          <span class="product-type">SHIRTS</span>
-          <div class="product-name">adidas X Pop Classic t-shirt, grey / navy</div>
-          <div class="product-price">$120.00</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1575428652377-a2d80e2040f4?auto=format&fit=crop&w=300&q=80" alt="Cap">
-        <div class="product-info">
-          <span class="product-type">ACCESSORIES</span>
-          <div class="product-name">adidas X Pop SL Cap, navy / white</div>
-          <div class="product-price">$59.00</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=300&q=80" alt="Hoodie">
-        <div class="product-info">
-          <span class="product-type">HOODIES</span>
-          <div class="product-name">Butter Yard Pullover Hood, denim</div>
-          <div class="product-price">$130.00</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1583743814966-8936f37f4674?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
-        <div class="product-info">
-          <span class="product-type">SHIRTS</span>
-          <div class="product-name">Parra Rug Pull t-shirt, white</div>
-          <div class="product-price">$60.00</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=300&q=80" alt="Sweatshirt">
-        <div class="product-info">
-          <span class="product-type">SWEATSHIRTS</span>
-          <div class="product-name">Carhartt L/S Deadkabob Knock Knock Sweat</div>
-          <div class="product-price">$131.00</div>
-        </div>
+    <div class="arrivals-grid" id="itemsGrid">
+      <!-- Items will be loaded dynamically from Firebase -->
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading items...</p>
       </div>
     </div>
   </section>
@@ -705,11 +683,18 @@
 
   <script type="module">
     // Import Firebase modules
-    import { auth } from './firebase.js';
+    import { auth, db } from './firebase.js';
     import { 
         signOut,
         onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+        collection,
+        getDocs,
+        query,
+        orderBy,
+        where
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // Check authentication state and update navbar
     onAuthStateChanged(auth, (user) => {
@@ -748,12 +733,105 @@
     // Make logout function globally available
     window.logout = logout;
 
+    // Global variables
+    let allItems = [];
+    let currentCategory = 'all';
+
+    // Load items from Firebase
+    async function loadItems() {
+        try {
+            const itemsGrid = document.getElementById('itemsGrid');
+            itemsGrid.innerHTML = `
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading items...</p>
+                </div>
+            `;
+
+            const itemsRef = collection(db, 'items');
+            const q = query(itemsRef, orderBy('createdAt', 'desc'));
+            const querySnapshot = await getDocs(q);
+            
+            allItems = [];
+            querySnapshot.forEach((doc) => {
+                allItems.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+
+            displayItems(allItems);
+        } catch (error) {
+            console.error('Error loading items:', error);
+            const itemsGrid = document.getElementById('itemsGrid');
+            itemsGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Error loading items. Please try again.</p>
+                </div>
+            `;
+        }
+    }
+
+    // Display items in the grid
+    function displayItems(items) {
+        const itemsGrid = document.getElementById('itemsGrid');
+        
+        if (items.length === 0) {
+            itemsGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-tshirt"></i>
+                    <p>No items available yet.</p>
+                    <p>Be the first to add an item!</p>
+                </div>
+            `;
+            return;
+        }
+
+        itemsGrid.innerHTML = items.map(item => `
+            <div class="product-card" onclick="viewItem('${item.id}')">
+                <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80'}" alt="${item.title}">
+                <div class="product-info">
+                    <span class="product-type">${item.category?.toUpperCase() || 'CLOTHING'}</span>
+                    <div class="product-name">${item.title}</div>
+                    <div class="product-price">${item.description || 'Available for swap'}</div>
+                    <div class="product-owner">by ${item.ownerName || 'Anonymous'}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Filter items by category
+    function filterItemsByCategory(category) {
+        currentCategory = category;
+        if (category === 'all') {
+            displayItems(allItems);
+        } else {
+            const filteredItems = allItems.filter(item => 
+                item.category && item.category.toLowerCase() === category.toLowerCase()
+            );
+            displayItems(filteredItems);
+        }
+    }
+
+    // View item details
+    function viewItem(itemId) {
+        window.location.href = `item_detail.html?id=${itemId}`;
+    }
+
+    // Make functions globally available
+    window.viewItem = viewItem;
+    window.filterItemsByCategory = filterItemsByCategory;
+
     document.addEventListener('DOMContentLoaded', function() {
-      // Hero slider logic
-      const slides = document.querySelectorAll('.hero-slide');
-      const prevBtn = document.getElementById('heroPrev');
-      const nextBtn = document.getElementById('heroNext');
-      let currentSlide = 0;
+        // Load items when page loads
+        loadItems();
+
+        // Hero slider logic
+        const slides = document.querySelectorAll('.hero-slide');
+        const prevBtn = document.getElementById('heroPrev');
+        const nextBtn = document.getElementById('heroNext');
+        let currentSlide = 0;
 
       function showSlide(idx) {
         slides.forEach((slide, i) => {
@@ -786,6 +864,10 @@
         tab.addEventListener('click', function() {
           tabs.forEach(t => t.classList.remove('active'));
           this.classList.add('active');
+          
+          // Filter items by category
+          const category = this.getAttribute('data-category');
+          filterItemsByCategory(category);
         });
       });
 

@@ -252,6 +252,36 @@
     .swap-status.completed {
       background: var(--chinese-violet);
     }
+    
+    /* Loading spinner */
+    .loading-spinner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: var(--chinese-violet);
+      font-size: 1.1rem;
+    }
+    
+    .loading-spinner i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--amaranth-pink);
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--chinese-violet);
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--amaranth-pink);
+      margin-bottom: 1rem;
+    }
     @media (max-width: 700px) {
       .dashboard-container {
         padding: 1rem 0.5rem;
@@ -297,35 +327,12 @@
 
     <!-- My Listings -->
     <div class="dashboard-section-title">My Listings</div>
-    <div class="listings-grid">
-      <a href="item_detail.html?id=1" style="text-decoration:none; color:inherit;">
-        <div class="listing-card">
-          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Listing 1">
-          <div class="listing-title">Blue Denim Jacket</div>
-          <div class="listing-status">Active</div>
-        </div>
-      </a>
-      <a href="item_detail.html?id=2" style="text-decoration:none; color:inherit;">
-        <div class="listing-card">
-          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=200&q=80" alt="Listing 2">
-          <div class="listing-title">Classic White Tee</div>
-          <div class="listing-status">Active</div>
-        </div>
-      </a>
-      <a href="item_detail.html?id=3" style="text-decoration:none; color:inherit;">
-        <div class="listing-card">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=200&q=80" alt="Listing 3">
-          <div class="listing-title">Patterned Skirt</div>
-          <div class="listing-status">Inactive</div>
-        </div>
-      </a>
-      <a href="item_detail.html?id=4" style="text-decoration:none; color:inherit;">
-        <div class="listing-card">
-          <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=200&q=80" alt="Listing 4">
-          <div class="listing-title">Cozy Knit Sweater</div>
-          <div class="listing-status">Active</div>
-        </div>
-      </a>
+    <div class="listings-grid" id="userListings">
+      <!-- User listings will be loaded dynamically from Firebase -->
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading your listings...</p>
+      </div>
     </div>
 
     <!-- My Swaps -->
@@ -367,11 +374,18 @@
   </div>
   <script type="module">
     // Import Firebase modules
-    import { auth } from './firebase.js';
+    import { auth, db } from './firebase.js';
     import { 
         signOut,
         onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+        collection,
+        getDocs,
+        query,
+        where,
+        orderBy
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // Check authentication state
     onAuthStateChanged(auth, (user) => {
@@ -383,6 +397,9 @@
         
         // Update profile section with user data
         updateProfileSection(user);
+        
+        // Load user's items
+        loadUserItems(user.uid);
     });
 
     // Update profile section with user data
@@ -422,6 +439,62 @@
 
     // Make logout function globally available
     window.logout = logout;
+
+    // Load user's items from Firebase
+    async function loadUserItems(userId) {
+        try {
+            const userListings = document.getElementById('userListings');
+            
+            const itemsRef = collection(db, 'items');
+            const q = query(itemsRef, where('uid', '==', userId), orderBy('createdAt', 'desc'));
+            const querySnapshot = await getDocs(q);
+            
+            const userItems = [];
+            querySnapshot.forEach((doc) => {
+                userItems.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+            
+            displayUserItems(userItems);
+        } catch (error) {
+            console.error('Error loading user items:', error);
+            const userListings = document.getElementById('userListings');
+            userListings.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Error loading your items. Please try again.</p>
+                </div>
+            `;
+        }
+    }
+
+    // Display user items in the dashboard
+    function displayUserItems(items) {
+        const userListings = document.getElementById('userListings');
+        
+        if (items.length === 0) {
+            userListings.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-tshirt"></i>
+                    <p>You haven't listed any items yet.</p>
+                    <p><a href="add_item.html" style="color: var(--amaranth-pink); text-decoration: none;">Add your first item!</a></p>
+                </div>
+            `;
+            return;
+        }
+
+        userListings.innerHTML = items.map(item => `
+            <a href="item_detail.html?id=${item.id}" style="text-decoration:none; color:inherit;">
+                <div class="listing-card">
+                    <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80'}" alt="${item.title}">
+                    <div class="listing-title">${item.title}</div>
+                    <div class="listing-status">${item.status || 'Active'}</div>
+                </div>
+            </a>
+        `).join('');
+    }
 
     function showSwaps(type) {
       document.getElementById('ongoing-swaps').style.display = (type === 'ongoing') ? 'grid' : 'none';
