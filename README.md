@@ -1,6 +1,21 @@
+# ReWear – Community Clothing Exchange
+
+**Overview:**
+Develop ReWear, a web-based platform that enables users to exchange unused clothing through direct swaps or a point-based redemption system. The goal is to promote sustainable fashion and reduce textile waste by encouraging users to reuse wearable garments instead of discarding them.
+
+## 👥 Team - BrookieBytes
+
+**Members:**
+- **Siddhi Mahajan** - siddhidmahajan@gmail.com
+- **Aadita Rahane** - aadita.rahane2004@gmail.com
+
+---
+
 # ReWear - Sustainable Fashion Exchange Platform
 
 A modern web application for swapping and exchanging fashion items, built with HTML, CSS, JavaScript, and Firebase.
+
+---
 
 ## 🚀 Complete User Flow
 
