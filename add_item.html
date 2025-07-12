@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Item - ReWear</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,6 +13,57 @@
             --amaranth-pink: #dd99bb;
             --chinese-violet: #7b506f;
             --dark-purple: #1f1a38;
+            --white-pink: #feebf5;
+        }
+        .navbar {
+            width: 100%;
+            background: var(--white-pink);
+            box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 2.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .navbar .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--chinese-violet);
+            background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: filter 0.3s;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 2.2rem;
+        }
+        .navbar .nav-links a {
+            color: var(--chinese-violet);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.08rem;
+            position: relative;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -3px;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+            transition: width 0.3s;
+        }
+        .navbar .nav-links a:hover {
+            color: var(--amaranth-pink);
+            transform: translateY(-2px);
+        }
+        .navbar .nav-links a:hover::after {
+            width: 100%;
         }
         html, body {
             height: 100%;
@@ -256,6 +308,16 @@
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="logo">ReWear</div>
+        <div class="nav-links">
+            <a href="landing.html">Home</a>
+            <a href="#">Browse</a>
+            <a href="index.html">Login</a>
+            <a href="Signup.html">Signup</a>
+            <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
+        </div>
+    </nav>
     <div class="container">
         <div class="header">
             <h1>Add Item</h1>

@@ -89,6 +89,58 @@
             100% { background-position: 200% center; }
         }
         
+        .navbar {
+            width: 100%;
+            background: var(--white-pink);
+            box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 2.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            animation: fadeInUp 1s;
+        }
+        .navbar .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--chinese-violet);
+            background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: filter 0.3s;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 2.2rem;
+        }
+        .navbar .nav-links a {
+            color: var(--chinese-violet);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.08rem;
+            position: relative;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -3px;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+            transition: width 0.3s;
+        }
+        .navbar .nav-links a:hover {
+            color: var(--amaranth-pink);
+            transform: translateY(-2px);
+        }
+        .navbar .nav-links a:hover::after {
+            width: 100%;
+        }
+        
         .split-container {
             display: flex;
             min-height: 100vh;
@@ -723,6 +775,16 @@
     </style>
 </head>
 <body>
+  <nav class="navbar">
+    <div class="logo">ReWear</div>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="#">Browse</a>
+      <a href="index.html">Login</a>
+      <a href="Signup.html">Signup</a>
+      <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
+    </div>
+  </nav>
   <div class="split-container">
     <div class="left">
       <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -791,8 +853,25 @@
       </div>
     </div>
   </div>
-  <script>
-        let users = JSON.parse(localStorage.getItem('users')) || [];
+  <script type="module">
+        // Import Firebase modules
+        import { auth } from './firebase.js';
+        import { 
+            signInWithEmailAndPassword, 
+            signInWithPopup, 
+            GoogleAuthProvider, 
+            FacebookAuthProvider,
+            GithubAuthProvider,
+            TwitterAuthProvider,
+            sendPasswordResetEmail,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Initialize auth providers
+        const googleProvider = new GoogleAuthProvider();
+        const facebookProvider = new FacebookAuthProvider();
+        const githubProvider = new GithubAuthProvider();
+        const twitterProvider = new TwitterAuthProvider();
 
         // Toggle password visibility
         function togglePassword(inputId) {
@@ -842,8 +921,19 @@
             }, 3000);
         }
 
-        // Login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        function showErrorMessage(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            successDiv.style.backgroundColor = '#ff6b6b';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+                successDiv.style.backgroundColor = '#51cf66';
+            }, 3000);
+        }
+
+        // Login form submission with Firebase
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             clearErrors();
             
@@ -863,46 +953,157 @@
             }
             
             if (isValid) {
-                // Simulate login process
-                const user = users.find(u => u.email === email && u.password === password);
-                
-                if (user) {
-                    showSuccessMessage('Login successful! Welcome back, ' + user.name);
-                    // Store current user session
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                try {
+                    // Show loading state
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Signing In...';
+                    submitBtn.disabled = true;
+
+                    // Sign in with Firebase
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    showSuccessMessage('Login successful! Welcome back, ' + (user.displayName || user.email));
+                    
+                    // Store user session
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL
+                    }));
+                    
                     // Redirect to landing page
                     setTimeout(() => {
                         window.location.href = 'landing.html';
                     }, 1500);
-                } else {
-                    showError('loginEmail', 'Invalid email or password');
-                    showError('loginPassword', 'Invalid email or password');
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    let errorMessage = 'Login failed. Please try again.';
+                    
+                    switch (error.code) {
+                        case 'auth/user-not-found':
+                            errorMessage = 'No account found with this email address.';
+                            showError('loginEmail', errorMessage);
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage = 'Incorrect password.';
+                            showError('loginPassword', errorMessage);
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'Invalid email address.';
+                            showError('loginEmail', errorMessage);
+                            break;
+                        case 'auth/too-many-requests':
+                            errorMessage = 'Too many failed attempts. Please try again later.';
+                            showErrorMessage(errorMessage);
+                            break;
+                        default:
+                            showErrorMessage(errorMessage);
+                    }
+                } finally {
+                    // Reset button state
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Sign In';
+                    submitBtn.disabled = false;
                 }
             }
         });
 
-        // Social login (placeholder - would require backend integration)
-        function socialLogin(provider) {
-            alert('Social login functionality is not yet implemented. Please use email/password.');
-            console.log('Social login clicked with provider:', provider);
+        // Social login with Firebase
+        async function socialLogin(provider) {
+            try {
+                let authProvider;
+                switch(provider) {
+                    case 'google':
+                        authProvider = googleProvider;
+                        break;
+                    case 'facebook':
+                        authProvider = facebookProvider;
+                        break;
+                    case 'github':
+                        authProvider = githubProvider;
+                        break;
+                    case 'twitter':
+                        authProvider = twitterProvider;
+                        break;
+                    default:
+                        throw new Error('Unsupported provider');
+                }
+
+                const result = await signInWithPopup(auth, authProvider);
+                const user = result.user;
+                
+                showSuccessMessage('Login successful! Welcome, ' + (user.displayName || user.email));
+                
+                // Store user session
+                localStorage.setItem('currentUser', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                }));
+                
+                // Redirect to landing page
+                setTimeout(() => {
+                    window.location.href = 'landing.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Social login error:', error);
+                let errorMessage = 'Social login failed. Please try again.';
+                
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = 'Login cancelled.';
+                } else if (error.code === 'auth/account-exists-with-different-credential') {
+                    errorMessage = 'An account already exists with this email using a different sign-in method.';
+                }
+                
+                showErrorMessage(errorMessage);
+            }
         }
 
-        // Forgot password (placeholder - would require backend integration)
-        function forgotPassword() {
-            alert('Forgot password functionality is not yet implemented. Please use email/password.');
-            console.log('Forgot password clicked');
+        // Forgot password with Firebase
+        async function forgotPassword() {
+            const email = document.getElementById('loginEmail').value.trim();
+            
+            if (!email || !validateEmail(email)) {
+                showError('loginEmail', 'Please enter a valid email address to reset password');
+                return;
+            }
+            
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showSuccessMessage('Password reset email sent! Check your inbox.');
+            } catch (error) {
+                console.error('Password reset error:', error);
+                let errorMessage = 'Failed to send reset email. Please try again.';
+                
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email address.';
+                }
+                
+                showErrorMessage(errorMessage);
+            }
         }
 
-        // Initial check for current user session on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (currentUser) {
-                showSuccessMessage('Welcome back, ' + currentUser.name + '!');
+        // Check authentication state on page load
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                showSuccessMessage('Welcome back, ' + (user.displayName || user.email) + '!');
                 setTimeout(() => {
                     window.location.href = 'landing.html';
                 }, 1500);
             }
         });
+
+        // Make functions globally available
+        window.togglePassword = togglePassword;
+        window.socialLogin = socialLogin;
+        window.forgotPassword = forgotPassword;
     </script>
 </body>
 </html>
