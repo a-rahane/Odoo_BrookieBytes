@@ -870,9 +870,9 @@
                     showSuccessMessage('Login successful! Welcome back, ' + user.name);
                     // Store current user session
                     localStorage.setItem('currentUser', JSON.stringify(user));
-                    // Redirect to dashboard or main page
+                    // Redirect to landing page
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'landing.html';
                     }, 1500);
                 } else {
                     showError('loginEmail', 'Invalid email or password');
@@ -899,7 +899,7 @@
             if (currentUser) {
                 showSuccessMessage('Welcome back, ' + currentUser.name + '!');
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'landing.html';
                 }, 1500);
             }
         });

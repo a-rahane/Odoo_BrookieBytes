@@ -247,54 +247,527 @@
     <div class="logo">ReWear</div>
     <div class="nav-links">
       <a href="landing.html">Home</a>
-      <a href="#">Browse</a>
-      <a href="index.html">Login</a>
-      <a href="Signup.html">Sign Up</a>
+      <a href="#">Shop</a>
+      <a href="#">Pages</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact Us</a>
+      <a href="index.html"><i class="fas fa-user"></i></a>
     </div>
   </nav>
-  <section class="hero">
-    <h1>Swap Your Style, Sustain the Planet</h1>
-    <p>ReWear is your platform to exchange unused clothing, discover new styles, and join a community passionate about sustainable fashion. Give your wardrobe a second life and help reduce fashion waste—one swap at a time.</p>
-    <div class="hero-ctas">
-      <button class="cta-btn">Start Swapping</button>
-      <button class="cta-btn">Browse Items</button>
-      <button class="cta-btn">List an Item</button>
-    </div>
-  </section>
-  <section class="carousel-section">
-    <div class="carousel-title">Featured Items</div>
-    <div class="carousel">
-      <div class="carousel-item">
-        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Floral Dress">
-        <div class="item-title">Floral Summer Dress</div>
-        <div class="item-desc">Lightweight, size M, perfect for sunny days.</div>
-        <div class="item-tag">Dresses</div>
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-bg"></div>
+      <div class="hero-slider">
+        <div class="hero-slide active">
+          <div class="hero-content">
+            <h2>Urban Edge</h2>
+            <h1>Jackets for the Modern Man</h1>
+            <button class="cta-btn main-cta">Start Swapping</button>
+          </div>
+          <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Hero Model 1">
+          </div>
+        </div>
+        <div class="hero-slide">
+          <div class="hero-content">
+            <h2>Fresh Finds</h2>
+            <h1>Discover the Latest Arrivals</h1>
+            <button class="cta-btn main-cta">Browse Items</button>
+          </div>
+          <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Hero Model 2">
+          </div>
+        </div>
+        <div class="hero-slide">
+          <div class="hero-content">
+            <h2>Share Your Style</h2>
+            <h1>List Your Own Items</h1>
+            <button class="cta-btn main-cta">List an Item</button>
+          </div>
+          <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Hero Model 3">
+          </div>
+        </div>
       </div>
-      <div class="carousel-item">
-        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Denim Jacket">
-        <div class="item-title">Classic Denim Jacket</div>
-        <div class="item-desc">Unisex, size L, timeless style for any season.</div>
-        <div class="item-tag">Jackets</div>
+      <div class="hero-arrows">
+        <span class="arrow left" id="heroPrev"><i class="fas fa-chevron-left"></i></span>
+        <span class="arrow right" id="heroNext"><i class="fas fa-chevron-right"></i></span>
       </div>
-      <div class="carousel-item">
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Sneakers">
-        <div class="item-title">White Sneakers</div>
-        <div class="item-desc">Gently used, size 8, goes with everything.</div>
-        <div class="item-tag">Shoes</div>
+    </section>
+    <!-- NEW ARRIVALS SECTION -->
+    <section class="arrivals-section">
+      <h2 class="arrivals-title">New Arrivals</h2>
+      <div class="arrivals-tabs">
+        <button class="tab active">Women</button>
+        <button class="tab">Men</button>
+        <button class="tab">Shoes</button>
+        <button class="tab">Bags</button>
+        <button class="tab">Accessories</button>
       </div>
-      <div class="carousel-item">
-        <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80" alt="Cozy Sweater">
-        <div class="item-title">Cozy Knit Sweater</div>
-        <div class="item-desc">Warm, size S, soft and comfortable.</div>
-        <div class="item-tag">Sweaters</div>
+      <div class="arrivals-grid">
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/1.jpg" alt="Polo Shirt">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">adidas X Pop Polo shirt, navy / blue</div>
+            <div class="product-price">$69.99</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/2.jpg" alt="Sneakers">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">adidas X Pop TRX Vintage, navy / white</div>
+            <div class="product-price">$99.99</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/3.jpg" alt="Track Jacket">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">adidas X Pop Beckenbauer Track Jacket</div>
+            <div class="product-price">$120.00</div>
+            <div class="product-rating">★★★★★</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/4.jpg" alt="T-shirt">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">adidas X Pop Classic t-shirt, grey / navy</div>
+            <div class="product-price">$120.00</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/5.jpg" alt="Cap">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">adidas X Pop SL Cap, navy / white</div>
+            <div class="product-price">$59.00</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/6.jpg" alt="Hoodie">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">Butter Yard Pullover Hood, denim</div>
+            <div class="product-price">$130.00</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/7.jpg" alt="T-shirt">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">Parra Rug Pull t-shirt, white</div>
+            <div class="product-price">$60.00</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/8.jpg" alt="Sweatshirt">
+          <div class="product-info">
+            <span class="product-type">JACKETS</span>
+            <div class="product-name">Carhartt L/S Deadkabob Knock Knock Sweat</div>
+            <div class="product-price">$131.00</div>
+          </div>
+        </div>
       </div>
-      <div class="carousel-item">
-        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Patterned Skirt">
-        <div class="item-title">Patterned Midi Skirt</div>
-        <div class="item-desc">Vibrant, size M, adds flair to any outfit.</div>
-        <div class="item-tag">Skirts</div>
+    </section>
+    <!-- PROMOTIONAL BANNERS SECTION -->
+    <section class="promo-section">
+      <div class="promo-banner large">
+        <div class="promo-content">
+          <h3>Where Dreams Meet Couture</h3>
+          <button class="promo-btn">Shop Now</button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Promo 1">
       </div>
-    </div>
-  </section>
-</body>
+      <div class="promo-row">
+        <div class="promo-banner">
+          <div class="promo-content">
+            <h3>Enchanting Styles for Every Woman</h3>
+            <button class="promo-btn">Shop Now</button>
+          </div>
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Promo 2">
+        </div>
+        <div class="promo-banner">
+          <div class="promo-content">
+            <h3>Chic Footwear for City Living</h3>
+            <button class="promo-btn">Shop Now</button>
+          </div>
+          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Promo 3">
+        </div>
+        <div class="promo-banner">
+          <div class="promo-content">
+            <h3>Trendsetting Bags for Her <span class="promo-discount">50%</span></h3>
+            <button class="promo-btn">Shop Now</button>
+          </div>
+          <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80" alt="Promo 4">
+        </div>
+      </div>
+    </section>
+    <style>
+      .hero-section {
+        position: relative;
+        background: var(--chinese-violet);
+        min-height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0 0 0 0;
+      }
+      .hero-bg {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(120deg, var(--chinese-violet) 60%, var(--amaranth-pink) 100%);
+        z-index: 1;
+      }
+      .hero-content {
+        position: absolute;
+        left: 8vw;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        color: var(--timberwolf);
+        text-align: left;
+        max-width: 420px;
+      }
+      .hero-content h2 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: var(--champagne-pink);
+        margin-bottom: 0.7em;
+      }
+      .hero-content h1 {
+        font-size: 2.7rem;
+        font-weight: 700;
+        margin-bottom: 1.2em;
+        background: linear-gradient(45deg, var(--timberwolf), var(--amaranth-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .cta-btn {
+        padding: 0.9em 2.2em;
+        border-radius: 2em;
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(123,80,111,0.10);
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        outline: none;
+        margin-bottom: 0.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-btn:hover {
+        background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 8px 24px rgba(123,80,111,0.18);
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+      .hero-ctas .cta-btn {
+        padding: 0.8em 1.7em;
+        border-radius: 2em;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--champagne-pink), var(--amaranth-pink));
+        color: var(--chinese-violet);
+        box-shadow: 0 2px 8px rgba(123,80,111,0.08);
+        cursor: pointer;
+        transition: background 0.3s, color 0.2s, transform 0.2s, box-shadow 0.3s;
+        outline: none;
+        margin-bottom: 0.2rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-ctas .cta-btn:hover {
+        background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+        color: #fff;
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 6px 18px rgba(123,80,111,0.13);
+      }
+      .main-cta {
+        margin-top: 0.7em;
+      }
+      .hero-arrows {
+        position: absolute;
+        left: 8vw;
+        bottom: 2.5em;
+        z-index: 10;
+        display: flex;
+        gap: 1.2em;
+        pointer-events: auto;
+      }
+      .arrow {
+        background: var(--champagne-pink);
+        color: var(--chinese-violet);
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(31,26,56,0.08);
+        transition: background 0.2s, color 0.2s;
+        z-index: 11;
+      }
+      .arrow:hover {
+        background: var(--amaranth-pink);
+        color: #fff;
+      }
+      .hero-img {
+        position: absolute;
+        right: 6vw;
+        bottom: 0;
+        display: flex;
+        gap: 2vw;
+        z-index: 2;
+        align-items: flex-end;
+      }
+      .hero-img img {
+        width: 260px;
+        height: 370px;
+        object-fit: cover;
+        border-radius: 2.5em 2.5em 0 0;
+        box-shadow: 0 8px 32px rgba(31,26,56,0.18);
+        background: var(--timberwolf);
+      }
+      .arrivals-section {
+        background: #fff;
+        padding: 3.5em 0 2.5em 0;
+        text-align: center;
+      }
+      .arrivals-title {
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: var(--chinese-violet);
+        margin-bottom: 1.2em;
+      }
+      .arrivals-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 2em;
+        margin-bottom: 2em;
+      }
+      .tab {
+        background: none;
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--chinese-violet);
+        padding: 0.5em 1.2em;
+        border-radius: 1.5em;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+      }
+      .tab.active, .tab:hover {
+        background: var(--champagne-pink);
+        color: var(--amaranth-pink);
+      }
+      .arrivals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 2em;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .product-card {
+        background: var(--white-pink);
+        border-radius: 1.5em;
+        box-shadow: 0 4px 18px rgba(31,26,56,0.07);
+        padding: 1.2em 1em 1em 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        position: relative;
+      }
+      .product-card:hover {
+        transform: translateY(-8px) scale(1.04);
+        box-shadow: 0 12px 32px rgba(123,80,111,0.13);
+      }
+      .product-card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 1em;
+        margin-bottom: 1em;
+        background: var(--timberwolf);
+      }
+      .product-info {
+        text-align: center;
+      }
+      .product-type {
+        font-size: 0.85rem;
+        color: var(--amaranth-pink);
+        background: var(--champagne-pink);
+        border-radius: 8px;
+        padding: 0.2em 0.7em;
+        margin-bottom: 0.3em;
+        display: inline-block;
+      }
+      .product-name {
+        font-size: 1.08rem;
+        font-weight: 600;
+        color: var(--chinese-violet);
+        margin-bottom: 0.3em;
+      }
+      .product-price {
+        font-size: 1.05rem;
+        color: var(--dark-purple);
+        font-weight: 500;
+        margin-bottom: 0.2em;
+      }
+      .product-rating {
+        color: var(--amaranth-pink);
+        font-size: 1.1em;
+      }
+      .promo-section {
+        background: var(--champagne-pink);
+        padding: 3em 0 2em 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        align-items: center;
+      }
+      .promo-row {
+        display: flex;
+        gap: 2em;
+        width: 100%;
+        max-width: 1100px;
+      }
+      .promo-banner {
+        background: var(--white-pink);
+        border-radius: 1.5em;
+        box-shadow: 0 4px 18px rgba(31,26,56,0.07);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 2em 1.5em 1.5em 1.5em;
+        flex: 1;
+        min-width: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .promo-banner.large {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        max-width: 1100px;
+        width: 100%;
+        min-height: 220px;
+        margin-bottom: 2em;
+      }
+      .promo-banner.large .promo-content {
+        flex: 1;
+        padding-right: 2em;
+      }
+      .promo-banner.large img {
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 1.5em;
+        box-shadow: 0 4px 18px rgba(31,26,56,0.07);
+        background: var(--timberwolf);
+      }
+      .promo-content h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--chinese-violet);
+        margin-bottom: 1em;
+      }
+      .promo-btn {
+        padding: 0.7em 1.7em;
+        border-radius: 2em;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(123,80,111,0.10);
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        outline: none;
+        margin-bottom: 0.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .promo-btn:hover {
+        background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 8px 24px rgba(123,80,111,0.18);
+      }
+      .promo-discount {
+        color: var(--amaranth-pink);
+        font-size: 1.1em;
+        font-weight: 700;
+        margin-left: 0.3em;
+      }
+      @media (max-width: 900px) {
+        .hero-section { flex-direction: column; min-height: 340px; }
+        .hero-content { left: 4vw; max-width: 320px; }
+        .hero-img { right: 2vw; }
+        .hero-img img { width: 160px; height: 220px; }
+        .arrivals-title { font-size: 1.4rem; }
+        .arrivals-grid { gap: 1em; }
+        .promo-row { flex-direction: column; gap: 1em; }
+        .promo-banner.large { flex-direction: column; align-items: flex-start; }
+        .promo-banner.large img { width: 100%; height: 160px; margin-top: 1em; }
+      }
+      @media (max-width: 600px) {
+        .navbar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 1rem; }
+        .hero-content { left: 2vw; max-width: 220px; }
+        .hero-img { right: 0vw; gap: 1vw; }
+        .hero-img img { width: 90px; height: 120px; }
+        .arrivals-section { padding: 2em 0 1em 0; }
+        .arrivals-title { font-size: 1.1rem; }
+        .arrivals-tabs { gap: 0.5em; }
+        .arrivals-grid { grid-template-columns: 1fr; gap: 0.7em; }
+        .promo-section { padding: 1em 0 1em 0; gap: 1em; }
+        .hero-ctas {
+          flex-direction: column;
+          gap: 0.5em;
+          align-items: stretch;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Hero slider logic
+        const slides = document.querySelectorAll('.hero-slide');
+        const prevBtn = document.getElementById('heroPrev');
+        const nextBtn = document.getElementById('heroNext');
+        let currentSlide = 0;
+        function showSlide(idx) {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === idx);
+          });
+        }
+        prevBtn.addEventListener('click', function() {
+          currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+          showSlide(currentSlide);
+        });
+        nextBtn.addEventListener('click', function() {
+          currentSlide = (currentSlide + 1) % slides.length;
+          showSlide(currentSlide);
+        });
+        showSlide(currentSlide);
+      });
+    </script>
+  </body>
 </html> 
