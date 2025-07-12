@@ -164,6 +164,11 @@
       overflow: hidden;
       opacity: 0;
       animation: slideInUp 0.8s 0.7s forwards;
+      min-width: 180px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     .cta-btn::before {
       content: '';
@@ -427,6 +432,11 @@
       outline: none;
       position: relative;
       overflow: hidden;
+      min-width: 180px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     .promo-btn:hover {
       background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
@@ -534,6 +544,156 @@
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* CONTACT SECTION */
+    .contact-section {
+      background: var(--white-pink);
+      padding: 4rem 2rem;
+      margin-top: 2rem;
+    }
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .contact-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .contact-subtitle {
+      font-size: 1.1rem;
+      color: var(--dark-purple);
+      text-align: center;
+      margin-bottom: 3rem;
+      opacity: 0.8;
+    }
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(123,80,111,0.08);
+      transition: transform 0.3s ease;
+    }
+    .contact-item:hover {
+      transform: translateY(-4px);
+    }
+    .contact-item i {
+      font-size: 1.5rem;
+      color: var(--amaranth-pink);
+      margin-top: 0.2rem;
+    }
+    .contact-item h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin-bottom: 0.5rem;
+    }
+    .contact-item p {
+      color: var(--dark-purple);
+      line-height: 1.5;
+    }
+    .contact-form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 18px rgba(123,80,111,0.08);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--timberwolf);
+      border-radius: 0.8rem;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s ease;
+      background: transparent;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--amaranth-pink);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .contact-btn {
+      width: 100%;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+      border: none;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    .contact-btn:hover::before {
+      left: 100%;
+    }
+    .contact-btn:hover {
+      background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123,80,111,0.18);
+    }
+
+    @media (max-width: 900px) {
+      .contact-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .contact-title {
+        font-size: 2rem;
+      }
+      .contact-section {
+        padding: 3rem 1rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .contact-title {
+        font-size: 1.8rem;
+      }
+      .contact-subtitle {
+        font-size: 1rem;
+      }
+      .contact-item {
+        padding: 1rem;
+      }
+      .contact-form {
+        padding: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -567,7 +727,8 @@
         <div class="hero-content">
           <h2>Fresh Finds</h2>
           <h1>Discover the Latest Arrivals</h1>
-          <button class="cta-btn">Browse Items</button>
+          <!-- <button class="cta-btn" >Browse Items</button> -->
+          <a href="#arrivals-section" class="promo-btn" style="text-decoration: none; display: inline-block; margin-right: 1rem;">Browse Items</a>
         </div>
         <div class="hero-img">
           <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Latest Fashion">
@@ -577,7 +738,8 @@
         <div class="hero-content">
           <h2>Share Your Style</h2>
           <h1>List Your Own Items</h1>
-          <button class="cta-btn">List an Item</button>
+          <a href="add_item.html" class="promo-btn" style="text-decoration: none; display: inline-block; margin-right: 1rem;">List an Item</a>
+          <!-- <button class="cta-btn">List an Item</button> -->
         </div>
         <div class="hero-img">
           <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Share Fashion">
@@ -591,7 +753,7 @@
   </section>
 
   <!-- NEW ARRIVALS SECTION -->
-  <section class="arrivals-section">
+  <section class="arrivals-section" id="arrivals-section">
     <h2 class="arrivals-title">New Arrivals</h2>
     <div class="arrivals-tabs">
       <button class="tab active">Women</button>
@@ -601,23 +763,23 @@
       <button class="tab">Accessories</button>
     </div>
     <div class="arrivals-grid">
-      <div class="product-card">
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=300&q=80" alt="Polo Shirt">
         <div class="product-info">
           <span class="product-type">JACKETS</span>
           <div class="product-name">adidas X Pop Polo shirt, navy / blue</div>
           <div class="product-price">$69.99</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80" alt="Sneakers">
         <div class="product-info">
           <span class="product-type">SHOES</span>
           <div class="product-name">adidas X Pop TRX Vintage, navy / white</div>
           <div class="product-price">$99.99</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=300&q=80" alt="Track Jacket">
         <div class="product-info">
           <span class="product-type">JACKETS</span>
@@ -625,85 +787,102 @@
           <div class="product-price">$120.00</div>
           <div class="product-rating">★★★★★</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
         <div class="product-info">
           <span class="product-type">SHIRTS</span>
           <div class="product-name">adidas X Pop Classic t-shirt, grey / navy</div>
           <div class="product-price">$120.00</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1575428652377-a2d80e2040f4?auto=format&fit=crop&w=300&q=80" alt="Cap">
         <div class="product-info">
           <span class="product-type">ACCESSORIES</span>
           <div class="product-name">adidas X Pop SL Cap, navy / white</div>
           <div class="product-price">$59.00</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=300&q=80" alt="Hoodie">
         <div class="product-info">
           <span class="product-type">HOODIES</span>
           <div class="product-name">Butter Yard Pullover Hood, denim</div>
           <div class="product-price">$130.00</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1583743814966-8936f37f4674?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
         <div class="product-info">
           <span class="product-type">SHIRTS</span>
           <div class="product-name">Parra Rug Pull t-shirt, white</div>
           <div class="product-price">$60.00</div>
         </div>
-      </div>
-      <div class="product-card">
+      </a>
+      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
         <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=300&q=80" alt="Sweatshirt">
         <div class="product-info">
           <span class="product-type">SWEATSHIRTS</span>
           <div class="product-name">Carhartt L/S Deadkabob Knock Knock Sweat</div>
           <div class="product-price">$131.00</div>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
-  <!-- PROMOTIONAL BANNERS SECTION -->
-  <section class="promo-section">
-    <div class="promo-banner large">
-      <div class="promo-content">
-        <h3>Where Dreams Meet Couture</h3>
-        <button class="promo-btn">Shop Now</button>
-      </div>
-      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Couture Fashion">
-    </div>
-    <div class="promo-row">
-      <div class="promo-banner">
-        <div class="promo-content">
-          <h3>Enchanting Styles for Every Woman</h3>
-          <button class="promo-btn">Shop Now</button>
-        </div>
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Women's Fashion">
-      </div>
-      <div class="promo-banner">
-        <div class="promo-content">
-          <h3>Chic Footwear for City Living</h3>
-          <button class="promo-btn">Shop Now</button>
-        </div>
-        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Footwear">
-      </div>
-      <div class="promo-banner">
-        <div class="promo-content">
-          <h3>Trendsetting Bags for Her <span class="promo-discount">50%</span></h3>
-          <button class="promo-btn">Shop Now</button>
-        </div>
-        <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80" alt="Bags">
-      </div>
-    </div>
-  </section>
 
-  <script type="module">
+    <!-- CONTACT SECTION -->
+    <section class="contact-section">
+      <div class="contact-container">
+        <h2 class="contact-title">Get in Touch</h2>
+        <p class="contact-subtitle">Have questions or feedback? We'd love to hear from you!</p>
+        
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div>
+                <h3>Email</h3>
+                <p>support@rewear.com</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <div>
+                <h3>Phone</h3>
+                <p>+1 (555) 123-4567</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <h3>Address</h3>
+                <p>123 Fashion Street<br>Style City, SC 12345</p>
+              </div>
+            </div>
+          </div>
+          
+          <form class="contact-form">
+            <div class="form-group">
+              <input type="text" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+              <textarea placeholder="Your Message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="contact-btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script type="module">
     // Import Firebase modules
     import { auth } from './firebase.js';
     import { 

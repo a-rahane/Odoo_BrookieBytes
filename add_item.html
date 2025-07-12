@@ -15,6 +15,26 @@
             --dark-purple: #1f1a38;
             --white-pink: #feebf5;
         }
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--champagne-pink);
+            color: var(--dark-purple);
+        }
+        body {
+            background:
+                repeating-linear-gradient(90deg, rgba(123,80,111,0.07) 0px, rgba(123,80,111,0.07) 2px, transparent 2px, transparent 32px),
+                linear-gradient(135deg, var(--champagne-pink) 0%, var(--timberwolf) 100%);
+            min-height: 100vh;
+            animation: subtleShift 20s ease-in-out infinite;
+        }
+        @keyframes subtleShift {
+            0%, 100% { background-position: 0px 0px, 0% 0%; }
+            50% { background-position: 10px 10px, 100% 100%; }
+        }
         .navbar {
             width: 100%;
             background: var(--white-pink);
@@ -26,6 +46,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            animation: fadeInUp 1s;
         }
         .navbar .logo {
             font-size: 1.7rem;
@@ -65,85 +86,61 @@
         .navbar .nav-links a:hover::after {
             width: 100%;
         }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: var(--champagne-pink);
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: var(--dark-purple);
-            color: var(--timberwolf);
-            box-shadow: 0 2px 8px rgba(31,26,56,0.15);
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--champagne-pink);
-            letter-spacing: 1px;
-        }
-        .nav-links a {
-            color: var(--timberwolf);
-            text-decoration: none;
-            margin-left: 25px;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover {
-            color: var(--amaranth-pink);
-        }
         .container {
             max-width: 1100px;
-            margin: 40px auto 0 auto;
-            background: #7B506F;
-            border-radius: 22px;
-            box-shadow: 0 4px 24px rgba(31,26,56,0.10);
-            padding: 36px 40px 32px 40px;
-            color: var(--timberwolf);
+            margin: 2rem auto;
+            background: var(--white-pink);
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(31,26,56,0.10);
+            padding: 2.5rem 2rem 2rem 2rem;
+            color: var(--dark-purple);
         }
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 32px;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--timberwolf);
+            padding-bottom: 1.5rem;
         }
         .header h1 {
             font-size: 2.1rem;
             font-weight: 700;
             letter-spacing: 0.5px;
-            color: var(--champagne-pink);
+            color: var(--chinese-violet);
             margin: 0;
         }
         .main-content {
             display: flex;
-            gap: 36px;
-            margin-bottom: 36px;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
         .image-upload {
             flex: 1.1;
-            background: #7B506F;
-            border: 2px dashed var(--timberwolf);
+            background: #fff;
+            border: 2px dashed var(--chinese-violet);
             border-radius: 16px;
             min-height: 260px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            color: var(--timberwolf);
+            color: var(--chinese-violet);
             text-align: center;
             margin-bottom: 0;
             flex-direction: column;
+            padding: 2rem;
+            transition: border-color 0.3s;
+        }
+        .image-upload:hover {
+            border-color: var(--amaranth-pink);
         }
         .image-preview {
             display: flex;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .image-preview img {
             width: 80px;
@@ -151,73 +148,98 @@
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid var(--amaranth-pink);
+            box-shadow: 0 2px 8px rgba(123,80,111,0.10);
         }
         .details-section {
             flex: 2;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 1.5rem;
         }
         .desc-box {
-            background: #7B506F;
+            background: #fff;
             border: 1.5px solid var(--timberwolf);
             border-radius: 14px;
-            padding: 18px 18px 12px 18px;
-            min-height: 60px;
-            color: var(--timberwolf);
+            padding: 1.5rem;
+            color: var(--dark-purple);
             font-size: 1.1rem;
             margin-bottom: 0;
+            transition: border-color 0.3s;
+        }
+        .desc-box:hover {
+            border-color: var(--chinese-violet);
         }
         .desc-box label {
             font-size: 1.08rem;
-            color: var(--champagne-pink);
-            font-weight: 500;
-            margin-bottom: 8px;
+            color: var(--chinese-violet);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
             display: block;
         }
+        .desc-box input,
         .desc-box textarea {
             width: 100%;
-            min-height: 70px;
             background: transparent;
             border: none;
-            color: var(--timberwolf);
+            color: var(--dark-purple);
             font-size: 1.08rem;
             resize: none;
             outline: none;
             font-family: 'Inter', sans-serif;
+            padding: 0.5rem 0;
+        }
+        .desc-box textarea {
+            min-height: 70px;
         }
         .swap-btn {
             align-self: flex-end;
-            margin-top: 8px;
-            padding: 10px 32px;
+            margin-top: 1rem;
+            padding: 0.9em 2.2em;
             background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-            color: var(--champagne-pink);
+            color: #fff;
             border: none;
-            border-radius: 12px;
+            border-radius: 2em;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(123,80,111,0.10);
-            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 4px 16px rgba(123,80,111,0.10);
+            transition: all 0.3s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .swap-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .swap-btn:hover::before {
+            left: 100%;
         }
         .swap-btn:hover {
             background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
-            color: var(--timberwolf);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 8px 24px rgba(123,80,111,0.18);
         }
         .previous-listings {
-            margin-top: 18px;
+            margin-top: 2rem;
+            border-top: 1px solid var(--timberwolf);
+            padding-top: 2rem;
         }
         .previous-listings h2 {
-            font-size: 1.15rem;
-            color: var(--champagne-pink);
+            font-size: 1.3rem;
+            color: var(--chinese-violet);
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
         }
         .listing-cards {
             display: flex;
             flex-direction: row;
             align-items: stretch;
-            gap: 18px;
+            gap: 1.5rem;
             overflow: hidden;
             position: relative;
             min-height: 180px;
@@ -228,7 +250,7 @@
             top: 50%;
             transform: translateY(-50%);
             background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-            color: var(--champagne-pink);
+            color: #fff;
             border: none;
             border-radius: 50%;
             width: 40px;
@@ -237,7 +259,11 @@
             cursor: pointer;
             z-index: 2;
             box-shadow: 0 2px 8px rgba(123,80,111,0.10);
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+        }
+        .carousel-arrow:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 16px rgba(123,80,111,0.18);
         }
         .carousel-arrow:disabled {
             opacity: 0.5;
@@ -254,9 +280,9 @@
             min-width: 220px;
             max-width: 260px;
             min-height: 320px;
-            background: #ead7d1;
+            background: #fff;
             border: none;
-            border-radius: 28px;
+            border-radius: 1.2em;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -265,10 +291,10 @@
             font-size: 1.05rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 16px rgba(31,26,56,0.10);
+            box-shadow: 0 2px 12px rgba(123,80,111,0.08);
             margin-bottom: 0;
-            padding: 0 0 18px 0;
-            transition: box-shadow 0.2s;
+            padding: 0 0 1.2rem 0;
+            transition: box-shadow 0.3s ease;
         }
         .listing-card:hover {
             box-shadow: 0 6px 32px rgba(123,80,111,0.13);
@@ -277,26 +303,26 @@
             width: 100%;
             height: 150px;
             object-fit: cover;
-            border-top-left-radius: 28px;
-            border-top-right-radius: 28px;
+            border-top-left-radius: 1.2em;
+            border-top-right-radius: 1.2em;
             background: var(--timberwolf);
         }
         .listing-card .card-content {
             width: 100%;
-            padding: 18px 18px 0 18px;
+            padding: 1.2rem 1.2rem 0 1.2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         .listing-card .category-badge {
-            background: var(--timberwolf);
+            background: var(--champagne-pink);
             color: var(--amaranth-pink);
             font-size: 0.95rem;
             font-weight: 600;
-            border-radius: 12px;
-            padding: 4px 18px;
-            margin-bottom: 10px;
-            margin-top: -22px;
+            border-radius: 0.7em;
+            padding: 0.2em 0.8em;
+            margin-bottom: 0.7em;
+            margin-top: -1.2rem;
             letter-spacing: 1px;
             display: inline-block;
         }
@@ -304,7 +330,7 @@
             font-size: 1.15rem;
             font-weight: 700;
             color: var(--dark-purple);
-            margin-bottom: 6px;
+            margin-bottom: 0.5rem;
             text-align: center;
         }
         .listing-card .desc {
@@ -312,71 +338,60 @@
             color: var(--dark-purple);
             margin-bottom: 0;
             text-align: center;
+            opacity: 0.8;
         }
         .hidden { display: none; }
-        .error-message { color: #e74c3c; font-size: 1rem; margin-top: 8px; }
-        .carousel-btn {
-            background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-            color: var(--champagne-pink);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 1.3rem;
-            cursor: pointer;
-            margin: 6px 0;
-            transition: background 0.2s;
-        }
-        .carousel-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .error-message { 
+            color: #e74c3c; 
+            font-size: 1rem; 
+            margin-top: 0.8rem; 
+            background: rgba(231, 76, 60, 0.1);
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            border-left: 3px solid #e74c3c;
         }
         input::placeholder, textarea::placeholder {
-            color: #ead7d1;
-            opacity: 1;
+            color: var(--chinese-violet);
+            opacity: 0.6;
         }
         @media (max-width: 900px) {
             .main-content {
                 flex-direction: column;
-                gap: 18px;
+                gap: 1.5rem;
             }
             .container {
-                padding: 18px 8px;
+                padding: 1.5rem 1rem;
+                margin: 1rem;
             }
             .listing-cards {
-                gap: 8px;
-                margin: 0 24px;
+                gap: 1rem;
+                margin: 0 2rem;
             }
             .listing-card {
                 min-width: 160px;
                 max-width: 180px;
                 min-height: 120px;
             }
+            .navbar {
+                padding: 0.7rem 1.5rem;
+            }
+            .navbar .nav-links {
+                gap: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-<<<<<<< HEAD
     <nav class="navbar">
         <div class="logo">ReWear</div>
         <div class="nav-links">
             <a href="landing.html">Home</a>
             <a href="#">Browse</a>
-            <a href="index.html">Login</a>
+            <a href="Index.html">Login</a>
             <a href="Signup.html">Signup</a>
             <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
         </div>
     </nav>
-=======
-    <div class="navbar">
-      <span class="logo">ReWear</span>
-      <div class="nav-links">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="#">Profile</a>
-        <a href="#">Logout</a>
-      </div>
-    </div>
->>>>>>> 0372890d0ba8b693270afaaf2a6127a35d85f748
     <div class="container">
         <div class="header">
             <h1>Add Item</h1>
@@ -386,30 +401,30 @@
                 <div class="image-upload">
                     <div class="image-preview" id="image-preview"></div>
                     <input type="file" id="images" name="images" accept="image/*" multiple required style="margin-bottom:10px;" />
-                    <span style="font-size:0.98rem; color:var(--timberwolf);">Add up to 2 images</span>
+                    <span style="font-size:0.98rem; color:var(--chinese-violet);">Add up to 2 images</span>
                 </div>
                 <div class="details-section">
                     <div class="desc-box">
                         <label for="product-title">Product Title</label>
-                        <input id="product-title" type="text" placeholder="Enter product title..." required style="width:100%;padding:10px 8px;margin-bottom:0;border-radius:8px;border:none;font-size:1.08rem;background:rgba(234,215,209,0.13);color:var(--timberwolf);font-family:'Inter',sans-serif;" />
+                        <input id="product-title" type="text" placeholder="Enter product title..." required />
                     </div>
-                    <div class="desc-box" style="margin-top:14px;">
+                    <div class="desc-box">
                         <label for="product-price">Price (INR)</label>
-                        <input id="product-price" type="number" min="0" step="0.01" placeholder="Enter price in INR..." required style="width:100%;padding:10px 8px;margin-bottom:0;border-radius:8px;border:none;font-size:1.08rem;background:rgba(234,215,209,0.13);color:var(--timberwolf);font-family:'Inter',sans-serif;" />
+                        <input id="product-price" type="number" min="0" step="0.01" placeholder="Enter price in INR..." required />
                     </div>
-                    <div class="desc-box" style="margin-top:14px;">
+                    <div class="desc-box">
                         <label for="product-desc">Add Product Description</label>
                         <textarea id="product-desc" placeholder="Describe your item..." required></textarea>
                     </div>
                 </div>
             </div>
             <div style="text-align:right; margin-bottom:10px;">
-                <button type="submit" class="swap-btn" style="margin:0;">Submit</button>
+                <button type="submit" class="swap-btn">Submit</button>
             </div>
             <div class="error-message hidden" id="error-message"></div>
         </form>
-        <div class="previous-listings" style="position:relative;">
-            <h2>Your Previous Listings:</h2>
+        <div class="previous-listings">
+            <h2>Your Previous Listings</h2>
             <button class="carousel-arrow left" id="carousel-left">&#8592;</button>
             <div class="listing-cards" id="listing-cards">
                 <!-- Carousel content will be inserted here -->
