@@ -150,11 +150,8 @@ Odoo_BrookieBytes/
 - ✅ Item management system
 - ✅ Modern UI/UX design
 
-## 🚧 Future Enhancements
+---
 
-- Real-time chat for swap negotiations
-- Push notifications
-- Advanced search and filtering
-- User ratings and reviews
-- Payment integration
-- Mobile app development
+## 🙌 Thank You!
+
+ReWear is now complete. Thank you for supporting our mission to make fashion more sustainable and community-driven!
