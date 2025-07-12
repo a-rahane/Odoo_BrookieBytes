@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReWear - Login</title>
+    <title>ReWear - Sign Up</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -73,7 +73,7 @@
         }
         .form-wrapper {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             background: var(--champagne-pink);
             border-radius: 18px;
             box-shadow: 0 4px 24px rgba(31,26,56,0.07);
@@ -247,31 +247,9 @@
             margin-bottom: 20px;
             display: none;
         }
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #7b506f;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .form-footer a {
-            color: var(--amaranth-pink);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .form-footer a:hover {
-            text-decoration: underline;
+        .password-strength {
+            margin-top: 8px;
+            font-size: 12px;
         }
         .strength-bar {
             height: 4px;
@@ -279,6 +257,37 @@
             border-radius: 2px;
             margin-top: 5px;
             overflow: hidden;
+        }
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .strength-weak {
+            background: #e74c3c;
+            width: 25%;
+        }
+        .strength-medium {
+            background: #f39c12;
+            width: 50%;
+        }
+        .strength-strong {
+            background: #27ae60;
+            width: 75%;
+        }
+        .strength-very-strong {
+            background: #2ecc71;
+            width: 100%;
+        }
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .terms-checkbox input[type="checkbox"] {
+            width: auto;
+            margin-top: 2px;
         }
         .terms-checkbox label {
             font-size: 14px;
@@ -328,49 +337,44 @@
         </g>
       </svg>
       <div class="brand-message">
-        <h1>Welcome to ReWear</h1>
-        <p>Swap, Save, Sustain.<br>Sign in or create an account to start swapping and get updates on sustainable fashion.</p>
+        <h1>Join ReWear</h1>
+        <p>Swap, Save, Sustain.<br>Sign up to start swapping and get updates on sustainable fashion.</p>
       </div>
     </div>
     <div class="right">
       <div class="form-wrapper">
         <div class="header">
-          <h1 id="formTitle">Welcome Back</h1>
-          <p id="formSubtitle">Sign in to your ReWear account</p>
+          <h1>Create Account</h1>
+          <p>Join ReWear today</p>
         </div>
         <div class="success-message" id="successMessage"></div>
-        <!-- Login Form -->
-        <form id="loginForm">
+        <form id="signupForm">
           <div class="form-group">
-            <label for="loginEmail">Email</label>
-            <input type="email" id="loginEmail" placeholder="Enter your email" required>
-            <div class="error-message">Please enter a valid email address</div>
-          </div>
-          <div class="form-group">
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" placeholder="Enter your password" required>
-            <i class="fas fa-eye password-toggle" onclick="togglePassword('loginPassword')"></i>
-            <div class="error-message">Password is required</div>
-          </div>
-          <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
-        <!-- Signup Form -->
-        <form id="signupForm" style="display: none;">
-          <div class="form-group">
-            <label for="signupName">Full Name</label>
-            <input type="text" id="signupName" placeholder="Enter your full name" required>
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required>
             <div class="error-message">Please enter your full name</div>
           </div>
           <div class="form-group">
-            <label for="signupEmail">Email</label>
-            <input type="email" id="signupEmail" placeholder="Enter your email" required>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
             <div class="error-message">Please enter a valid email address</div>
           </div>
           <div class="form-group">
-            <label for="signupPassword">Password</label>
-            <input type="password" id="signupPassword" placeholder="Create a password" required>
-            <i class="fas fa-eye password-toggle" onclick="togglePassword('signupPassword')"></i>
+            <label for="phone">Phone Number (Optional)</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number">
+            <div class="error-message">Please enter a valid phone number</div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Create a strong password" required>
+            <i class="fas fa-eye password-toggle" onclick="togglePassword('password')"></i>
             <div class="error-message">Password must be at least 8 characters</div>
+            <div class="password-strength">
+              <span id="strengthText">Password strength</span>
+              <div class="strength-bar">
+                <div class="strength-fill" id="strengthFill"></div>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
@@ -378,73 +382,50 @@
             <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
             <div class="error-message">Passwords do not match</div>
           </div>
+          <div class="terms-checkbox">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">
+              I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+            </label>
+          </div>
+          <div class="terms-checkbox">
+            <input type="checkbox" id="newsletter">
+            <label for="newsletter">
+              I want to receive updates and newsletters
+            </label>
+          </div>
           <button type="submit" class="btn btn-primary">Create Account</button>
         </form>
         <div class="divider">
-          <span>or continue with</span>
+          <span>or sign up with</span>
         </div>
         <div class="social-buttons">
-          <button class="social-btn google" onclick="socialLogin('google')">
+          <button class="social-btn google" onclick="socialSignup('google')">
             <i class="fab fa-google"></i>
             Google
           </button>
-          <button class="social-btn facebook" onclick="socialLogin('facebook')">
+          <button class="social-btn facebook" onclick="socialSignup('facebook')">
             <i class="fab fa-facebook-f"></i>
             Facebook
           </button>
-          <button class="social-btn github" onclick="socialLogin('github')">
+          <button class="social-btn github" onclick="socialSignup('github')">
             <i class="fab fa-github"></i>
             GitHub
           </button>
-          <button class="social-btn twitter" onclick="socialLogin('twitter')">
+          <button class="social-btn twitter" onclick="socialSignup('twitter')">
             <i class="fab fa-twitter"></i>
             Twitter
           </button>
         </div>
         <div class="toggle-form">
-          <span id="toggleText">Don't have an account?</span>
-          <a href="#" id="toggleLink" onclick="toggleForm()">Sign up</a>
-        </div>
-        <div class="form-footer">
-          <a href="#" onclick="forgotPassword()">Forgot your password?</a>
+          <span>Already have an account?</span>
+          <a href="index.html">Sign in</a>
         </div>
       </div>
     </div>
   </div>
   <script>
-        let isLoginForm = true;
         let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Toggle between login and signup forms
-        function toggleForm() {
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const toggleText = document.getElementById('toggleText');
-            const toggleLink = document.getElementById('toggleLink');
-            const header = document.querySelector('.header h1');
-            const headerP = document.querySelector('.header p');
-
-            if (isLoginForm) {
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                toggleText.textContent = 'Already have an account?';
-                toggleLink.textContent = 'Sign in';
-                header.textContent = 'Create Account';
-                headerP.textContent = 'Join ReWear today';
-                isLoginForm = false;
-            } else {
-                loginForm.style.display = 'block';
-                signupForm.style.display = 'none';
-                toggleText.textContent = 'Don\'t have an account?';
-                toggleLink.textContent = 'Sign up';
-                header.textContent = 'Welcome Back';
-                headerP.textContent = 'Sign in to your ReWear account';
-                isLoginForm = true;
-            }
-            
-            clearErrors();
-            clearSuccessMessage();
-        }
 
         // Toggle password visibility
         function togglePassword(inputId) {
@@ -462,6 +443,51 @@
             }
         }
 
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            let feedback = [];
+
+            if (password.length >= 8) strength += 1;
+            else feedback.push('At least 8 characters');
+
+            if (/[a-z]/.test(password)) strength += 1;
+            else feedback.push('Lowercase letter');
+
+            if (/[A-Z]/.test(password)) strength += 1;
+            else feedback.push('Uppercase letter');
+
+            if (/[0-9]/.test(password)) strength += 1;
+            else feedback.push('Number');
+
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            else feedback.push('Special character');
+
+            return { strength, feedback };
+        }
+
+        function updatePasswordStrength(password) {
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            const result = checkPasswordStrength(password);
+
+            strengthFill.className = 'strength-fill';
+            
+            if (result.strength <= 1) {
+                strengthFill.classList.add('strength-weak');
+                strengthText.textContent = 'Weak password';
+            } else if (result.strength <= 2) {
+                strengthFill.classList.add('strength-medium');
+                strengthText.textContent = 'Medium password';
+            } else if (result.strength <= 3) {
+                strengthFill.classList.add('strength-strong');
+                strengthText.textContent = 'Strong password';
+            } else {
+                strengthFill.classList.add('strength-very-strong');
+                strengthText.textContent = 'Very strong password';
+            }
+        }
+
         // Form validation
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -470,6 +496,12 @@
 
         function validatePassword(password) {
             return password.length >= 8;
+        }
+
+        function validatePhone(phone) {
+            if (!phone) return true; // Optional field
+            const re = /^[\+]?[1-9][\d]{0,15}$/;
+            return re.test(phone.replace(/\s/g, ''));
         }
 
         function showError(inputId, message) {
@@ -498,73 +530,37 @@
             }, 3000);
         }
 
-        function clearSuccessMessage() {
-            document.getElementById('successMessage').style.display = 'none';
-        }
-
-        // Login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            clearErrors();
-            
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            
-            let isValid = true;
-            
-            if (!email || !validateEmail(email)) {
-                showError('loginEmail', 'Please enter a valid email address');
-                isValid = false;
-            }
-            
-            if (!password) {
-                showError('loginPassword', 'Password is required');
-                isValid = false;
-            }
-            
-            if (isValid) {
-                // Simulate login process
-                const user = users.find(u => u.email === email && u.password === password);
-                
-                if (user) {
-                    showSuccessMessage('Login successful! Welcome back, ' + user.name);
-                    // Store current user session
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    // Redirect to dashboard or main page
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    showError('loginEmail', 'Invalid email or password');
-                    showError('loginPassword', 'Invalid email or password');
-                }
-            }
-        });
-
         // Signup form submission
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             clearErrors();
             
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
             
             let isValid = true;
             
-            if (!name) {
-                showError('signupName', 'Please enter your full name');
+            if (!fullName) {
+                showError('fullName', 'Please enter your full name');
                 isValid = false;
             }
             
             if (!email || !validateEmail(email)) {
-                showError('signupEmail', 'Please enter a valid email address');
+                showError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            if (phone && !validatePhone(phone)) {
+                showError('phone', 'Please enter a valid phone number');
                 isValid = false;
             }
             
             if (!password || !validatePassword(password)) {
-                showError('signupPassword', 'Password must be at least 8 characters');
+                showError('password', 'Password must be at least 8 characters');
                 isValid = false;
             }
             
@@ -573,9 +569,14 @@
                 isValid = false;
             }
             
+            if (!terms) {
+                alert('Please accept the Terms of Service and Privacy Policy');
+                isValid = false;
+            }
+            
             // Check if email already exists
             if (users.find(u => u.email === email)) {
-                showError('signupEmail', 'Email already registered');
+                showError('email', 'Email already registered');
                 isValid = false;
             }
             
@@ -583,30 +584,31 @@
                 // Create new user
                 const newUser = {
                     id: Date.now(),
-                    name: name,
+                    name: fullName,
                     email: email,
+                    phone: phone || null,
                     password: password,
+                    newsletter: document.getElementById('newsletter').checked,
                     createdAt: new Date().toISOString()
                 };
                 
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
                 
-                showSuccessMessage('Account created successfully! Please sign in.');
+                showSuccessMessage('Account created successfully! Redirecting to login...');
                 
-                // Switch back to login form
+                // Redirect to login page
                 setTimeout(() => {
-                    toggleForm();
-                    document.getElementById('loginEmail').value = email;
-                }, 1500);
+                    window.location.href = 'index.html';
+                }, 2000);
             }
         });
 
-        // Social media login
-        function socialLogin(provider) {
+        // Social media signup
+        function socialSignup(provider) {
             showSuccessMessage(`Connecting to ${provider}...`);
             
-            // Simulate social login process
+            // Simulate social signup process
             setTimeout(() => {
                 const socialUser = {
                     id: Date.now(),
@@ -616,8 +618,15 @@
                     createdAt: new Date().toISOString()
                 };
                 
+                // Check if user already exists
+                const existingUser = users.find(u => u.email === socialUser.email);
+                if (!existingUser) {
+                    users.push(socialUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
                 localStorage.setItem('currentUser', JSON.stringify(socialUser));
-                showSuccessMessage(`Successfully logged in with ${provider}!`);
+                showSuccessMessage(`Successfully signed up with ${provider}!`);
                 
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
@@ -625,25 +634,26 @@
             }, 2000);
         }
 
-        // Forgot password functionality
-        function forgotPassword() {
-            const email = document.getElementById('loginEmail').value.trim();
-            
-            if (!email || !validateEmail(email)) {
-                showError('loginEmail', 'Please enter your email address first');
-                return;
-            }
-            
-            showSuccessMessage('Password reset link sent to your email!');
+        // Show terms and privacy modals
+        function showTerms() {
+            alert('Terms of Service:\n\n1. You agree to use this service responsibly\n2. You will not share your account credentials\n3. You are responsible for maintaining the security of your account\n4. We reserve the right to modify these terms at any time');
+        }
+
+        function showPrivacy() {
+            alert('Privacy Policy:\n\n1. We collect only the information you provide\n2. Your data is stored locally in your browser\n3. We do not share your information with third parties\n4. You can request deletion of your data at any time');
         }
 
         // Real-time validation
+        document.getElementById('password').addEventListener('input', function() {
+            updatePasswordStrength(this.value);
+        });
+
         document.querySelectorAll('input').forEach(input => {
             input.addEventListener('blur', function() {
                 const inputId = this.id;
                 const value = this.value.trim();
                 
-                if (inputId.includes('Email')) {
+                if (inputId === 'email') {
                     if (value && !validateEmail(value)) {
                         showError(inputId, 'Please enter a valid email address');
                     } else {
@@ -651,7 +661,15 @@
                     }
                 }
                 
-                if (inputId.includes('Password') && !inputId.includes('confirm')) {
+                if (inputId === 'phone') {
+                    if (value && !validatePhone(value)) {
+                        showError(inputId, 'Please enter a valid phone number');
+                    } else {
+                        clearError(inputId);
+                    }
+                }
+                
+                if (inputId === 'password') {
                     if (value && !validatePassword(value)) {
                         showError(inputId, 'Password must be at least 8 characters');
                     } else {
@@ -660,7 +678,7 @@
                 }
                 
                 if (inputId === 'confirmPassword') {
-                    const password = document.getElementById('signupPassword').value;
+                    const password = document.getElementById('password').value;
                     if (value && value !== password) {
                         showError(inputId, 'Passwords do not match');
                     } else {
