@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReWear - Sustainable Fashion Exchange</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --timberwolf: #dbcdc6;
+      --champagne-pink: #ead7d1;
+      --amaranth-pink: #dd99bb;
+      --chinese-violet: #7b506f;
+      --dark-purple: #1f1a38;
+      --white-pink: #feebf5;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--champagne-pink); color: var(--dark-purple); }
+    body {
+      background: repeating-linear-gradient(45deg, var(--champagne-pink) 0px, var(--champagne-pink) 20px, var(--timberwolf) 20px, var(--timberwolf) 40px), linear-gradient(135deg, var(--champagne-pink) 0%, var(--timberwolf) 100%);
+      min-height: 100vh;
+      animation: subtleShift 20s ease-in-out infinite;
+    }
+    @keyframes subtleShift {
+      0%, 100% { background-position: 0px 0px, 0% 0%; }
+      50% { background-position: 10px 10px, 100% 100%; }
+    }
+    .navbar {
+      width: 100%;
+      background: var(--white-pink);
+      box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      animation: fadeInUp 1s;
+    }
+    .navbar .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--chinese-violet);
+      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: filter 0.3s;
+    }
+    .navbar .nav-links {
+      display: flex;
+      gap: 2.2rem;
+    }
+    .navbar .nav-links a {
+      color: var(--chinese-violet);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.08rem;
+      position: relative;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      transition: width 0.3s;
+    }
+    .navbar .nav-links a:hover {
+      color: var(--amaranth-pink);
+      transform: translateY(-2px);
+    }
+    .navbar .nav-links a:hover::after {
+      width: 100%;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4.5rem 1.5rem 2.5rem 1.5rem;
+      text-align: center;
+      animation: fadeInUp 1.2s 0.2s both;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5em;
+      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 1px;
+      animation: textGlow 3s ease-in-out infinite;
+    }
+    @keyframes textGlow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--dark-purple);
+      max-width: 600px;
+      margin: 0 auto 2.2em auto;
+      opacity: 0.92;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero-ctas .cta-btn {
+      padding: 1rem 2.1rem;
+      border-radius: 2rem;
+      border: none;
+      font-size: 1.15rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(123,80,111,0.10);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      outline: none;
+      margin-bottom: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-ctas .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    .hero-ctas .cta-btn:hover::before {
+      left: 100%;
+    }
+    .hero-ctas .cta-btn:hover {
+      background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(123,80,111,0.18);
+    }
+    .carousel-section {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto 3rem auto;
+      padding: 2.5rem 0 1.5rem 0;
+      animation: fadeInUp 1.2s 0.4s both;
+    }
+    .carousel-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin-bottom: 1.2rem;
+      text-align: left;
+      padding-left: 1.2rem;
+    }
+    .carousel {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0 1.2rem;
+    }
+    .carousel::-webkit-scrollbar {
+      height: 8px;
+      background: var(--champagne-pink);
+    }
+    .carousel::-webkit-scrollbar-thumb {
+      background: var(--amaranth-pink);
+      border-radius: 4px;
+    }
+    .carousel-item {
+      min-width: 220px;
+      max-width: 240px;
+      background: var(--white-pink);
+      border-radius: 18px;
+      box-shadow: 0 4px 18px rgba(31,26,56,0.07);
+      padding: 1.2rem 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+    .carousel-item:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 12px 32px rgba(123,80,111,0.13);
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      background: var(--timberwolf);
+    }
+    .carousel-item .item-title {
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    .carousel-item .item-desc {
+      font-size: 0.98rem;
+      color: var(--dark-purple);
+      opacity: 0.8;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .carousel-item .item-tag {
+      font-size: 0.85rem;
+      color: var(--amaranth-pink);
+      background: var(--champagne-pink);
+      border-radius: 8px;
+      padding: 0.2em 0.7em;
+      margin-top: 0.2em;
+      display: inline-block;
+    }
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 2rem; }
+      .carousel-section { padding: 1.2rem 0; }
+      .carousel-item { min-width: 170px; max-width: 180px; }
+    }
+    @media (max-width: 600px) {
+      .navbar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 1rem; }
+      .hero { padding: 2.5rem 0.5rem 1.5rem 0.5rem; }
+      .carousel { gap: 0.7rem; padding: 0 0.5rem; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">ReWear</div>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="#">Browse</a>
+      <a href="index.html">Login</a>
+      <a href="Signup.html">Sign Up</a>
+    </div>
+  </nav>
+  <section class="hero">
+    <h1>Swap Your Style, Sustain the Planet</h1>
+    <p>ReWear is your platform to exchange unused clothing, discover new styles, and join a community passionate about sustainable fashion. Give your wardrobe a second life and help reduce fashion waste—one swap at a time.</p>
+    <div class="hero-ctas">
+      <button class="cta-btn">Start Swapping</button>
+      <button class="cta-btn">Browse Items</button>
+      <button class="cta-btn">List an Item</button>
+    </div>
+  </section>
+  <section class="carousel-section">
+    <div class="carousel-title">Featured Items</div>
+    <div class="carousel">
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Floral Dress">
+        <div class="item-title">Floral Summer Dress</div>
+        <div class="item-desc">Lightweight, size M, perfect for sunny days.</div>
+        <div class="item-tag">Dresses</div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Denim Jacket">
+        <div class="item-title">Classic Denim Jacket</div>
+        <div class="item-desc">Unisex, size L, timeless style for any season.</div>
+        <div class="item-tag">Jackets</div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Sneakers">
+        <div class="item-title">White Sneakers</div>
+        <div class="item-desc">Gently used, size 8, goes with everything.</div>
+        <div class="item-tag">Shoes</div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80" alt="Cozy Sweater">
+        <div class="item-title">Cozy Knit Sweater</div>
+        <div class="item-desc">Warm, size S, soft and comfortable.</div>
+        <div class="item-tag">Sweaters</div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Patterned Skirt">
+        <div class="item-title">Patterned Midi Skirt</div>
+        <div class="item-desc">Vibrant, size M, adds flair to any outfit.</div>
+        <div class="item-tag">Skirts</div>
+      </div>
+    </div>
+  </section>
+</body>
+</html> 
