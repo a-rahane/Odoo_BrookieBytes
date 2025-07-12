@@ -78,112 +78,236 @@
     .navbar .nav-links a:hover::after {
       width: 100%;
     }
-    .hero {
+
+    /* HERO SECTION */
+    .hero-section {
+      position: relative;
+      background: var(--chinese-violet);
+      min-height: 480px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4.5rem 1.5rem 2.5rem 1.5rem;
-      text-align: center;
-      animation: fadeInUp 1.2s 0.2s both;
+      overflow: hidden;
+      padding: 0;
     }
-    .hero h1 {
-      font-size: 2.8rem;
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(120deg, var(--chinese-violet) 60%, var(--amaranth-pink) 100%);
+      z-index: 1;
+    }
+    .hero-slider {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8vw;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: all 0.6s ease-in-out;
+      z-index: 2;
+    }
+    .hero-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .hero-content {
+      flex: 1;
+      max-width: 420px;
+      color: var(--timberwolf);
+      text-align: left;
+      z-index: 3;
+    }
+    .hero-content h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: var(--champagne-pink);
+      margin-bottom: 0.7em;
+      opacity: 0;
+      animation: slideInUp 0.8s 0.3s forwards;
+    }
+    .hero-content h1 {
+      font-size: 2.7rem;
       font-weight: 700;
-      margin-bottom: 0.5em;
-      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      margin-bottom: 1.2em;
+      background: linear-gradient(45deg, var(--timberwolf), var(--amaranth-pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 1px;
-      animation: textGlow 3s ease-in-out infinite;
+      opacity: 0;
+      animation: slideInUp 0.8s 0.5s forwards;
     }
-    @keyframes textGlow {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.2); }
-    }
-    .hero p {
-      font-size: 1.25rem;
-      color: var(--dark-purple);
-      max-width: 600px;
-      margin: 0 auto 2.2em auto;
-      opacity: 0.92;
-    }
-    .hero-ctas {
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 2.5rem;
-    }
-    .hero-ctas .cta-btn {
-      padding: 1rem 2.1rem;
-      border-radius: 2rem;
+    .cta-btn {
+      padding: 0.9em 2.2em;
+      border-radius: 2em;
       border: none;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 600;
       background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
       color: #fff;
       box-shadow: 0 4px 16px rgba(123,80,111,0.10);
       cursor: pointer;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      transition: all 0.3s ease;
       outline: none;
-      margin-bottom: 0.5rem;
       position: relative;
       overflow: hidden;
+      opacity: 0;
+      animation: slideInUp 0.8s 0.7s forwards;
     }
-    .hero-ctas .cta-btn::before {
+    .cta-btn::before {
       content: '';
       position: absolute;
       top: 0; left: -100%; width: 100%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
       transition: left 0.5s;
     }
-    .hero-ctas .cta-btn:hover::before {
+    .cta-btn:hover::before {
       left: 100%;
     }
-    .hero-ctas .cta-btn:hover {
+    .cta-btn:hover {
       background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
       transform: translateY(-2px) scale(1.04);
       box-shadow: 0 8px 24px rgba(123,80,111,0.18);
     }
-    .carousel-section {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto 3rem auto;
-      padding: 2.5rem 0 1.5rem 0;
-      animation: fadeInUp 1.2s 0.4s both;
+    .hero-arrows {
+      position: absolute;
+      left: 8vw;
+      bottom: 2.5em;
+      z-index: 10;
+      display: flex;
+      gap: 1.2em;
     }
-    .carousel-title {
-      font-size: 1.5rem;
+    .arrow {
+      background: var(--champagne-pink);
+      color: var(--chinese-violet);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(31,26,56,0.08);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .arrow:hover {
+      background: var(--amaranth-pink);
+      color: #fff;
+      transform: scale(1.1);
+      border-color: var(--champagne-pink);
+    }
+    .hero-img {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: flex-end;
+      z-index: 3;
+    }
+    .hero-img img {
+      width: 280px;
+      height: 380px;
+      object-fit: cover;
+      border-radius: 2.5em 2.5em 0 0;
+      box-shadow: 0 8px 32px rgba(31,26,56,0.18);
+      background: var(--timberwolf);
+      opacity: 0;
+      animation: slideInRight 0.8s 0.4s forwards;
+    }
+
+    @keyframes slideInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    @keyframes slideInRight {
+      from { 
+        opacity: 0; 
+        transform: translateX(50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0); 
+      }
+    }
+
+    /* Reset animations for active slide */
+    .hero-slide.active .hero-content h2,
+    .hero-slide.active .hero-content h1,
+    .hero-slide.active .cta-btn,
+    .hero-slide.active .hero-img img {
+      animation: none;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-slide.active .hero-img img {
+      transform: translateX(0);
+    }
+
+    /* NEW ARRIVALS SECTION */
+    .arrivals-section {
+      background: #fff;
+      padding: 3.5em 2rem 2.5em 2rem;
+      text-align: center;
+    }
+    .arrivals-title {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+      margin-bottom: 1.2em;
+    }
+    .arrivals-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      margin-bottom: 2em;
+      flex-wrap: wrap;
+    }
+    .tab {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--chinese-violet);
-      margin-bottom: 1.2rem;
-      text-align: left;
-      padding-left: 1.2rem;
+      padding: 0.5em 1.2em;
+      border-radius: 1.5em;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .carousel {
-      display: flex;
-      gap: 1.5rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: 0 1.2rem;
-    }
-    .carousel::-webkit-scrollbar {
-      height: 8px;
+    .tab.active, .tab:hover {
       background: var(--champagne-pink);
+      color: var(--amaranth-pink);
     }
-    .carousel::-webkit-scrollbar-thumb {
-      background: var(--amaranth-pink);
-      border-radius: 4px;
+    .arrivals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 2em;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    .carousel-item {
-      min-width: 220px;
-      max-width: 240px;
+    .product-card {
       background: var(--white-pink);
-      border-radius: 18px;
+      border-radius: 1.5em;
       box-shadow: 0 4px 18px rgba(31,26,56,0.07);
-      padding: 1.2rem 1rem 1rem 1rem;
+      padding: 1.2em 1em 1em 1em;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -191,51 +315,221 @@
       cursor: pointer;
       position: relative;
     }
-    .carousel-item:hover {
+    .product-card:hover {
       transform: translateY(-8px) scale(1.04);
       box-shadow: 0 12px 32px rgba(123,80,111,0.13);
     }
-    .carousel-item img {
+    .product-card img {
       width: 100%;
-      height: 160px;
+      height: 140px;
       object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 1rem;
+      border-radius: 1em;
+      margin-bottom: 1em;
       background: var(--timberwolf);
     }
-    .carousel-item .item-title {
-      font-size: 1.08rem;
-      font-weight: 600;
-      color: var(--chinese-violet);
-      margin-bottom: 0.3rem;
+    .product-info {
       text-align: center;
     }
-    .carousel-item .item-desc {
-      font-size: 0.98rem;
-      color: var(--dark-purple);
-      opacity: 0.8;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-    .carousel-item .item-tag {
+    .product-type {
       font-size: 0.85rem;
       color: var(--amaranth-pink);
       background: var(--champagne-pink);
       border-radius: 8px;
       padding: 0.2em 0.7em;
-      margin-top: 0.2em;
+      margin-bottom: 0.3em;
       display: inline-block;
     }
+    .product-name {
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin-bottom: 0.3em;
+    }
+    .product-price {
+      font-size: 1.05rem;
+      color: var(--dark-purple);
+      font-weight: 500;
+      margin-bottom: 0.2em;
+    }
+    .product-rating {
+      color: var(--amaranth-pink);
+      font-size: 1.1em;
+    }
+
+    /* PROMOTIONAL BANNERS SECTION */
+    .promo-section {
+      background: var(--champagne-pink);
+      padding: 3em 2rem 2em 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+      align-items: center;
+    }
+    .promo-row {
+      display: flex;
+      gap: 2em;
+      width: 100%;
+      max-width: 1200px;
+      flex-wrap: wrap;
+    }
+    .promo-banner {
+      background: var(--white-pink);
+      border-radius: 1.5em;
+      box-shadow: 0 4px 18px rgba(31,26,56,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 2em 1.5em 1.5em 1.5em;
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+    .promo-banner.large {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      max-width: 1200px;
+      width: 100%;
+      min-height: 220px;
+      margin-bottom: 2em;
+    }
+    .promo-banner.large .promo-content {
+      flex: 1;
+      padding-right: 2em;
+    }
+    .promo-banner.large img {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 1.5em;
+      box-shadow: 0 4px 18px rgba(31,26,56,0.07);
+      background: var(--timberwolf);
+    }
+    .promo-content h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+      margin-bottom: 1em;
+    }
+    .promo-btn {
+      padding: 0.7em 1.7em;
+      border-radius: 2em;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(123,80,111,0.10);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .promo-btn:hover {
+      background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(123,80,111,0.18);
+    }
+    .promo-discount {
+      color: var(--amaranth-pink);
+      font-size: 1.1em;
+      font-weight: 700;
+      margin-left: 0.3em;
+    }
+
+    /* RESPONSIVE DESIGN */
     @media (max-width: 900px) {
-      .hero h1 { font-size: 2rem; }
-      .carousel-section { padding: 1.2rem 0; }
-      .carousel-item { min-width: 170px; max-width: 180px; }
+      .hero-slide {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 4vw;
+        gap: 2rem;
+      }
+      .hero-content {
+        max-width: 100%;
+      }
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      .hero-img img {
+        width: 200px;
+        height: 280px;
+      }
+      .arrivals-title {
+        font-size: 1.8rem;
+      }
+      .arrivals-grid {
+        gap: 1.5em;
+      }
+      .promo-row {
+        flex-direction: column;
+        gap: 1.5em;
+      }
+      .promo-banner.large {
+        flex-direction: column;
+        text-align: center;
+      }
+      .promo-banner.large .promo-content {
+        padding-right: 0;
+      }
+      .promo-banner.large img {
+        width: 100%;
+        height: 200px;
+        margin-top: 1em;
+      }
     }
+
     @media (max-width: 600px) {
-      .navbar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 1rem; }
-      .hero { padding: 2.5rem 0.5rem 1.5rem 0.5rem; }
-      .carousel { gap: 0.7rem; padding: 0 0.5rem; }
+      .navbar {
+        flex-direction: column;
+        gap: 0.7rem;
+        padding: 0.7rem 1rem;
+      }
+      .hero-section {
+        min-height: 400px;
+      }
+      .hero-slide {
+        padding: 1.5rem 2vw;
+      }
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      .hero-img img {
+        width: 160px;
+        height: 220px;
+      }
+      .hero-arrows {
+        left: 2vw;
+        bottom: 1.5em;
+      }
+      .arrivals-section {
+        padding: 2em 1rem 1.5em 1rem;
+      }
+      .arrivals-title {
+        font-size: 1.6rem;
+      }
+      .arrivals-tabs {
+        gap: 1em;
+      }
+      .tab {
+        font-size: 1rem;
+        padding: 0.4em 1em;
+      }
+      .arrivals-grid {
+        grid-template-columns: 1fr;
+        gap: 1em;
+      }
+      .promo-section {
+        padding: 2em 1rem 1.5em 1rem;
+      }
+      .promo-banner {
+        min-width: 100%;
+      }
     }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
@@ -246,528 +540,214 @@
   <nav class="navbar">
     <div class="logo">ReWear</div>
     <div class="nav-links">
-      <a href="landing.html">Home</a>
-      <a href="#">Shop</a>
-      <a href="#">Pages</a>
-      <a href="#">Blog</a>
-      <a href="#">Contact Us</a>
-      <a href="index.html"><i class="fas fa-user"></i></a>
+      <a href="#home">Home</a>
+      <a href="#shop">Shop</a>
+      <a href="#pages">Pages</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact">Contact Us</a>
+      <a href="#profile"><i class="fas fa-user"></i></a>
     </div>
   </nav>
-    <!-- HERO SECTION -->
-    <section class="hero-section">
-      <div class="hero-bg"></div>
-      <div class="hero-slider">
-        <div class="hero-slide active">
-          <div class="hero-content">
-            <h2>Urban Edge</h2>
-            <h1>Jackets for the Modern Man</h1>
-            <button class="cta-btn main-cta">Start Swapping</button>
-          </div>
-          <div class="hero-img">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Hero Model 1">
-          </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-slider">
+      <div class="hero-slide active">
+        <div class="hero-content">
+          <h2>Urban Edge</h2>
+          <h1>Jackets for the Modern Man</h1>
+          <button class="cta-btn">Start Swapping</button>
         </div>
-        <div class="hero-slide">
-          <div class="hero-content">
-            <h2>Fresh Finds</h2>
-            <h1>Discover the Latest Arrivals</h1>
-            <button class="cta-btn main-cta">Browse Items</button>
-          </div>
-          <div class="hero-img">
-            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Hero Model 2">
-          </div>
-        </div>
-        <div class="hero-slide">
-          <div class="hero-content">
-            <h2>Share Your Style</h2>
-            <h1>List Your Own Items</h1>
-            <button class="cta-btn main-cta">List an Item</button>
-          </div>
-          <div class="hero-img">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Hero Model 3">
-          </div>
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Modern Fashion">
         </div>
       </div>
-      <div class="hero-arrows">
-        <span class="arrow left" id="heroPrev"><i class="fas fa-chevron-left"></i></span>
-        <span class="arrow right" id="heroNext"><i class="fas fa-chevron-right"></i></span>
-      </div>
-    </section>
-    <!-- NEW ARRIVALS SECTION -->
-    <section class="arrivals-section">
-      <h2 class="arrivals-title">New Arrivals</h2>
-      <div class="arrivals-tabs">
-        <button class="tab active">Women</button>
-        <button class="tab">Men</button>
-        <button class="tab">Shoes</button>
-        <button class="tab">Bags</button>
-        <button class="tab">Accessories</button>
-      </div>
-      <div class="arrivals-grid">
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/1.jpg" alt="Polo Shirt">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">adidas X Pop Polo shirt, navy / blue</div>
-            <div class="product-price">$69.99</div>
-          </div>
+      <div class="hero-slide">
+        <div class="hero-content">
+          <h2>Fresh Finds</h2>
+          <h1>Discover the Latest Arrivals</h1>
+          <button class="cta-btn">Browse Items</button>
         </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/2.jpg" alt="Sneakers">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">adidas X Pop TRX Vintage, navy / white</div>
-            <div class="product-price">$99.99</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/3.jpg" alt="Track Jacket">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">adidas X Pop Beckenbauer Track Jacket</div>
-            <div class="product-price">$120.00</div>
-            <div class="product-rating">★★★★★</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/4.jpg" alt="T-shirt">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">adidas X Pop Classic t-shirt, grey / navy</div>
-            <div class="product-price">$120.00</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/5.jpg" alt="Cap">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">adidas X Pop SL Cap, navy / white</div>
-            <div class="product-price">$59.00</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/6.jpg" alt="Hoodie">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">Butter Yard Pullover Hood, denim</div>
-            <div class="product-price">$130.00</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/7.jpg" alt="T-shirt">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">Parra Rug Pull t-shirt, white</div>
-            <div class="product-price">$60.00</div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/8.jpg" alt="Sweatshirt">
-          <div class="product-info">
-            <span class="product-type">JACKETS</span>
-            <div class="product-name">Carhartt L/S Deadkabob Knock Knock Sweat</div>
-            <div class="product-price">$131.00</div>
-          </div>
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Latest Fashion">
         </div>
       </div>
-    </section>
-    <!-- PROMOTIONAL BANNERS SECTION -->
-    <section class="promo-section">
-      <div class="promo-banner large">
+      <div class="hero-slide">
+        <div class="hero-content">
+          <h2>Share Your Style</h2>
+          <h1>List Your Own Items</h1>
+          <button class="cta-btn">List an Item</button>
+        </div>
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Share Fashion">
+        </div>
+      </div>
+    </div>
+    <div class="hero-arrows">
+      <span class="arrow left" id="heroPrev"><i class="fas fa-chevron-left"></i></span>
+      <span class="arrow right" id="heroNext"><i class="fas fa-chevron-right"></i></span>
+    </div>
+  </section>
+
+  <!-- NEW ARRIVALS SECTION -->
+  <section class="arrivals-section">
+    <h2 class="arrivals-title">New Arrivals</h2>
+    <div class="arrivals-tabs">
+      <button class="tab active">Women</button>
+      <button class="tab">Men</button>
+      <button class="tab">Shoes</button>
+      <button class="tab">Bags</button>
+      <button class="tab">Accessories</button>
+    </div>
+    <div class="arrivals-grid">
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=300&q=80" alt="Polo Shirt">
+        <div class="product-info">
+          <span class="product-type">JACKETS</span>
+          <div class="product-name">adidas X Pop Polo shirt, navy / blue</div>
+          <div class="product-price">$69.99</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80" alt="Sneakers">
+        <div class="product-info">
+          <span class="product-type">SHOES</span>
+          <div class="product-name">adidas X Pop TRX Vintage, navy / white</div>
+          <div class="product-price">$99.99</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=300&q=80" alt="Track Jacket">
+        <div class="product-info">
+          <span class="product-type">JACKETS</span>
+          <div class="product-name">adidas X Pop Beckenbauer Track Jacket</div>
+          <div class="product-price">$120.00</div>
+          <div class="product-rating">★★★★★</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
+        <div class="product-info">
+          <span class="product-type">SHIRTS</span>
+          <div class="product-name">adidas X Pop Classic t-shirt, grey / navy</div>
+          <div class="product-price">$120.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1575428652377-a2d80e2040f4?auto=format&fit=crop&w=300&q=80" alt="Cap">
+        <div class="product-info">
+          <span class="product-type">ACCESSORIES</span>
+          <div class="product-name">adidas X Pop SL Cap, navy / white</div>
+          <div class="product-price">$59.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=300&q=80" alt="Hoodie">
+        <div class="product-info">
+          <span class="product-type">HOODIES</span>
+          <div class="product-name">Butter Yard Pullover Hood, denim</div>
+          <div class="product-price">$130.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1583743814966-8936f37f4674?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
+        <div class="product-info">
+          <span class="product-type">SHIRTS</span>
+          <div class="product-name">Parra Rug Pull t-shirt, white</div>
+          <div class="product-price">$60.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=300&q=80" alt="Sweatshirt">
+        <div class="product-info">
+          <span class="product-type">SWEATSHIRTS</span>
+          <div class="product-name">Carhartt L/S Deadkabob Knock Knock Sweat</div>
+          <div class="product-price">$131.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMOTIONAL BANNERS SECTION -->
+  <section class="promo-section">
+    <div class="promo-banner large">
+      <div class="promo-content">
+        <h3>Where Dreams Meet Couture</h3>
+        <button class="promo-btn">Shop Now</button>
+      </div>
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Couture Fashion">
+    </div>
+    <div class="promo-row">
+      <div class="promo-banner">
         <div class="promo-content">
-          <h3>Where Dreams Meet Couture</h3>
+          <h3>Enchanting Styles for Every Woman</h3>
           <button class="promo-btn">Shop Now</button>
         </div>
-        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Promo 1">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Women's Fashion">
       </div>
-      <div class="promo-row">
-        <div class="promo-banner">
-          <div class="promo-content">
-            <h3>Enchanting Styles for Every Woman</h3>
-            <button class="promo-btn">Shop Now</button>
-          </div>
-          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Promo 2">
+      <div class="promo-banner">
+        <div class="promo-content">
+          <h3>Chic Footwear for City Living</h3>
+          <button class="promo-btn">Shop Now</button>
         </div>
-        <div class="promo-banner">
-          <div class="promo-content">
-            <h3>Chic Footwear for City Living</h3>
-            <button class="promo-btn">Shop Now</button>
-          </div>
-          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Promo 3">
-        </div>
-        <div class="promo-banner">
-          <div class="promo-content">
-            <h3>Trendsetting Bags for Her <span class="promo-discount">50%</span></h3>
-            <button class="promo-btn">Shop Now</button>
-          </div>
-          <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80" alt="Promo 4">
-        </div>
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Footwear">
       </div>
-    </section>
-    <style>
-      .hero-section {
-        position: relative;
-        background: var(--chinese-violet);
-        min-height: 480px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        padding: 0 0 0 0;
-      }
-      .hero-bg {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(120deg, var(--chinese-violet) 60%, var(--amaranth-pink) 100%);
-        z-index: 1;
-      }
-      .hero-content {
-        position: absolute;
-        left: 8vw;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 2;
-        color: var(--timberwolf);
-        text-align: left;
-        max-width: 420px;
-      }
-      .hero-content h2 {
-        font-size: 1.1rem;
-        font-weight: 500;
-        letter-spacing: 2px;
-        color: var(--champagne-pink);
-        margin-bottom: 0.7em;
-      }
-      .hero-content h1 {
-        font-size: 2.7rem;
-        font-weight: 700;
-        margin-bottom: 1.2em;
-        background: linear-gradient(45deg, var(--timberwolf), var(--amaranth-pink));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-      .cta-btn {
-        padding: 0.9em 2.2em;
-        border-radius: 2em;
-        border: none;
-        font-size: 1.1rem;
-        font-weight: 600;
-        background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-        color: #fff;
-        box-shadow: 0 4px 16px rgba(123,80,111,0.10);
-        cursor: pointer;
-        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-        outline: none;
-        margin-bottom: 0.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .cta-btn:hover {
-        background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
-        transform: translateY(-2px) scale(1.04);
-        box-shadow: 0 8px 24px rgba(123,80,111,0.18);
-      }
-      .hero-ctas {
-        display: flex;
-        gap: 1.2rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.5rem;
-      }
-      .hero-ctas .cta-btn {
-        padding: 0.8em 1.7em;
-        border-radius: 2em;
-        border: none;
-        font-size: 1rem;
-        font-weight: 600;
-        background: linear-gradient(135deg, var(--champagne-pink), var(--amaranth-pink));
-        color: var(--chinese-violet);
-        box-shadow: 0 2px 8px rgba(123,80,111,0.08);
-        cursor: pointer;
-        transition: background 0.3s, color 0.2s, transform 0.2s, box-shadow 0.3s;
-        outline: none;
-        margin-bottom: 0.2rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .hero-ctas .cta-btn:hover {
-        background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-        color: #fff;
-        transform: translateY(-2px) scale(1.04);
-        box-shadow: 0 6px 18px rgba(123,80,111,0.13);
-      }
-      .main-cta {
-        margin-top: 0.7em;
-      }
-      .hero-arrows {
-        position: absolute;
-        left: 8vw;
-        bottom: 2.5em;
-        z-index: 10;
-        display: flex;
-        gap: 1.2em;
-        pointer-events: auto;
-      }
-      .arrow {
-        background: var(--champagne-pink);
-        color: var(--chinese-violet);
-        border-radius: 50%;
-        width: 38px;
-        height: 38px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(31,26,56,0.08);
-        transition: background 0.2s, color 0.2s;
-        z-index: 11;
-      }
-      .arrow:hover {
-        background: var(--amaranth-pink);
-        color: #fff;
-      }
-      .hero-img {
-        position: absolute;
-        right: 6vw;
-        bottom: 0;
-        display: flex;
-        gap: 2vw;
-        z-index: 2;
-        align-items: flex-end;
-      }
-      .hero-img img {
-        width: 260px;
-        height: 370px;
-        object-fit: cover;
-        border-radius: 2.5em 2.5em 0 0;
-        box-shadow: 0 8px 32px rgba(31,26,56,0.18);
-        background: var(--timberwolf);
-      }
-      .arrivals-section {
-        background: #fff;
-        padding: 3.5em 0 2.5em 0;
-        text-align: center;
-      }
-      .arrivals-title {
-        font-size: 2.1rem;
-        font-weight: 700;
-        color: var(--chinese-violet);
-        margin-bottom: 1.2em;
-      }
-      .arrivals-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 2em;
-        margin-bottom: 2em;
-      }
-      .tab {
-        background: none;
-        border: none;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--chinese-violet);
-        padding: 0.5em 1.2em;
-        border-radius: 1.5em;
-        cursor: pointer;
-        transition: background 0.2s, color 0.2s;
-      }
-      .tab.active, .tab:hover {
-        background: var(--champagne-pink);
-        color: var(--amaranth-pink);
-      }
-      .arrivals-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-        gap: 2em;
-        max-width: 1100px;
-        margin: 0 auto;
-      }
-      .product-card {
-        background: var(--white-pink);
-        border-radius: 1.5em;
-        box-shadow: 0 4px 18px rgba(31,26,56,0.07);
-        padding: 1.2em 1em 1em 1em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: pointer;
-        position: relative;
-      }
-      .product-card:hover {
-        transform: translateY(-8px) scale(1.04);
-        box-shadow: 0 12px 32px rgba(123,80,111,0.13);
-      }
-      .product-card img {
-        width: 100%;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 1em;
-        margin-bottom: 1em;
-        background: var(--timberwolf);
-      }
-      .product-info {
-        text-align: center;
-      }
-      .product-type {
-        font-size: 0.85rem;
-        color: var(--amaranth-pink);
-        background: var(--champagne-pink);
-        border-radius: 8px;
-        padding: 0.2em 0.7em;
-        margin-bottom: 0.3em;
-        display: inline-block;
-      }
-      .product-name {
-        font-size: 1.08rem;
-        font-weight: 600;
-        color: var(--chinese-violet);
-        margin-bottom: 0.3em;
-      }
-      .product-price {
-        font-size: 1.05rem;
-        color: var(--dark-purple);
-        font-weight: 500;
-        margin-bottom: 0.2em;
-      }
-      .product-rating {
-        color: var(--amaranth-pink);
-        font-size: 1.1em;
-      }
-      .promo-section {
-        background: var(--champagne-pink);
-        padding: 3em 0 2em 0;
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
-        align-items: center;
-      }
-      .promo-row {
-        display: flex;
-        gap: 2em;
-        width: 100%;
-        max-width: 1100px;
-      }
-      .promo-banner {
-        background: var(--white-pink);
-        border-radius: 1.5em;
-        box-shadow: 0 4px 18px rgba(31,26,56,0.07);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-between;
-        padding: 2em 1.5em 1.5em 1.5em;
-        flex: 1;
-        min-width: 0;
-        position: relative;
-        overflow: hidden;
-      }
-      .promo-banner.large {
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        max-width: 1100px;
-        width: 100%;
-        min-height: 220px;
-        margin-bottom: 2em;
-      }
-      .promo-banner.large .promo-content {
-        flex: 1;
-        padding-right: 2em;
-      }
-      .promo-banner.large img {
-        width: 220px;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 1.5em;
-        box-shadow: 0 4px 18px rgba(31,26,56,0.07);
-        background: var(--timberwolf);
-      }
-      .promo-content h3 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--chinese-violet);
-        margin-bottom: 1em;
-      }
-      .promo-btn {
-        padding: 0.7em 1.7em;
-        border-radius: 2em;
-        border: none;
-        font-size: 1rem;
-        font-weight: 600;
-        background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
-        color: #fff;
-        box-shadow: 0 4px 16px rgba(123,80,111,0.10);
-        cursor: pointer;
-        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-        outline: none;
-        margin-bottom: 0.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .promo-btn:hover {
-        background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
-        transform: translateY(-2px) scale(1.04);
-        box-shadow: 0 8px 24px rgba(123,80,111,0.18);
-      }
-      .promo-discount {
-        color: var(--amaranth-pink);
-        font-size: 1.1em;
-        font-weight: 700;
-        margin-left: 0.3em;
-      }
-      @media (max-width: 900px) {
-        .hero-section { flex-direction: column; min-height: 340px; }
-        .hero-content { left: 4vw; max-width: 320px; }
-        .hero-img { right: 2vw; }
-        .hero-img img { width: 160px; height: 220px; }
-        .arrivals-title { font-size: 1.4rem; }
-        .arrivals-grid { gap: 1em; }
-        .promo-row { flex-direction: column; gap: 1em; }
-        .promo-banner.large { flex-direction: column; align-items: flex-start; }
-        .promo-banner.large img { width: 100%; height: 160px; margin-top: 1em; }
-      }
-      @media (max-width: 600px) {
-        .navbar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 1rem; }
-        .hero-content { left: 2vw; max-width: 220px; }
-        .hero-img { right: 0vw; gap: 1vw; }
-        .hero-img img { width: 90px; height: 120px; }
-        .arrivals-section { padding: 2em 0 1em 0; }
-        .arrivals-title { font-size: 1.1rem; }
-        .arrivals-tabs { gap: 0.5em; }
-        .arrivals-grid { grid-template-columns: 1fr; gap: 0.7em; }
-        .promo-section { padding: 1em 0 1em 0; gap: 1em; }
-        .hero-ctas {
-          flex-direction: column;
-          gap: 0.5em;
-          align-items: stretch;
-        }
-      }
-    </style>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Hero slider logic
-        const slides = document.querySelectorAll('.hero-slide');
-        const prevBtn = document.getElementById('heroPrev');
-        const nextBtn = document.getElementById('heroNext');
-        let currentSlide = 0;
-        function showSlide(idx) {
-          slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === idx);
-          });
-        }
-        prevBtn.addEventListener('click', function() {
-          currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-          showSlide(currentSlide);
+      <div class="promo-banner">
+        <div class="promo-content">
+          <h3>Trendsetting Bags for Her <span class="promo-discount">50%</span></h3>
+          <button class="promo-btn">Shop Now</button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80" alt="Bags">
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hero slider logic
+      const slides = document.querySelectorAll('.hero-slide');
+      const prevBtn = document.getElementById('heroPrev');
+      const nextBtn = document.getElementById('heroNext');
+      let currentSlide = 0;
+
+      function showSlide(idx) {
+        slides.forEach((slide, i) => {
+          slide.classList.remove('active');
+          if (i === idx) {
+            slide.classList.add('active');
+          }
         });
-        nextBtn.addEventListener('click', function() {
-          currentSlide = (currentSlide + 1) % slides.length;
-          showSlide(currentSlide);
-        });
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
         showSlide(currentSlide);
+      }
+
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      prevBtn.addEventListener('click', prevSlide);
+      nextBtn.addEventListener('click', nextSlide);
+
+      // Auto-advance slides every 5 seconds
+      setInterval(nextSlide, 5000);
+
+      // Tab functionality
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
       });
-    </script>
-  </body>
-</html> 
+
+      // Initialize first slide
+      showSlide(currentSlide);
+    });
+  </script>
+</body>
+</html>
