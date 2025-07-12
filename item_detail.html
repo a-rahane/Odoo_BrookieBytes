@@ -259,7 +259,6 @@
     </div>
   </div>
   <script type="module">
-    // Import Firebase modules
     import { auth, db } from './firebase.js';
     import { 
         signOut,
@@ -553,13 +552,9 @@
                     buyButton.style.opacity = '1';
                     
                     // Add click handler for buying
-                    buyButton.onclick = async () => {
+                    buyButton.onclick = () => {
                         const itemId = getItemId(); // Get the item ID from URL
-                        const success = await buyItemWithPoints(itemId, product.uid, currentUser.uid);
-                        if (success) {
-                            // Refresh the page to show updated status
-                            window.location.reload();
-                        }
+                        window.location.href = `checkout.html?id=${itemId}`;
                     };
                 }
             }

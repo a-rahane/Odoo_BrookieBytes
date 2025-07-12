@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - ReWear</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --timberwolf: #dbcdc6;
+      --champagne-pink: #ead7d1;
+      --amaranth-pink: #dd99bb;
+      --chinese-violet: #7b506f;
+      --dark-purple: #1f1a38;
+      --white-pink: #feebf5;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; font-family: 'Inter', sans-serif; 
+      background: var(--champagne-pink); color: var(--dark-purple); 
+    }
+    body {
+      background: repeating-linear-gradient(90deg, rgba(123,80,111,0.07) 0px, rgba(123,80,111,0.07) 2px, transparent 2px, transparent 32px),
+        linear-gradient(135deg, var(--champagne-pink) 0%, var(--timberwolf) 100%);
+      min-height: 100vh;
+      animation: subtleShift 20s ease-in-out infinite;
+    }
+    @keyframes subtleShift {
+      0%, 100% { background-position: 0px 0px, 0% 0%; }
+      50% { background-position: 10px 10px, 100% 100%; }
+    }
+    
+    .navbar {
+      width: 100%;
+      background: var(--white-pink);
+      box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      animation: fadeInUp 1s;
+    }
+    .navbar .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--chinese-violet);
+      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: filter 0.3s;
+    }
+    .navbar .nav-links {
+      display: flex;
+      gap: 2.2rem;
+    }
+    .navbar .nav-links a {
+      color: var(--chinese-violet);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.08rem;
+      position: relative;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      transition: width 0.3s;
+    }
+    .navbar .nav-links a:hover {
+      color: var(--amaranth-pink);
+      transform: translateY(-2px);
+    }
+    .navbar .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .checkout-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    .checkout-main {
+      background: var(--white-pink);
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: 0 4px 32px rgba(31,26,56,0.10);
+    }
+
+    .checkout-sidebar {
+      background: var(--white-pink);
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: 0 4px 32px rgba(31,26,56,0.10);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .item-summary {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--champagne-pink);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--timberwolf);
+    }
+
+    .item-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--timberwolf);
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin-bottom: 0.3rem;
+    }
+
+    .item-price {
+      font-size: 1rem;
+      color: var(--amaranth-pink);
+      font-weight: 600;
+    }
+
+    .points-section {
+      background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .points-display {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .points-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .coupon-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .coupon-input {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .coupon-input input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 2px solid var(--timberwolf);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--white-pink);
+      color: var(--dark-purple);
+    }
+
+    .coupon-input input:focus {
+      outline: none;
+      border-color: var(--amaranth-pink);
+    }
+
+    .apply-btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--amaranth-pink);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .apply-btn:hover {
+      background: var(--chinese-violet);
+    }
+
+    .coupon-message {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .coupon-success {
+      background: rgba(81, 207, 102, 0.1);
+      color: #51cf66;
+      border: 1px solid #51cf66;
+    }
+
+    .coupon-error {
+      background: rgba(255, 107, 107, 0.1);
+      color: #ff6b6b;
+      border: 1px solid #ff6b6b;
+    }
+
+    .payment-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .payment-methods {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 2px solid var(--timberwolf);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: var(--white-pink);
+    }
+
+    .payment-method:hover {
+      border-color: var(--amaranth-pink);
+      background: var(--champagne-pink);
+    }
+
+    .payment-method.selected {
+      border-color: var(--amaranth-pink);
+      background: var(--champagne-pink);
+    }
+
+    .payment-method input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--amaranth-pink);
+    }
+
+    .payment-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--amaranth-pink);
+      color: white;
+      border-radius: 8px;
+      font-size: 1.2rem;
+    }
+
+    .payment-details {
+      flex: 1;
+    }
+
+    .payment-name {
+      font-weight: 600;
+      color: var(--chinese-violet);
+      margin-bottom: 0.2rem;
+    }
+
+    .payment-description {
+      font-size: 0.9rem;
+      color: var(--dark-purple);
+      opacity: 0.8;
+    }
+
+    .order-summary {
+      background: var(--champagne-pink);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
+    }
+
+    .summary-row.total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--chinese-violet);
+      border-top: 2px solid var(--timberwolf);
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123,80,111,0.18);
+    }
+
+    .checkout-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .checkout-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .checkout-btn:hover::before {
+      left: 100%;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .success-message {
+      background: rgba(81, 207, 102, 0.1);
+      color: #51cf66;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #51cf66;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .error-message {
+      background: rgba(255, 107, 107, 0.1);
+      color: #ff6b6b;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ff6b6b;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .checkout-sidebar {
+        position: static;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">ReWear</div>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="#">Browse</a>
+      <a href="add_item.html">Add Item</a>
+      <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
+      <a href="#" onclick="logout()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </nav>
+
+  <div class="checkout-container">
+    <div class="checkout-main">
+      <h1 class="section-title">
+        <i class="fas fa-shopping-cart"></i>
+        Checkout
+      </h1>
+
+      <!-- Item Summary -->
+      <div class="item-summary" id="itemSummary">
+        <img src="" alt="Item" class="item-image" id="itemImage">
+        <div class="item-details">
+          <div class="item-title" id="itemTitle">Loading...</div>
+          <div class="item-price" id="itemPrice">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Points Section -->
+      <div class="points-section">
+        <div class="points-display" id="userPoints">Loading...</div>
+        <div class="points-label">Your Available Points</div>
+      </div>
+
+      <!-- Coupon Section -->
+      <div class="coupon-section">
+        <h2 class="section-title">
+          <i class="fas fa-tag"></i>
+          Apply Coupon Code
+        </h2>
+        <div class="coupon-input">
+          <input type="text" id="couponInput" placeholder="Enter coupon code..." maxlength="10">
+          <button class="apply-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div id="couponMessage"></div>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="payment-section">
+        <h2 class="section-title">
+          <i class="fas fa-credit-card"></i>
+          Payment Method
+        </h2>
+        <div class="payment-methods">
+          <div class="payment-method" onclick="selectPayment('points')">
+            <input type="radio" name="payment" value="points" checked>
+            <div class="payment-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="payment-details">
+              <div class="payment-name">Pay with Points</div>
+              <div class="payment-description">Use your ReWear points to complete the purchase</div>
+            </div>
+          </div>
+          <div class="payment-method" onclick="selectPayment('card')">
+            <input type="radio" name="payment" value="card">
+            <div class="payment-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="payment-details">
+              <div class="payment-name">Credit/Debit Card</div>
+              <div class="payment-description">Pay with Visa, Mastercard, or other cards</div>
+            </div>
+          </div>
+          <div class="payment-method" onclick="selectPayment('upi')">
+            <input type="radio" name="payment" value="upi">
+            <div class="payment-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="payment-details">
+              <div class="payment-name">UPI Payment</div>
+              <div class="payment-description">Pay using UPI apps like Google Pay, PhonePe</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-sidebar">
+      <h2 class="section-title">
+        <i class="fas fa-receipt"></i>
+        Order Summary
+      </h2>
+
+      <div class="order-summary">
+        <div class="summary-row">
+          <span>Item Price:</span>
+          <span id="summaryPrice">₹0</span>
+        </div>
+        <div class="summary-row">
+          <span>Coupon Discount:</span>
+          <span id="summaryDiscount">-₹0</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span id="summaryTotal">₹0</span>
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="checkoutBtn" onclick="processCheckout()">
+        <span id="checkoutBtnText">Complete Purchase</span>
+      </button>
+
+      <div id="checkoutMessage"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './firebase.js';
+    import { 
+        signOut,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+        doc,
+        getDoc,
+        updateDoc,
+        increment,
+        setDoc,
+        deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Global variables
+    let currentUser = null;
+    let itemData = null;
+    let userPoints = 0;
+    let selectedPayment = 'points';
+    let appliedCoupon = null;
+    let couponDiscount = 0;
+
+    // Available coupon codes
+    const couponCodes = {
+        'WELCOME10': { discount: 10, type: 'percentage' },
+        'SAVE20': { discount: 20, type: 'percentage' },
+        'FLAT50': { discount: 50, type: 'fixed' },
+        'REWEAR25': { discount: 25, type: 'percentage' }
+    };
+
+    // Initialize checkout
+    document.addEventListener('DOMContentLoaded', function() {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            currentUser = user;
+            initializeCheckout();
+        });
+    });
+
+    async function initializeCheckout() {
+        try {
+            // Get item ID from URL
+            const params = new URLSearchParams(window.location.search);
+            const itemId = params.get('id');
+            
+            if (!itemId) {
+                showError('No item ID provided');
+                return;
+            }
+
+            // Load item data
+            await loadItemData(itemId);
+            
+            // Load user points
+            await loadUserPoints();
+            
+            // Update order summary
+            updateOrderSummary();
+            
+        } catch (error) {
+            console.error('Error initializing checkout:', error);
+            showError('Error loading checkout data');
+        }
+    }
+
+    async function loadItemData(itemId) {
+        try {
+            const docRef = doc(db, 'items', itemId);
+            const docSnap = await getDoc(docRef);
+            
+            if (!docSnap.exists()) {
+                showError('Item not found');
+                return;
+            }
+            
+            itemData = { id: itemId, ...docSnap.data() };
+            
+            // Update item display
+            document.getElementById('itemTitle').textContent = itemData.title || 'Untitled Item';
+            document.getElementById('itemPrice').textContent = `₹${itemData.price || 0}`;
+            
+            if (itemData.imageUrl) {
+                document.getElementById('itemImage').src = itemData.imageUrl;
+            }
+            
+        } catch (error) {
+            console.error('Error loading item data:', error);
+            showError('Error loading item data');
+        }
+    }
+
+    async function loadUserPoints() {
+        try {
+            const userRef = doc(db, 'users', currentUser.uid);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                userPoints = userDoc.data().points || 0;
+            } else {
+                userPoints = 0;
+            }
+            
+            document.getElementById('userPoints').textContent = userPoints;
+            
+        } catch (error) {
+            console.error('Error loading user points:', error);
+            userPoints = 0;
+        }
+    }
+
+    function selectPayment(method) {
+        selectedPayment = method;
+        
+        // Update radio buttons
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.checked = radio.value === method;
+        });
+        
+        // Update payment method styling
+        document.querySelectorAll('.payment-method').forEach(methodEl => {
+            methodEl.classList.remove('selected');
+        });
+        
+        event.currentTarget.classList.add('selected');
+        
+        updateOrderSummary();
+    }
+
+    function applyCoupon() {
+        const couponCode = document.getElementById('couponInput').value.trim().toUpperCase();
+        const messageEl = document.getElementById('couponMessage');
+        
+        if (!couponCode) {
+            showCouponMessage('Please enter a coupon code', 'error');
+            return;
+        }
+        
+        if (couponCodes[couponCode]) {
+            const coupon = couponCodes[couponCode];
+            appliedCoupon = couponCode;
+            
+            if (coupon.type === 'percentage') {
+                couponDiscount = Math.round((itemData.price || 0) * (coupon.discount / 100));
+            } else {
+                couponDiscount = coupon.discount;
+            }
+            
+            showCouponMessage(`Coupon applied! You saved ₹${couponDiscount}`, 'success');
+            updateOrderSummary();
+        } else {
+            showCouponMessage('Invalid coupon code', 'error');
+            appliedCoupon = null;
+            couponDiscount = 0;
+            updateOrderSummary();
+        }
+    }
+
+    function showCouponMessage(message, type) {
+        const messageEl = document.getElementById('couponMessage');
+        messageEl.textContent = message;
+        messageEl.className = `coupon-message coupon-${type}`;
+    }
+
+    function updateOrderSummary() {
+        if (!itemData) return;
+        
+        const itemPrice = itemData.price || 0;
+        const total = Math.max(0, itemPrice - couponDiscount);
+        
+        document.getElementById('summaryPrice').textContent = `₹${itemPrice}`;
+        document.getElementById('summaryDiscount').textContent = `-₹${couponDiscount}`;
+        document.getElementById('summaryTotal').textContent = `₹${total}`;
+        
+        // Update checkout button
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutBtnText = document.getElementById('checkoutBtnText');
+        
+        if (selectedPayment === 'points') {
+            if (userPoints >= total) {
+                checkoutBtn.disabled = false;
+                checkoutBtnText.textContent = `Pay with Points (${total})`;
+            } else {
+                checkoutBtn.disabled = true;
+                checkoutBtnText.textContent = `Insufficient Points (Need ${total})`;
+            }
+        } else {
+            checkoutBtn.disabled = false;
+            checkoutBtnText.textContent = `Pay ₹${total}`;
+        }
+    }
+
+    async function processCheckout() {
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutBtnText = document.getElementById('checkoutBtnText');
+        
+        // Disable button and show loading
+        checkoutBtn.disabled = true;
+        checkoutBtnText.innerHTML = '<span class="loading-spinner"></span> Processing...';
+        
+        try {
+            if (selectedPayment === 'points') {
+                await processPointsPayment();
+            } else {
+                await processCardPayment();
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            showCheckoutMessage('Payment failed. Please try again.', 'error');
+        } finally {
+            // Re-enable button
+            checkoutBtn.disabled = false;
+            checkoutBtnText.textContent = 'Complete Purchase';
+        }
+    }
+
+    async function processPointsPayment() {
+        const total = (itemData.price || 0) - couponDiscount;
+        
+        if (userPoints < total) {
+            showCheckoutMessage('Insufficient points for this purchase.', 'error');
+            return;
+        }
+        
+        // Deduct points from user
+        const userRef = doc(db, 'users', currentUser.uid);
+        await updateDoc(userRef, {
+            points: increment(-total)
+        });
+        
+        // Award points to seller
+        const sellerRef = doc(db, 'users', itemData.uid);
+        const sellerDoc = await getDoc(sellerRef);
+        if (sellerDoc.exists()) {
+            await updateDoc(sellerRef, {
+                points: increment(20)
+            });
+        } else {
+            await setDoc(sellerRef, {
+                uid: itemData.uid,
+                points: 20,
+                createdAt: new Date()
+            });
+        }
+        
+        // Delete the item from the items collection
+        const itemRef = doc(db, 'items', itemData.id);
+        await deleteDoc(itemRef);
+        
+        showCheckoutMessage('Payment successful! Item purchased with points.', 'success');
+        
+        // Redirect to success page after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'landing.html';
+        }, 2000);
+    }
+
+    async function processCardPayment() {
+        // Simulate payment processing
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Delete the item from the items collection
+        const itemRef = doc(db, 'items', itemData.id);
+        await deleteDoc(itemRef);
+        
+        showCheckoutMessage('Payment successful! Item purchased.', 'success');
+        
+        // Redirect to success page after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'landing.html';
+        }, 2000);
+    }
+
+    function showCheckoutMessage(message, type) {
+        const messageEl = document.getElementById('checkoutMessage');
+        messageEl.textContent = message;
+        messageEl.className = `${type}-message`;
+    }
+
+    function showError(message) {
+        const messageEl = document.getElementById('checkoutMessage');
+        messageEl.textContent = message;
+        messageEl.className = 'error-message';
+    }
+
+    // Logout function
+    async function logout() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('Error logging out. Please try again.');
+        }
+    }
+
+    // Make logout function globally available
+    window.logout = logout;
+    window.applyCoupon = applyCoupon;
+    window.selectPayment = selectPayment;
+    window.processCheckout = processCheckout;
+  </script>
+</body>
+</html> 
