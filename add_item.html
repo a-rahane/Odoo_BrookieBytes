@@ -387,9 +387,14 @@
         <div class="nav-links">
             <a href="landing.html">Home</a>
             <a href="#">Browse</a>
+<<<<<<< HEAD
             <a href="Index.html">Login</a>
             <a href="Signup.html">Signup</a>
+=======
+            <a href="add_item.html">Add Item</a>
+>>>>>>> 541992ab7efa141ef59136f3ab5513bdc47b7a69
             <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" onclick="logout()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </nav>
     <div class="container">
@@ -408,7 +413,22 @@
                         <label for="product-title">Product Title</label>
                         <input id="product-title" type="text" placeholder="Enter product title..." required />
                     </div>
+<<<<<<< HEAD
                     <div class="desc-box">
+=======
+                    <div class="desc-box" style="margin-top:14px;">
+                        <label for="product-category">Category</label>
+                        <select id="product-category" required style="width:100%;padding:10px 8px;margin-bottom:0;border-radius:8px;border:none;font-size:1.08rem;background:rgba(234,215,209,0.13);color:var(--timberwolf);font-family:'Inter',sans-serif;">
+                            <option value="">Select category...</option>
+                            <option value="women">Women</option>
+                            <option value="men">Men</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="bags">Bags</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                    </div>
+                    <div class="desc-box" style="margin-top:14px;">
+>>>>>>> 541992ab7efa141ef59136f3ab5513bdc47b7a69
                         <label for="product-price">Price (INR)</label>
                         <input id="product-price" type="number" min="0" step="0.01" placeholder="Enter price in INR..." required />
                     </div>
@@ -434,7 +454,7 @@
     </div>
     <script type="module">
     import { auth, db, storage } from './firebase.js';
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
     document.addEventListener('DOMContentLoaded', function() {
@@ -447,22 +467,21 @@
         const errorMessage = document.getElementById('error-message');
         const listingCards = document.getElementById('listing-cards');
 
-        let currentUser = { uid: 'test-user' }; // TEMP: fake user for testing
+        let currentUser = null;
         let status = 'available';
         let listings = [];
         let carouselIndex = 0;
         const CARDS_VISIBLE = 3;
 
-        // Auth check (DISABLED FOR TESTING)
-        // onAuthStateChanged(auth, user => {
-        //     if (!user) {
-        //         window.location.href = 'index.html'; // redirect to login
-        //     } else {
-        //         currentUser = user;
-        //         fetchListings();
-        //     }
-        // });
-        fetchListings();
+        // Auth check
+        onAuthStateChanged(auth, user => {
+            if (!user) {
+                window.location.href = 'index.html'; // redirect to login
+            } else {
+                currentUser = user;
+                fetchListings();
+            }
+        });
 
         // Toggle status
         if (toggleStatusBtn && statusInput) {
@@ -507,9 +526,15 @@
                 return;
             }
             const title = document.getElementById('product-title').value.trim();
+            const category = document.getElementById('product-category').value;
             const desc = descInput.value.trim();
             if (!title) {
                 errorMessage.textContent = 'Please enter a product title.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            if (!category) {
+                errorMessage.textContent = 'Please select a category.';
                 errorMessage.classList.remove('hidden');
                 return;
             }
@@ -532,14 +557,20 @@
                 await addDoc(collection(db, 'items'), {
                     uid: currentUser.uid,
                     title: title,
+                    category: category,
                     description: desc,
                     status: status,
+                    imageUrl: imageUrls[0], // Use first image as main image
                     images: imageUrls,
+                    ownerName: currentUser.displayName || currentUser.email,
                     createdAt: new Date()
                 });
                 form.reset();
                 imagePreview.innerHTML = '';
-                fetchListings();
+                
+                // Show success message and redirect
+                alert('Item added successfully! Redirecting to home page...');
+                window.location.href = 'landing.html';
             } catch (err) {
                 errorMessage.textContent = 'Error uploading item. Please try again.';
                 errorMessage.classList.remove('hidden');
@@ -608,6 +639,21 @@
                 showCarousel(carouselIndex);
             }
         };
+
+        // Logout function
+        async function logout() {
+            try {
+                await signOut(auth);
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Error logging out. Please try again.');
+            }
+        }
+
+        // Make logout function globally available
+        window.logout = logout;
     });
     </script>
 </body>

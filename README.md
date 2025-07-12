@@ -1,215 +1,160 @@
-# ReWear Authentication System
+# ReWear - Sustainable Fashion Exchange Platform
 
-A modern, secure user authentication system built with vanilla JavaScript, featuring email/password authentication and social media login options.
+A modern web application for swapping and exchanging fashion items, built with HTML, CSS, JavaScript, and Firebase.
 
-## 🌟 Features
+## 🚀 Complete User Flow
 
-### 🔐 Authentication Methods
-- **Email/Password Authentication**: Secure login and signup with email validation
-- **Social Media Login**: One-click authentication with Google, Facebook, GitHub, and Twitter
-- **Password Security**: Strong password requirements with real-time strength indicator
-- **Session Management**: Automatic session tracking with inactivity timeout
+### 1. Landing Page (`landing.html`)
+- **Purpose**: Main homepage displaying all available items
+- **Features**:
+  - Hero section with rotating slides
+  - Dynamic items grid loaded from Firebase
+  - Category filtering (All, Women, Men, Shoes, Bags, Accessories)
+  - Responsive design with loading states
+  - Authentication-aware navigation
 
-### 🎨 User Interface
-- **Modern Design**: Beautiful gradient backgrounds and smooth animations
-- **Responsive Layout**: Works perfectly on desktop, tablet, and mobile devices
-- **Real-time Validation**: Instant feedback on form inputs
-- **Password Visibility Toggle**: Show/hide password functionality
-- **Success/Error Messages**: Clear user feedback for all actions
+### 2. Authentication Flow
+- **Login** (`index.html`): Email/password and social login options
+- **Signup** (`Signup.html`): User registration with profile creation
+- **Auto-redirect**: Authenticated users are automatically redirected to landing page
 
-### 🔒 Security Features
-- **Password Strength Checker**: Real-time password strength validation
-- **Form Validation**: Comprehensive client-side validation
-- **Session Management**: Secure session handling with localStorage
-- **Auto-logout**: Automatic logout after 30 minutes of inactivity
-- **Data Persistence**: User data stored securely in browser localStorage
+### 3. User Dashboard (`dashboard.html`)
+- **Purpose**: User's personal space showing their listings and swaps
+- **Features**:
+  - Profile section with user info
+  - Dynamic display of user's items from Firebase
+  - Swap management (ongoing/completed)
+  - Empty state with call-to-action
+
+### 4. Add Item (`add_item.html`)
+- **Purpose**: Form for users to list new items
+- **Features**:
+  - Image upload (up to 2 images)
+  - Category selection
+  - Title, description, and price fields
+  - Firebase Storage for images
+  - Firestore for item data
+  - Auto-redirect to landing page after submission
+
+### 5. Item Details (`item_detail.html`)
+- **Purpose**: Detailed view of individual items
+- **Features**:
+  - Dynamic loading from Firebase
+  - Image gallery with navigation
+  - Item information display
+  - Action buttons for swapping
+
+## 🔧 Firebase Integration
+
+### Authentication
+- Email/password authentication
+- Social login (Google, Facebook, GitHub, Twitter)
+- User session management
+- Protected routes
+
+### Firestore Database
+- **Collections**:
+  - `items`: Stores all item listings
+  - `users`: Stores user profile information
+
+### Firebase Storage
+- Image upload and storage
+- Secure file access
+- Automatic URL generation
 
 ## 📁 File Structure
 
 ```
 Odoo_BrookieBytes/
-├── index.html          # Main login page with toggle to signup
-├── Signup.html         # Dedicated signup page
-├── dashboard.html      # User dashboard after successful login
-├── README.md          # This documentation file
-└── Problem Statements_ Odoo Hackathon '25.pdf
+├── index.html          # Login page
+├── Signup.html         # Registration page
+├── landing.html        # Main homepage
+├── dashboard.html      # User dashboard
+├── add_item.html       # Add new item form
+├── item_detail.html    # Item details page
+├── firebase.js         # Firebase configuration
+└── README.md          # This file
 ```
 
-## 🎨 Color Palette
+## 🎨 Design System
 
-| Color        | Hex Code  | Use                             |
-| ------------ | --------- | ------------------------------- |
-| Soft Beige   | `#D9C9C3` | Backgrounds                     |
-| Neutral Pink | `#D8A2BD` | CTA buttons, highlights         |
-| Plum         | `#6D4C6E` | Icons, secondary buttons, tags  |
-| Charcoal     | `#24221E` | Text, navbar, footer            |
-| Taupe/Khaki  | `#B8A690` | Cards, borders, labels          |
-| Off-white    | `#F3F0EC` | Backgrounds, modals, containers |
+### Color Palette
+- **Timberwolf**: `#dbcdc6`
+- **Champagne Pink**: `#ead7d1`
+- **Amaranth Pink**: `#dd99bb`
+- **Chinese Violet**: `#7b506f`
+- **Dark Purple**: `#1f1a38`
+- **White Pink**: `#feebf5`
+
+### Typography
+- **Font Family**: Inter (Google Fonts)
+- **Weights**: 300, 400, 500, 600, 700
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- No additional dependencies required - built with vanilla JavaScript
+1. **Setup Firebase**:
+   - Create a Firebase project
+   - Enable Authentication (Email/Password + Social providers)
+   - Enable Firestore Database
+   - Enable Firebase Storage
+   - Update `firebase.js` with your configuration
 
-### Installation
-1. Clone or download the project files
-2. Open `index.html` in your web browser
-3. Start using the authentication system!
+2. **Run the Application**:
+   - Serve the files using a local server
+   - Open `landing.html` in your browser
 
-## 📖 Usage Guide
+3. **Test the Flow**:
+   - Sign up for a new account
+   - Add some items
+   - Browse items on the landing page
+   - View your dashboard
 
-### For Users
+## 🔒 Security Features
 
-#### Creating an Account
-1. Navigate to the signup page (`Signup.html` or click "Sign up" on login page)
-2. Fill in your details:
-   - Full Name (required)
-   - Email Address (required)
-   - Phone Number (optional)
-   - Password (minimum 8 characters)
-   - Confirm Password
-3. Accept Terms of Service and Privacy Policy
-4. Optionally subscribe to newsletters
-5. Click "Create Account" or use social media login
+- Authentication required for protected pages
+- User-specific data isolation
+- Secure image upload with validation
+- Input sanitization and validation
 
-#### Logging In
-1. Open `index.html` (main login page)
-2. Enter your email and password
-3. Click "Sign In" or use social media login
-4. You'll be redirected to the dashboard upon successful authentication
+## 📱 Responsive Design
 
-#### Dashboard Features
-- View your profile information
-- See authentication statistics
-- Monitor session time
-- Logout functionality
-- Auto-logout after 30 minutes of inactivity
+- Mobile-first approach
+- Responsive grid layouts
+- Touch-friendly interactions
+- Optimized for all screen sizes
 
-### For Developers
+## 🛠️ Technologies Used
 
-#### Key Features Implementation
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Backend**: Firebase (Authentication, Firestore, Storage)
+- **UI Framework**: Custom CSS with modern design patterns
+- **Icons**: Font Awesome 6.0
+- **Fonts**: Google Fonts (Inter)
 
-**Password Strength Checker:**
-```javascript
-function checkPasswordStrength(password) {
-    let strength = 0;
-    // Checks for length, lowercase, uppercase, numbers, special characters
-    return { strength, feedback };
-}
-```
+## 🔄 Data Flow
 
-**Form Validation:**
-```javascript
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-```
+1. **User Registration** → Firebase Auth → User Profile Created
+2. **Add Item** → Firebase Storage (images) → Firestore (item data)
+3. **Landing Page** → Firestore Query → Display Items
+4. **Dashboard** → Firestore Query (user-specific) → Display User Items
+5. **Item Details** → Firestore Query (by ID) → Display Item Details
 
-**Session Management:**
-```javascript
-// Store user session
-localStorage.setItem('currentUser', JSON.stringify(user));
+## 🎯 Key Features
 
-// Check authentication
-const user = JSON.parse(localStorage.getItem('currentUser'));
-```
+- ✅ Complete user authentication flow
+- ✅ Real-time data from Firebase
+- ✅ Image upload and storage
+- ✅ Category-based filtering
+- ✅ Responsive design
+- ✅ User-specific dashboards
+- ✅ Item management system
+- ✅ Modern UI/UX design
 
-## 🎯 Features in Detail
+## 🚧 Future Enhancements
 
-### Email/Password Authentication
-- **Real-time validation**: Email format and password strength checked as you type
-- **Error handling**: Clear error messages for invalid inputs
-- **Success feedback**: Confirmation messages for successful actions
-- **Password requirements**: Minimum 8 characters with strength indicator
-
-### Social Media Authentication
-- **Multiple providers**: Google, Facebook, GitHub, Twitter
-- **Simulated integration**: Ready for real OAuth implementation
-- **Consistent UX**: Same user experience across all providers
-- **Profile creation**: Automatic user profile creation from social login
-
-### Security Features
-- **Password visibility toggle**: Eye icon to show/hide passwords
-- **Session timeout**: Automatic logout after 30 minutes of inactivity
-- **Data validation**: Comprehensive client-side validation
-- **Secure storage**: User data stored in browser localStorage
-
-### User Experience
-- **Responsive design**: Works on all device sizes
-- **Smooth animations**: Hover effects and transitions
-- **Accessibility**: Proper form labels and keyboard navigation
-- **Modern UI**: Clean, professional design with gradients
-
-## 🔧 Customization
-
-### Styling
-The system uses CSS custom properties and can be easily customized:
-- Color scheme: Modify gradient colors in CSS
-- Typography: Change font family and sizes
-- Layout: Adjust container widths and spacing
-
-### Functionality
-- Add new social login providers
-- Implement server-side validation
-- Add email verification
-- Integrate with backend APIs
-
-## 📱 Browser Support
-- Chrome 60+
-- Firefox 55+
-- Safari 12+
-- Edge 79+
-
-## 🔒 Security Considerations
-
-### Current Implementation
-- Client-side validation (for demo purposes)
-- localStorage for data persistence
-- Simulated social authentication
-
-### Production Recommendations
-- Implement server-side validation
-- Use secure authentication APIs (Firebase Auth, Auth0, etc.)
-- Add HTTPS enforcement
-- Implement proper password hashing
-- Add rate limiting for login attempts
-- Use secure session management
-
-## 🚀 Future Enhancements
-
-### Planned Features
-- [ ] Email verification system
-- [ ] Password reset functionality
-- [ ] Two-factor authentication
-- [ ] User profile management
-- [ ] Activity logging
-- [ ] Admin dashboard
-- [ ] API integration
-- [ ] Database backend
-
-### Technical Improvements
-- [ ] Server-side rendering
-- [ ] Progressive Web App (PWA) features
-- [ ] Offline functionality
-- [ ] Real-time notifications
-- [ ] Advanced analytics
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is created for the Odoo Hackathon '25. Feel free to use and modify for your own projects.
-
-## 📞 Support
-
-For questions or support, please refer to the project documentation or create an issue in the repository.
-
----
+- Real-time chat for swap negotiations
+- Push notifications
+- Advanced search and filtering
+- User ratings and reviews
+- Payment integration
+- Mobile app development

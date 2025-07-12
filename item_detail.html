@@ -205,11 +205,10 @@
     <div class="logo">ReWear</div>
     <div class="nav-links">
       <a href="landing.html">Home</a>
-      <a href="#">Shop</a>
-      <a href="#">Pages</a>
-      <a href="#">Blog</a>
-      <a href="#">Contact Us</a>
-      <a href="index.html"><i class="fas fa-user"></i></a>
+      <a href="#">Browse</a>
+      <a href="add_item.html">Add Item</a>
+      <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
+      <a href="#" onclick="logout()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
   </nav>
   <div class="item-detail-container">
@@ -229,46 +228,17 @@
       </div>
     </div>
   </div>
-  <script>
-    // Static data for demonstration
-    const products = {
-      1: {
-        name: 'Blue Denim Jacket',
-        desc: 'A classic blue denim jacket, perfect for layering in any season. Size M. Gently used, no visible wear.',
-        images: [
-          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
-          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80'
-        ]
-      },
-      2: {
-        name: 'Classic White Tee',
-        desc: 'Soft, breathable cotton white t-shirt. Size L. Barely worn, no stains or tears.',
-        images: [
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80',
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=200&q=80',
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=100&q=80'
-        ]
-      },
-      3: {
-        name: 'Patterned Skirt',
-        desc: 'Colorful patterned skirt, knee-length, size S. Light and flowy, perfect for summer.',
-        images: [
-          'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-          'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=200&q=80',
-          'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=100&q=80'
-        ]
-      },
-      4: {
-        name: 'Cozy Knit Sweater',
-        desc: 'Warm, cozy knit sweater in cream color. Size M. Slightly oversized fit.',
-        images: [
-          'https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80',
-          'https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=200&q=80',
-          'https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=100&q=80'
-        ]
-      }
-    };
+  <script type="module">
+    // Import Firebase modules
+    import { auth, db } from './firebase.js';
+    import { 
+        signOut,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+        doc,
+        getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // Get item ID from URL
     function getItemId() {
@@ -279,19 +249,59 @@
     let currentImgIdx = 0;
     let currentImages = [];
 
-    function showProductDetails(id) {
-      const product = products[id];
-      if (!product) {
+    // Load product details from Firebase
+    async function loadProductDetails(id) {
+        try {
+            console.log('Item ID from URL:', id); // Debug log
+            const docRef = doc(db, 'items', id);
+            const docSnap = await getDoc(docRef);
+            console.log('Document exists:', docSnap.exists()); // Debug log
+            if (docSnap.exists()) {
+                const product = docSnap.data();
+                console.log('Document data:', product); // Debug log
+                showProductDetails(product);
+            } else {
+                showProductNotFound();
+            }
+        } catch (error) {
+            console.error('Error loading product:', error);
+            showProductNotFound();
+        }
+    }
+
+    function showProductDetails(product) {
+        document.getElementById('productTitle').textContent = product.title || 'Untitled Item';
+        document.getElementById('productDesc').textContent = product.description || 'No description available.';
+        
+        // Set images
+        if (product.images && product.images.length > 0) {
+            currentImages = product.images;
+        } else if (product.imageUrl) {
+            currentImages = [product.imageUrl];
+        } else {
+            currentImages = ['https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80'];
+        }
+        
+        currentImgIdx = 0;
+        document.getElementById('productMainImg').src = currentImages[currentImgIdx];
+        
+        // Show/hide navigation arrows based on number of images
+        const arrowLeft = document.getElementById('arrowLeft');
+        const arrowRight = document.getElementById('arrowRight');
+        
+        if (currentImages.length <= 1) {
+            arrowLeft.style.display = 'none';
+            arrowRight.style.display = 'none';
+        } else {
+            arrowLeft.style.display = 'flex';
+            arrowRight.style.display = 'flex';
+        }
+    }
+
+    function showProductNotFound() {
         document.getElementById('productTitle').textContent = 'Product Not Found';
-        document.getElementById('productDesc').textContent = '';
-        document.getElementById('productMainImg').src = '';
-        return;
-      }
-      document.getElementById('productTitle').textContent = product.name;
-      document.getElementById('productDesc').textContent = product.desc;
-      currentImages = product.images;
-      currentImgIdx = 0;
-      document.getElementById('productMainImg').src = currentImages[currentImgIdx];
+        document.getElementById('productDesc').textContent = 'The item you are looking for does not exist or has been removed.';
+        document.getElementById('productMainImg').src = 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80';
     }
 
     function showImage(idx) {
@@ -302,15 +312,35 @@
       document.getElementById('productMainImg').src = currentImages[currentImgIdx];
     }
 
+    // Logout function
+    async function logout() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('Error logging out. Please try again.');
+        }
+    }
+
+    // Make logout function globally available
+    window.logout = logout;
+
     document.addEventListener('DOMContentLoaded', function() {
-      const id = getItemId();
-      showProductDetails(id);
-      document.getElementById('arrowLeft').onclick = function() {
-        showImage(currentImgIdx - 1);
-      };
-      document.getElementById('arrowRight').onclick = function() {
-        showImage(currentImgIdx + 1);
-      };
+        const id = getItemId();
+        if (id) {
+            loadProductDetails(id);
+        } else {
+            showProductNotFound();
+        }
+        
+        document.getElementById('arrowLeft').onclick = function() {
+            showImage(currentImgIdx - 1);
+        };
+        document.getElementById('arrowRight').onclick = function() {
+            showImage(currentImgIdx + 1);
+        };
     });
   </script>
 </body>
