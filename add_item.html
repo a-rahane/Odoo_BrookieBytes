@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item - ReWear</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --timberwolf: #dbcdc6;
+            --champagne-pink: #ead7d1;
+            --amaranth-pink: #dd99bb;
+            --chinese-violet: #7b506f;
+            --dark-purple: #1f1a38;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--champagne-pink);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto 0 auto;
+            background: var(--dark-purple);
+            border-radius: 22px;
+            box-shadow: 0 4px 24px rgba(31,26,56,0.10);
+            padding: 36px 40px 32px 40px;
+            color: var(--timberwolf);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+        .header h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--champagne-pink);
+            margin: 0;
+        }
+        .main-content {
+            display: flex;
+            gap: 36px;
+            margin-bottom: 36px;
+        }
+        .image-upload {
+            flex: 1.1;
+            background: rgba(123,80,111,0.13);
+            border: 2px dashed var(--timberwolf);
+            border-radius: 16px;
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--timberwolf);
+            text-align: center;
+            margin-bottom: 0;
+            flex-direction: column;
+        }
+        .image-preview {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .image-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--amaranth-pink);
+        }
+        .details-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .desc-box {
+            background: rgba(234,215,209,0.10);
+            border: 1.5px solid var(--timberwolf);
+            border-radius: 14px;
+            padding: 18px 18px 12px 18px;
+            min-height: 120px;
+            color: var(--timberwolf);
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+        .desc-box label {
+            font-size: 1.08rem;
+            color: var(--champagne-pink);
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .desc-box textarea {
+            width: 100%;
+            min-height: 70px;
+            background: transparent;
+            border: none;
+            color: var(--timberwolf);
+            font-size: 1.08rem;
+            resize: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .swap-btn {
+            align-self: flex-end;
+            margin-top: 8px;
+            padding: 10px 32px;
+            background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+            color: var(--champagne-pink);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(123,80,111,0.10);
+            transition: background 0.2s, color 0.2s;
+        }
+        .swap-btn:hover {
+            background: linear-gradient(135deg, var(--chinese-violet), var(--amaranth-pink));
+            color: var(--timberwolf);
+        }
+        .previous-listings {
+            margin-top: 18px;
+        }
+        .previous-listings h2 {
+            font-size: 1.15rem;
+            color: var(--champagne-pink);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .listing-cards {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: 18px;
+            overflow: hidden;
+            position: relative;
+            min-height: 180px;
+            margin: 0 48px;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+            color: var(--champagne-pink);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(123,80,111,0.10);
+            transition: background 0.2s;
+        }
+        .carousel-arrow:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .carousel-arrow.left {
+            left: 0;
+        }
+        .carousel-arrow.right {
+            right: 0;
+        }
+        .listing-card {
+            flex: 0 0 240px;
+            min-width: 220px;
+            max-width: 260px;
+            min-height: 180px;
+            background: rgba(123,80,111,0.13);
+            border: 1.5px solid var(--timberwolf);
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            color: var(--timberwolf);
+            font-size: 1.05rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(31,26,56,0.10);
+            margin-bottom: 0;
+            padding: 0;
+        }
+        .listing-card .card-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+        .listing-card .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 18px 18px 14px 18px;
+            width: 100%;
+        }
+        .listing-card .desc {
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--timberwolf);
+            margin-bottom: 4px;
+            text-shadow: 0 2px 8px rgba(31,26,56,0.18);
+        }
+        .listing-card .stat {
+            font-size: 1rem;
+            color: var(--amaranth-pink);
+            font-weight: 500;
+        }
+        .hidden { display: none; }
+        .error-message { color: #e74c3c; font-size: 1rem; margin-top: 8px; }
+        .carousel-btn {
+            background: linear-gradient(135deg, var(--amaranth-pink), var(--chinese-violet));
+            color: var(--champagne-pink);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin: 6px 0;
+            transition: background 0.2s;
+        }
+        .carousel-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                gap: 18px;
+            }
+            .container {
+                padding: 18px 8px;
+            }
+            .listing-cards {
+                gap: 8px;
+                margin: 0 24px;
+            }
+            .listing-card {
+                min-width: 160px;
+                max-width: 180px;
+                min-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Add Item</h1>
+        </div>
+        <form id="add-item-form" autocomplete="off">
+            <div class="main-content">
+                <div class="image-upload">
+                    <div class="image-preview" id="image-preview"></div>
+                    <input type="file" id="images" name="images" accept="image/*" multiple required style="margin-bottom:10px;" />
+                    <span style="font-size:0.98rem; color:var(--timberwolf);">Add up to 2 images</span>
+                </div>
+                <div class="details-section">
+                    <div class="desc-box">
+                        <label for="product-desc">Add Product Description</label>
+                        <textarea id="product-desc" placeholder="Describe your item..." required></textarea>
+                    </div>
+                    <button type="button" class="swap-btn" id="toggle-status">Available</button>
+                    <input type="hidden" id="status" value="available" />
+                </div>
+            </div>
+            <div style="text-align:right; margin-bottom:10px;">
+                <button type="submit" class="swap-btn" style="margin:0;">Submit</button>
+            </div>
+            <div class="error-message hidden" id="error-message"></div>
+        </form>
+        <div class="previous-listings" style="position:relative;">
+            <h2>Your Previous Listings:</h2>
+            <button class="carousel-arrow left" id="carousel-left">&#8592;</button>
+            <div class="listing-cards" id="listing-cards">
+                <!-- Carousel content will be inserted here -->
+            </div>
+            <button class="carousel-arrow right" id="carousel-right">&#8594;</button>
+        </div>
+    </div>
+    <script type="module">
+        import { auth, db, storage } from './firebase.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const form = document.getElementById('add-item-form');
+        const imagesInput = document.getElementById('images');
+        const imagePreview = document.getElementById('image-preview');
+        const descInput = document.getElementById('product-desc');
+        const statusInput = document.getElementById('status');
+        const toggleStatusBtn = document.getElementById('toggle-status');
+        const errorMessage = document.getElementById('error-message');
+        const listingCards = document.getElementById('listing-cards');
+
+        let currentUser = { uid: 'test-user' }; // TEMP: fake user for testing
+        let status = 'available';
+        let listings = [];
+        let carouselIndex = 0;
+        const CARDS_VISIBLE = 3;
+
+        // Auth check (DISABLED FOR TESTING)
+        // onAuthStateChanged(auth, user => {
+        //     if (!user) {
+        //         window.location.href = 'index.html'; // redirect to login
+        //     } else {
+        //         currentUser = user;
+        //         fetchListings();
+        //     }
+        // });
+        fetchListings();
+
+        // Toggle status
+        toggleStatusBtn.addEventListener('click', () => {
+            status = (status === 'available') ? 'swap' : 'available';
+            statusInput.value = status;
+            toggleStatusBtn.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        });
+
+        // Image preview
+        imagesInput.addEventListener('change', () => {
+            imagePreview.innerHTML = '';
+            const files = Array.from(imagesInput.files).slice(0,2);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+            if (imagesInput.files.length > 2) {
+                errorMessage.textContent = 'You can only upload up to 2 images.';
+                errorMessage.classList.remove('hidden');
+                imagesInput.value = '';
+            } else {
+                errorMessage.classList.add('hidden');
+            }
+        });
+
+        // Form submit
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.classList.add('hidden');
+            if (!currentUser) return;
+            const files = Array.from(imagesInput.files).slice(0,2);
+            if (files.length === 0) {
+                errorMessage.textContent = 'Please select up to 2 images.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            const desc = descInput.value.trim();
+            if (!desc) {
+                errorMessage.textContent = 'Please enter a product description.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            try {
+                // Upload images
+                const imageUrls = [];
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const storageRef = ref(storage, `items/${currentUser.uid}/${Date.now()}_${file.name}`);
+                    await uploadBytes(storageRef, file);
+                    const url = await getDownloadURL(storageRef);
+                    imageUrls.push(url);
+                }
+                // Save to Firestore
+                await addDoc(collection(db, 'items'), {
+                    uid: currentUser.uid,
+                    description: desc,
+                    status: status,
+                    images: imageUrls,
+                    createdAt: new Date()
+                });
+                form.reset();
+                imagePreview.innerHTML = '';
+                fetchListings();
+            } catch (err) {
+                errorMessage.textContent = 'Error uploading item. Please try again.';
+                errorMessage.classList.remove('hidden');
+            }
+        });
+
+        async function fetchListings() {
+            listingCards.innerHTML = '';
+            if (!currentUser) return;
+            const q = query(collection(db, 'items'), where('uid', '==', currentUser.uid), orderBy('createdAt', 'desc'));
+            const querySnapshot = await getDocs(q);
+            listings = [];
+            querySnapshot.forEach(doc => {
+                listings.push(doc.data());
+            });
+            carouselIndex = 0;
+            showCarousel(carouselIndex);
+        }
+
+        function showCarousel(startIdx) {
+            listingCards.innerHTML = '';
+            if (listings.length === 0) return;
+            for (let i = startIdx; i < Math.min(startIdx + CARDS_VISIBLE, listings.length); i++) {
+                const data = listings[i];
+                const card = document.createElement('div');
+                card.className = 'listing-card';
+                if (data.images && data.images.length) {
+                    const img = document.createElement('img');
+                    img.src = data.images[0];
+                    img.className = 'card-bg';
+                    card.appendChild(img);
+                }
+                const content = document.createElement('div');
+                content.className = 'card-content';
+                const desc = document.createElement('div');
+                desc.className = 'desc';
+                desc.textContent = data.description;
+                content.appendChild(desc);
+                const stat = document.createElement('div');
+                stat.className = 'stat';
+                stat.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                content.appendChild(stat);
+                card.appendChild(content);
+                listingCards.appendChild(card);
+            }
+            document.getElementById('carousel-left').disabled = (carouselIndex === 0);
+            document.getElementById('carousel-right').disabled = (carouselIndex + CARDS_VISIBLE >= listings.length);
+        }
+
+        document.getElementById('carousel-left').onclick = function() {
+            if (carouselIndex > 0) {
+                carouselIndex--;
+                showCarousel(carouselIndex);
+            }
+        };
+        document.getElementById('carousel-right').onclick = function() {
+            if (carouselIndex + CARDS_VISIBLE < listings.length) {
+                carouselIndex++;
+                showCarousel(carouselIndex);
+            }
+        };
+    </script>
+</body>
+</html>
