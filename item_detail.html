@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Listing</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --timberwolf: #dbcdc6;
+      --champagne-pink: #ead7d1;
+      --amaranth-pink: #dd99bb;
+      --chinese-violet: #7b506f;
+      --dark-purple: #1f1a38;
+      --white-pink: #feebf5;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--champagne-pink); color: var(--dark-purple); }
+    body {
+      background: var(--champagne-pink);
+      min-height: 100vh;
+    }
+    .navbar {
+      width: 100%;
+      background: var(--white-pink);
+      box-shadow: 0 2px 12px rgba(31,26,56,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      animation: fadeInUp 1s;
+    }
+    .navbar .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--chinese-violet);
+      background: linear-gradient(45deg, var(--chinese-violet), var(--amaranth-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: filter 0.3s;
+    }
+    .navbar .nav-links {
+      display: flex;
+      gap: 2.2rem;
+    }
+    .navbar .nav-links a {
+      color: var(--chinese-violet);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.08rem;
+      position: relative;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      transition: width 0.3s;
+    }
+    .navbar .nav-links a:hover {
+      color: var(--amaranth-pink);
+      transform: translateY(-2px);
+    }
+    .navbar .nav-links a:hover::after {
+      width: 100%;
+    }
+    .item-detail-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      max-width: 1100px;
+      margin: 2.5rem auto 0 auto;
+      padding: 2rem;
+      background: var(--white-pink);
+      border-radius: 18px;
+      border: 1px solid var(--timberwolf);
+      box-shadow: 0 4px 32px rgba(31,26,56,0.10);
+    }
+    .main-image-section {
+      flex: 1 1 320px;
+      min-width: 280px;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+    .main-image {
+      background: var(--champagne-pink);
+      border: 2px solid var(--chinese-violet);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 350px;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    .main-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+    }
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--amaranth-pink);
+      border: none;
+      color: var(--white-pink);
+      font-size: 2rem;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      opacity: 0.85;
+      transition: background 0.2s;
+    }
+    .arrow-btn:hover {
+      background: var(--chinese-violet);
+    }
+    .arrow-left { left: 10px; }
+    .arrow-right { right: 10px; }
+    .details-section {
+      flex: 2 1 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      justify-content: flex-start;
+    }
+    .product-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.3em;
+      color: var(--chinese-violet);
+    }
+    .product-desc {
+      font-size: 1.1rem;
+      color: var(--dark-purple);
+      margin-bottom: 1.2em;
+      line-height: 1.6;
+      background: var(--champagne-pink);
+      border-radius: 10px;
+      padding: 1rem;
+      border: 1px solid var(--timberwolf);
+    }
+    .action-buttons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .action-btn {
+      padding: 0.8em 2.2em;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 1.2em;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--amaranth-pink), var(--chinese-violet));
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(123,80,111,0.10);
+      transition: background 0.2s, color 0.2s;
+    }
+    .action-btn.buy {
+      background: linear-gradient(90deg, var(--chinese-violet), var(--amaranth-pink));
+    }
+    .action-btn:hover {
+      filter: brightness(1.1);
+    }
+    @media (max-width: 900px) {
+      .item-detail-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+      }
+      .main-image-section, .details-section {
+        max-width: 100%;
+      }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">ReWear</div>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">Pages</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact Us</a>
+      <a href="index.html"><i class="fas fa-user"></i></a>
+    </div>
+  </nav>
+  <div class="item-detail-container">
+    <div class="main-image-section">
+      <div class="main-image">
+        <button class="arrow-btn arrow-left" id="arrowLeft" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+        <img id="productMainImg" src="" alt="Product Image">
+        <button class="arrow-btn arrow-right" id="arrowRight" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="details-section">
+      <div class="product-title" id="productTitle">Product Name</div>
+      <div class="product-desc" id="productDesc">Product description will appear here.</div>
+      <div class="action-buttons">
+        <button class="action-btn buy">Buy</button>
+        <button class="action-btn swap">Express Interest to Swap</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Static data for demonstration
+    const products = {
+      1: {
+        name: 'Blue Denim Jacket',
+        desc: 'A classic blue denim jacket, perfect for layering in any season. Size M. Gently used, no visible wear.',
+        images: [
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80'
+        ]
+      },
+      2: {
+        name: 'Classic White Tee',
+        desc: 'Soft, breathable cotton white t-shirt. Size L. Barely worn, no stains or tears.',
+        images: [
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80',
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=200&q=80',
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=100&q=80'
+        ]
+      },
+      3: {
+        name: 'Patterned Skirt',
+        desc: 'Colorful patterned skirt, knee-length, size S. Light and flowy, perfect for summer.',
+        images: [
+          'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
+          'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=200&q=80',
+          'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=100&q=80'
+        ]
+      },
+      4: {
+        name: 'Cozy Knit Sweater',
+        desc: 'Warm, cozy knit sweater in cream color. Size M. Slightly oversized fit.',
+        images: [
+          'https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=400&q=80',
+          'https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=200&q=80',
+          'https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=100&q=80'
+        ]
+      }
+    };
+
+    // Get item ID from URL
+    function getItemId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+
+    let currentImgIdx = 0;
+    let currentImages = [];
+
+    function showProductDetails(id) {
+      const product = products[id];
+      if (!product) {
+        document.getElementById('productTitle').textContent = 'Product Not Found';
+        document.getElementById('productDesc').textContent = '';
+        document.getElementById('productMainImg').src = '';
+        return;
+      }
+      document.getElementById('productTitle').textContent = product.name;
+      document.getElementById('productDesc').textContent = product.desc;
+      currentImages = product.images;
+      currentImgIdx = 0;
+      document.getElementById('productMainImg').src = currentImages[currentImgIdx];
+    }
+
+    function showImage(idx) {
+      if (currentImages.length === 0) return;
+      if (idx < 0) idx = currentImages.length - 1;
+      if (idx >= currentImages.length) idx = 0;
+      currentImgIdx = idx;
+      document.getElementById('productMainImg').src = currentImages[currentImgIdx];
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const id = getItemId();
+      showProductDetails(id);
+      document.getElementById('arrowLeft').onclick = function() {
+        showImage(currentImgIdx - 1);
+      };
+      document.getElementById('arrowRight').onclick = function() {
+        showImage(currentImgIdx + 1);
+      };
+    });
+  </script>
+</body>
+</html> 
