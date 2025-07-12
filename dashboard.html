@@ -384,8 +384,52 @@
         getDocs,
         query,
         where,
-        orderBy
+        orderBy,
+        doc,
+        getDoc,
+        updateDoc,
+        increment,
+        setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Points system functions
+    async function getUserPoints(userId) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                return userDoc.data().points || 0;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error getting user points:', error);
+            return 0;
+        }
+    }
+
+    async function updateUserPoints(userId, points) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                await updateDoc(userRef, {
+                    points: increment(points)
+                });
+            } else {
+                // Create new user document
+                await setDoc(userRef, {
+                    uid: userId,
+                    points: points,
+                    createdAt: new Date()
+                });
+            }
+        } catch (error) {
+            console.error('Error updating user points:', error);
+        }
+    }
 
     // Check authentication state
     onAuthStateChanged(auth, (user) => {
@@ -403,10 +447,11 @@
     });
 
     // Update profile section with user data
-    function updateProfileSection(user) {
+    async function updateProfileSection(user) {
         const profileName = document.querySelector('.profile-details h2');
         const profileEmail = document.querySelector('.profile-details .email');
         const profileAvatar = document.querySelector('.profile-avatar');
+        const profilePoints = document.querySelector('.profile-points');
         
         if (profileName) {
             profileName.textContent = user.displayName || 'User';
@@ -422,6 +467,12 @@
             // Use first letter of display name or email
             const initial = (user.displayName || user.email || 'U').charAt(0).toUpperCase();
             profileAvatar.innerHTML = `<span style="font-size: 2.5rem; color: var(--chinese-violet);">${initial}</span>`;
+        }
+        
+        // Update points display
+        if (profilePoints) {
+            const points = await getUserPoints(user.uid);
+            profilePoints.textContent = `Points: ${points}`;
         }
     }
 
@@ -443,20 +494,26 @@
     // Load user's items from Firebase
     async function loadUserItems(userId) {
         try {
+            console.log('Loading items for user ID:', userId); // Debug log
             const userListings = document.getElementById('userListings');
             
             const itemsRef = collection(db, 'items');
             const q = query(itemsRef, where('uid', '==', userId), orderBy('createdAt', 'desc'));
+            console.log('Query created:', q); // Debug log
             const querySnapshot = await getDocs(q);
+            console.log('Query snapshot size:', querySnapshot.size); // Debug log
             
             const userItems = [];
             querySnapshot.forEach((doc) => {
-                userItems.push({
+                const itemData = {
                     id: doc.id,
                     ...doc.data()
-                });
+                };
+                console.log('Item data:', itemData); // Debug log
+                userItems.push(itemData);
             });
             
+            console.log('Total items loaded:', userItems.length); // Debug log
             displayUserItems(userItems);
         } catch (error) {
             console.error('Error loading user items:', error);
@@ -474,6 +531,8 @@
     function displayUserItems(items) {
         const userListings = document.getElementById('userListings');
         
+        console.log('Displaying user items:', items); // Debug log
+        
         if (items.length === 0) {
             userListings.innerHTML = `
                 <div class="empty-state">
@@ -485,15 +544,18 @@
             return;
         }
 
-        userListings.innerHTML = items.map(item => `
-            <a href="item_detail.html?id=${item.id}" style="text-decoration:none; color:inherit;">
-                <div class="listing-card">
-                    <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80'}" alt="${item.title}">
-                    <div class="listing-title">${item.title}</div>
-                    <div class="listing-status">${item.status || 'Active'}</div>
-                </div>
-            </a>
-        `).join('');
+        userListings.innerHTML = items.map(item => {
+            console.log('Creating link for item:', item.id, item.title); // Debug log
+            return `
+                <a href="item_detail.html?id=${item.id}" style="text-decoration:none; color:inherit;">
+                    <div class="listing-card">
+                        <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80'}" alt="${item.title}">
+                        <div class="listing-title">${item.title}</div>
+                        <div class="listing-status">${item.status || 'Active'}</div>
+                    </div>
+                </a>
+            `;
+        }).join('');
     }
 
     function showSwaps(type) {

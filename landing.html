@@ -185,6 +185,18 @@
       transform: translateY(-2px) scale(1.04);
       box-shadow: 0 8px 24px rgba(123,80,111,0.18);
     }
+    
+    .points-guide {
+      margin: 1.5rem 0;
+      color: var(--timberwolf);
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+    
+    .points-guide p {
+      margin: 0.5rem 0;
+      font-weight: 500;
+    }
     .hero-arrows {
       position: absolute;
       left: 8vw;
@@ -303,13 +315,13 @@
     }
     .arrivals-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 2em;
-      max-width: 1200px;
-      margin: 0 auto;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 280px));
+      gap: 2rem;
+      padding: 1.5rem 0;
+      justify-content: center;
     }
     .product-card {
-      background: var(--white-pink);
+      background: #feebf5;
       border-radius: 1.5em;
       box-shadow: 0 4px 18px rgba(31,26,56,0.07);
       padding: 1.2em 1em 1em 1em;
@@ -319,6 +331,7 @@
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
       position: relative;
+      min-height: 320px;
     }
     .product-card:hover {
       transform: translateY(-8px) scale(1.04);
@@ -330,31 +343,36 @@
       object-fit: cover;
       border-radius: 1em;
       margin-bottom: 1em;
-      background: var(--timberwolf);
+      background: #dbcdc6;
     }
     .product-info {
       text-align: center;
     }
     .product-type {
       font-size: 0.85rem;
-      color: var(--amaranth-pink);
-      background: var(--champagne-pink);
+      color: #dd99bb;
+      background: #ead7d1;
       border-radius: 8px;
       padding: 0.2em 0.7em;
       margin-bottom: 0.3em;
       display: inline-block;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
     .product-name {
       font-size: 1.08rem;
       font-weight: 600;
-      color: var(--chinese-violet);
+      color: #7b506f;
       margin-bottom: 0.3em;
+      text-align: center;
     }
     .product-price {
       font-size: 1.05rem;
-      color: var(--dark-purple);
+      color: #1f1a38;
       font-weight: 500;
       margin-bottom: 0.2em;
+      text-align: center;
     }
     
     .product-owner {
@@ -510,6 +528,7 @@
       }
       .arrivals-grid {
         gap: 1.5em;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
       }
       .promo-row {
         flex-direction: column;
@@ -566,7 +585,7 @@
         padding: 0.4em 1em;
       }
       .arrivals-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 200px));
         gap: 1em;
       }
       .promo-section {
@@ -736,13 +755,18 @@
 <body>
   <nav class="navbar">
     <div class="logo">ReWear</div>
-    <div class="nav-links" id="navLinks">
+    <div class="nav-links">
       <a href="landing.html">Home</a>
-      <a href="#">Browse</a>
-      <a href="index.html" id="loginLink">Login</a>
-      <a href="Signup.html" id="signupLink">Signup</a>
-      <a href="dashboard.html" id="profileLink" style="display: none;"><i class="fas fa-user"></i> Profile</a>
-      <a href="#" id="logoutLink" onclick="logout()" style="display: none; color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a href="#arrivals-section">Browse</a>
+      <a href="add_item.html">Add Item</a>
+      <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
+      <a href="#" id="loginLink" onclick="window.location.href='index.html'">Login</a>
+      <a href="#" id="signupLink" onclick="window.location.href='Signup.html'">Signup</a>
+      <!-- <a href="#" id="profileLink" style="display:none;"><i class="fas fa-user"></i> Profile</a> -->
+      <a href="#" id="logoutLink" style="display:none;" onclick="logout()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <span id="pointsDisplay" style="display:none; color: var(--amaranth-pink); font-weight: 600; margin-left: 1rem;">
+        <i class="fas fa-coins"></i> <span id="pointsValue">0</span> pts
+      </span>
     </div>
   </nav>
 
@@ -752,9 +776,9 @@
     <div class="hero-slider">
       <div class="hero-slide active">
         <div class="hero-content">
-          <h2>Urban Edge</h2>
-          <h1>Jackets for the Modern Man</h1>
-          <button class="cta-btn">Start Swapping</button>
+          <h2>SUSTAINABLE FASHION</h2>
+          <h1>Exchange & Earn Points</h1>
+          <button class="cta-btn" onclick="window.location.href='add_item.html'">Start Listing</button>
         </div>
         <div class="hero-img">
           <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Modern Fashion">
@@ -762,30 +786,23 @@
       </div>
       <div class="hero-slide">
         <div class="hero-content">
-          <h2>Fresh Finds</h2>
-          <h1>Discover the Latest Arrivals</h1>
-          <!-- <button class="cta-btn" >Browse Items</button> -->
-          <a href="#arrivals-section" class="promo-btn" style="text-decoration: none; display: inline-block; margin-right: 1rem;">Browse Items</a>
+          <h2>POINTS SYSTEM</h2>
+          <h1>Earn & Spend Points</h1>
+          <div class="points-guide">
+            <p>• List an item = +10 points</p>
+            <p>• Swap an item = +20 points</p>
+            <p>• Buy items = Item price in points</p>
+          </div>
+          <!-- <button class="cta-btn" onclick="window.location.href='dashboard.html'">View Profile</button> -->
         </div>
         <div class="hero-img">
           <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Latest Fashion">
         </div>
       </div>
-      <div class="hero-slide">
-        <div class="hero-content">
-          <h2>Share Your Style</h2>
-          <h1>List Your Own Items</h1>
-          <a href="add_item.html" class="promo-btn" style="text-decoration: none; display: inline-block; margin-right: 1rem;">List an Item</a>
-          <!-- <button class="cta-btn">List an Item</button> -->
-        </div>
-        <div class="hero-img">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Share Fashion">
-        </div>
-      </div>
     </div>
     <div class="hero-arrows">
-      <span class="arrow left" id="heroPrev"><i class="fas fa-chevron-left"></i></span>
-      <span class="arrow right" id="heroNext"><i class="fas fa-chevron-right"></i></span>
+      <button class="arrow" id="heroPrev"><i class="fas fa-chevron-left"></i></button>
+      <button class="arrow" id="heroNext"><i class="fas fa-chevron-right"></i></button>
     </div>
   </section>
 
@@ -800,82 +817,14 @@
       <button class="tab" data-category="bags">Bags</button>
       <button class="tab" data-category="accessories">Accessories</button>
     </div>
-<<<<<<< HEAD
-    <div class="arrivals-grid">
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=300&q=80" alt="Polo Shirt">
-        <div class="product-info">
-          <span class="product-type">JACKETS</span>
-          <div class="product-name">adidas X Pop Polo shirt, navy / blue</div>
-          <div class="product-price">$69.99</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80" alt="Sneakers">
-        <div class="product-info">
-          <span class="product-type">SHOES</span>
-          <div class="product-name">adidas X Pop TRX Vintage, navy / white</div>
-          <div class="product-price">$99.99</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=300&q=80" alt="Track Jacket">
-        <div class="product-info">
-          <span class="product-type">JACKETS</span>
-          <div class="product-name">adidas X Pop Beckenbauer Track Jacket</div>
-          <div class="product-price">$120.00</div>
-          <div class="product-rating">★★★★★</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
-        <div class="product-info">
-          <span class="product-type">SHIRTS</span>
-          <div class="product-name">adidas X Pop Classic t-shirt, grey / navy</div>
-          <div class="product-price">$120.00</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1575428652377-a2d80e2040f4?auto=format&fit=crop&w=300&q=80" alt="Cap">
-        <div class="product-info">
-          <span class="product-type">ACCESSORIES</span>
-          <div class="product-name">adidas X Pop SL Cap, navy / white</div>
-          <div class="product-price">$59.00</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=300&q=80" alt="Hoodie">
-        <div class="product-info">
-          <span class="product-type">HOODIES</span>
-          <div class="product-name">Butter Yard Pullover Hood, denim</div>
-          <div class="product-price">$130.00</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1583743814966-8936f37f4674?auto=format&fit=crop&w=300&q=80" alt="T-shirt">
-        <div class="product-info">
-          <span class="product-type">SHIRTS</span>
-          <div class="product-name">Parra Rug Pull t-shirt, white</div>
-          <div class="product-price">$60.00</div>
-        </div>
-      </a>
-      <a href="#" class="product-card" style="text-decoration: none; color: inherit;">
-        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=300&q=80" alt="Sweatshirt">
-        <div class="product-info">
-          <span class="product-type">SWEATSHIRTS</span>
-          <div class="product-name">Carhartt L/S Deadkabob Knock Knock Sweat</div>
-          <div class="product-price">$131.00</div>
-        </div>
-      </a>
-=======
     <div class="arrivals-grid" id="itemsGrid">
       <!-- Items will be loaded dynamically from Firebase -->
       <div class="loading-spinner">
         <i class="fas fa-spinner fa-spin"></i>
         <p>Loading items...</p>
       </div>
->>>>>>> 541992ab7efa141ef59136f3ab5513bdc47b7a69
     </div>
+
   </section>
 
 
@@ -941,7 +890,9 @@
         getDocs,
         query,
         orderBy,
-        where
+        where,
+        doc,
+        getDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // Check authentication state and update navbar
@@ -950,6 +901,8 @@
         const signupLink = document.getElementById('signupLink');
         const profileLink = document.getElementById('profileLink');
         const logoutLink = document.getElementById('logoutLink');
+        const pointsDisplay = document.getElementById('pointsDisplay');
+        const pointsValue = document.getElementById('pointsValue');
         
         if (user) {
             // User is signed in
@@ -957,14 +910,35 @@
             signupLink.style.display = 'none';
             profileLink.style.display = 'inline';
             logoutLink.style.display = 'inline';
+            pointsDisplay.style.display = 'inline';
+            
+            // Show user points
+            showUserPoints(user.uid);
         } else {
             // User is not signed in
             loginLink.style.display = 'inline';
             signupLink.style.display = 'inline';
             profileLink.style.display = 'none';
             logoutLink.style.display = 'none';
+            pointsDisplay.style.display = 'none';
         }
     });
+    
+    // Show user points
+    async function showUserPoints(userId) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                const points = userDoc.data().points || 0;
+                pointsValue.textContent = points;
+                console.log(`User has ${points} points`);
+            }
+        } catch (error) {
+            console.error('Error getting user points:', error);
+        }
+    }
 
     // Logout function
     async function logout() {
@@ -988,6 +962,7 @@
     // Load items from Firebase
     async function loadItems() {
         try {
+            console.log('Loading all items from Firebase...'); // Debug log
             const itemsGrid = document.getElementById('itemsGrid');
             itemsGrid.innerHTML = `
                 <div class="loading-spinner">
@@ -998,16 +973,21 @@
 
             const itemsRef = collection(db, 'items');
             const q = query(itemsRef, orderBy('createdAt', 'desc'));
+            console.log('Query created for all items'); // Debug log
             const querySnapshot = await getDocs(q);
+            console.log('Query snapshot size:', querySnapshot.size); // Debug log
             
             allItems = [];
             querySnapshot.forEach((doc) => {
-                allItems.push({
+                const itemData = {
                     id: doc.id,
                     ...doc.data()
-                });
+                };
+                console.log('Item data:', itemData); // Debug log
+                allItems.push(itemData);
             });
 
+            console.log('Total items loaded:', allItems.length); // Debug log
             displayItems(allItems);
         } catch (error) {
             console.error('Error loading items:', error);
@@ -1025,6 +1005,8 @@
     function displayItems(items) {
         const itemsGrid = document.getElementById('itemsGrid');
         
+        console.log('Displaying items:', items); // Debug log
+        
         if (items.length === 0) {
             itemsGrid.innerHTML = `
                 <div class="empty-state">
@@ -1036,17 +1018,20 @@
             return;
         }
 
-        itemsGrid.innerHTML = items.map(item => `
-            <div class="product-card" onclick="viewItem('${item.id}')">
-                <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80'}" alt="${item.title}">
-                <div class="product-info">
-                    <span class="product-type">${item.category?.toUpperCase() || 'CLOTHING'}</span>
-                    <div class="product-name">${item.title}</div>
-                    <div class="product-price">${item.description || 'Available for swap'}</div>
-                    <div class="product-owner">by ${item.ownerName || 'Anonymous'}</div>
+        itemsGrid.innerHTML = items.map(item => {
+            console.log('Creating product card for item:', item.id, item.title); // Debug log
+            return `
+                <div class="product-card" onclick="viewItem('${item.id}')">
+                    <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80'}" alt="${item.title}">
+                    <div class="product-info">
+                        <span class="product-type">${item.category?.toUpperCase() || 'CLOTHING'}</span>
+                        <div class="product-name">${item.title}</div>
+                        <div class="product-price">${item.description || 'Available for swap'}</div>
+                        <div class="product-owner">by ${item.ownerName || 'Anonymous'}</div>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     // Filter items by category
@@ -1064,7 +1049,10 @@
 
     // View item details
     function viewItem(itemId) {
-        window.location.href = `item_detail.html?id=${itemId}`;
+        console.log('viewItem called with ID:', itemId); // Debug log
+        const url = `item_detail.html?id=${itemId}`;
+        console.log('Redirecting to:', url); // Debug log
+        window.location.href = url;
     }
 
     // Make functions globally available

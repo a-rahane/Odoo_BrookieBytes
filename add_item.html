@@ -387,12 +387,7 @@
         <div class="nav-links">
             <a href="landing.html">Home</a>
             <a href="#">Browse</a>
-<<<<<<< HEAD
-            <a href="Index.html">Login</a>
-            <a href="Signup.html">Signup</a>
-=======
             <a href="add_item.html">Add Item</a>
->>>>>>> 541992ab7efa141ef59136f3ab5513bdc47b7a69
             <a href="dashboard.html"><i class="fas fa-user"></i> Profile</a>
             <a href="#" onclick="logout()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
@@ -413,9 +408,6 @@
                         <label for="product-title">Product Title</label>
                         <input id="product-title" type="text" placeholder="Enter product title..." required />
                     </div>
-<<<<<<< HEAD
-                    <div class="desc-box">
-=======
                     <div class="desc-box" style="margin-top:14px;">
                         <label for="product-category">Category</label>
                         <select id="product-category" required style="width:100%;padding:10px 8px;margin-bottom:0;border-radius:8px;border:none;font-size:1.08rem;background:rgba(234,215,209,0.13);color:var(--timberwolf);font-family:'Inter',sans-serif;">
@@ -428,9 +420,8 @@
                         </select>
                     </div>
                     <div class="desc-box" style="margin-top:14px;">
->>>>>>> 541992ab7efa141ef59136f3ab5513bdc47b7a69
-                        <label for="product-price">Price (INR)</label>
-                        <input id="product-price" type="number" min="0" step="0.01" placeholder="Enter price in INR..." required />
+                        <label for="product-price">Price (Points)</label>
+                        <input id="product-price" type="number" min="0" step="1" placeholder="Enter price in points..." required />
                     </div>
                     <div class="desc-box">
                         <label for="product-desc">Add Product Description</label>
@@ -455,8 +446,49 @@
     <script type="module">
     import { auth, db, storage } from './firebase.js';
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { collection, addDoc, query, where, getDocs, orderBy, doc, getDoc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    
+    // Points system functions
+    async function awardPointsForListing(userId) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                // Update existing user's points
+                await updateDoc(userRef, {
+                    points: increment(10)
+                });
+            } else {
+                // Create new user document with points
+                await setDoc(userRef, {
+                    uid: userId,
+                    points: 10,
+                    createdAt: new Date()
+                });
+            }
+            console.log('Points awarded successfully');
+        } catch (error) {
+            console.error('Error awarding points:', error);
+        }
+    }
+    
+    async function getUserPoints(userId) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                return userDoc.data().points || 0;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error getting user points:', error);
+            return 0;
+        }
+    }
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('add-item-form');
         const imagesInput = document.getElementById('images');
@@ -527,6 +559,7 @@
             }
             const title = document.getElementById('product-title').value.trim();
             const category = document.getElementById('product-category').value;
+            const price = parseInt(document.getElementById('product-price').value);
             const desc = descInput.value.trim();
             if (!title) {
                 errorMessage.textContent = 'Please enter a product title.';
@@ -535,6 +568,11 @@
             }
             if (!category) {
                 errorMessage.textContent = 'Please select a category.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            if (!price || price < 0) {
+                errorMessage.textContent = 'Please enter a valid price in points.';
                 errorMessage.classList.remove('hidden');
                 return;
             }
@@ -554,22 +592,30 @@
                     imageUrls.push(url);
                 }
                 // Save to Firestore
-                await addDoc(collection(db, 'items'), {
+                const itemData = {
                     uid: currentUser.uid,
                     title: title,
                     category: category,
+                    price: price,
                     description: desc,
                     status: status,
                     imageUrl: imageUrls[0], // Use first image as main image
                     images: imageUrls,
                     ownerName: currentUser.displayName || currentUser.email,
                     createdAt: new Date()
-                });
+                };
+                
+                // Add item to Firestore
+                const itemRef = await addDoc(collection(db, 'items'), itemData);
+                
+                // Award points for listing an item
+                await awardPointsForListing(currentUser.uid);
+                
                 form.reset();
                 imagePreview.innerHTML = '';
                 
                 // Show success message and redirect
-                alert('Item added successfully! Redirecting to home page...');
+                alert('Item added successfully! You earned 10 points! Redirecting to home page...');
                 window.location.href = 'landing.html';
             } catch (err) {
                 errorMessage.textContent = 'Error uploading item. Please try again.';

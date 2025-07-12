@@ -184,6 +184,27 @@
     .action-btn:hover {
       filter: brightness(1.1);
     }
+    
+    .points-section {
+      background: var(--champagne-pink);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 1px solid var(--timberwolf);
+    }
+    
+    .points-info {
+      display: flex;
+      align-items: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--chinese-violet);
+    }
+    
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
     @media (max-width: 900px) {
       .item-detail-container {
         flex-direction: column;
@@ -222,6 +243,15 @@
     <div class="details-section">
       <div class="product-title" id="productTitle">Product Name</div>
       <div class="product-desc" id="productDesc">Product description will appear here.</div>
+      
+      <!-- Points Display Section -->
+      <div class="points-section" id="pointsSection" style="display: none;">
+          <div class="points-info">
+              <i class="fas fa-coins" style="color: var(--amaranth-pink); margin-right: 8px;"></i>
+              <span id="userPointsDisplay">Your Points: Loading...</span>
+          </div>
+      </div>
+      
       <div class="action-buttons">
         <button class="action-btn buy">Buy</button>
         <button class="action-btn swap">Express Interest to Swap</button>
@@ -237,8 +267,120 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import {
         doc,
-        getDoc
+        getDoc,
+        updateDoc,
+        increment,
+        setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Points system functions
+    async function getUserPoints(userId) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                return userDoc.data().points || 0;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error getting user points:', error);
+            return 0;
+        }
+    }
+
+    async function buyItemWithPoints(itemId, itemOwnerId, currentUserId) {
+        try {
+            const userPoints = await getUserPoints(currentUserId);
+            
+            // Get the item details to get the price
+            const itemRef = doc(db, 'items', itemId);
+            const itemDoc = await getDoc(itemRef);
+            
+            if (!itemDoc.exists()) {
+                alert('Item not found.');
+                return false;
+            }
+            
+            const itemData = itemDoc.data();
+            const itemCost = itemData.price || 50; // Use item price, default to 50 if no price
+            
+            if (userPoints < itemCost) {
+                alert(`You need ${itemCost} points to buy this item. You currently have ${userPoints} points.`);
+                return false;
+            }
+            
+            // Deduct points from buyer
+            const buyerRef = doc(db, 'users', currentUserId);
+            await updateDoc(buyerRef, {
+                points: increment(-itemCost)
+            });
+            
+            // Award points to seller (20 points for swap)
+            const sellerRef = doc(db, 'users', itemOwnerId);
+            const sellerDoc = await getDoc(sellerRef);
+            if (sellerDoc.exists()) {
+                await updateDoc(sellerRef, {
+                    points: increment(20) // Seller gets 20 points for swap
+                });
+            } else {
+                await setDoc(sellerRef, {
+                    uid: itemOwnerId,
+                    points: 20,
+                    createdAt: new Date()
+                });
+            }
+            
+            // Update item status to sold
+            await updateDoc(itemRef, {
+                status: 'sold',
+                soldTo: currentUserId,
+                soldAt: new Date()
+            });
+            
+            alert(`Item purchased successfully! You spent ${itemCost} points.`);
+            return true;
+        } catch (error) {
+            console.error('Error buying item:', error);
+            alert('Error purchasing item. Please try again.');
+            return false;
+        }
+    }
+
+    async function swapItem(itemId, currentUserId) {
+        try {
+            // Award 20 points to the user for swapping
+            const userRef = doc(db, 'users', currentUserId);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+                await updateDoc(userRef, {
+                    points: increment(20)
+                });
+            } else {
+                await setDoc(userRef, {
+                    uid: currentUserId,
+                    points: 20,
+                    createdAt: new Date()
+                });
+            }
+            
+            // Update item status to indicate swap interest
+            const itemRef = doc(db, 'items', itemId);
+            await updateDoc(itemRef, {
+                swapInterest: increment(1),
+                lastUpdated: new Date()
+            });
+            
+            alert('Swap interest expressed! You earned 20 points.');
+            return true;
+        } catch (error) {
+            console.error('Error expressing swap interest:', error);
+            alert('Error expressing swap interest. Please try again.');
+            return false;
+        }
+    }
 
     // Get item ID from URL
     function getItemId() {
@@ -253,7 +395,13 @@
     async function loadProductDetails(id) {
         try {
             console.log('Item ID from URL:', id); // Debug log
+            if (!id) {
+                console.error('No item ID provided');
+                showProductNotFound();
+                return;
+            }
             const docRef = doc(db, 'items', id);
+            console.log('Document reference:', docRef); // Debug log
             const docSnap = await getDoc(docRef);
             console.log('Document exists:', docSnap.exists()); // Debug log
             if (docSnap.exists()) {
@@ -261,6 +409,7 @@
                 console.log('Document data:', product); // Debug log
                 showProductDetails(product);
             } else {
+                console.log('Document does not exist for ID:', id);
                 showProductNotFound();
             }
         } catch (error) {
@@ -295,6 +444,98 @@
         } else {
             arrowLeft.style.display = 'flex';
             arrowRight.style.display = 'flex';
+        }
+        
+        // Show points section for logged-in users
+        showPointsSection();
+        
+        // Update buy button with points information
+        updateBuyButton(product);
+    }
+    
+    async function showPointsSection() {
+        const currentUser = auth.currentUser;
+        const pointsSection = document.getElementById('pointsSection');
+        const userPointsDisplay = document.getElementById('userPointsDisplay');
+        
+        if (currentUser && pointsSection && userPointsDisplay) {
+            const points = await getUserPoints(currentUser.uid);
+            userPointsDisplay.textContent = `Your Points: ${points}`;
+            pointsSection.style.display = 'block';
+        }
+    }
+    
+    async function updateBuyButton(product) {
+        const buyButton = document.querySelector('.action-btn.buy');
+        const swapButton = document.querySelector('.action-btn.swap');
+        const currentUser = auth.currentUser;
+        
+        if (currentUser) {
+            const userPoints = await getUserPoints(currentUser.uid);
+            const itemCost = product.price || 50; // Use item price, default to 50
+            
+            // Handle Buy Button
+            if (buyButton) {
+                if (product.status === 'sold') {
+                    buyButton.textContent = 'Sold';
+                    buyButton.disabled = true;
+                    buyButton.style.opacity = '0.5';
+                } else if (product.uid === currentUser.uid) {
+                    buyButton.textContent = 'Your Item';
+                    buyButton.disabled = true;
+                    buyButton.style.opacity = '0.5';
+                } else {
+                    buyButton.textContent = `Buy (${itemCost} points) - You have ${userPoints}`;
+                    buyButton.disabled = false;
+                    buyButton.style.opacity = '1';
+                    
+                    // Add click handler for buying
+                    buyButton.onclick = async () => {
+                        const itemId = getItemId(); // Get the item ID from URL
+                        const success = await buyItemWithPoints(itemId, product.uid, currentUser.uid);
+                        if (success) {
+                            // Refresh the page to show updated status
+                            window.location.reload();
+                        }
+                    };
+                }
+            }
+            
+            // Handle Swap Button
+            if (swapButton) {
+                if (product.status === 'sold') {
+                    swapButton.textContent = 'Item Sold';
+                    swapButton.disabled = true;
+                    swapButton.style.opacity = '0.5';
+                } else if (product.uid === currentUser.uid) {
+                    swapButton.textContent = 'Your Item';
+                    swapButton.disabled = true;
+                    swapButton.style.opacity = '0.5';
+                } else {
+                    swapButton.textContent = `Express Swap Interest (+20 points)`;
+                    swapButton.disabled = false;
+                    swapButton.style.opacity = '1';
+                    
+                    // Add click handler for swapping
+                    swapButton.onclick = async () => {
+                        const itemId = getItemId(); // Get the item ID from URL
+                        const success = await swapItem(itemId, currentUser.uid);
+                        if (success) {
+                            // Refresh the page to show updated status
+                            window.location.reload();
+                        }
+                    };
+                }
+            }
+        } else {
+            if (buyButton) {
+                buyButton.textContent = 'Login to Buy';
+                buyButton.disabled = true;
+            }
+            if (swapButton) {
+                swapButton.textContent = 'Login to Swap';
+                swapButton.disabled = true;
+            }
         }
     }
 
